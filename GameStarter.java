@@ -3,7 +3,6 @@ import java.util.*;
 import input.Input;
 
 public class GameStarter{
-    Input inp;
 
     public void loadGame()
     {
