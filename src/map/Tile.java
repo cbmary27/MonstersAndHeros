@@ -3,7 +3,7 @@ package map;
 import java.util.*;
 
 public class Tile{
-    private String tileVal; //M, C, X
+    private Piece<String> tileVal; //M, C, X
     private int row;
     private int col;
 
@@ -27,14 +27,20 @@ public class Tile{
         return col;
     }
 
-    public void setVal(String val)
-    {
-        this.tileVal = val;
-    }
+    // public void setVal(String val)
+    // {
+    //     this.tileVal = val;
+    // }
 
-    public String getVal()
+    // public String getVal()
+    // {
+    //     return tileVal;
+    // }
+
+    public void copy(Tile pos)
     {
-        return tileVal;
+        this.row = pos.row;
+        this.col = pos.col;
     }
 
 }

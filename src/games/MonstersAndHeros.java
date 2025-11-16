@@ -12,6 +12,7 @@ import entity.hero.HeroFactory;
 public class MonstersAndHeros extends Games{
     public FileParser file;
     public HeroFactory hf = new HeroFactory();
+    public Market market;
 
     public MonstersAndHeros()
     {
@@ -20,6 +21,7 @@ public class MonstersAndHeros extends Games{
         player.currentPos.col = 7;
     }
 
+    @Override
     public void start()
     {
         String ch;
@@ -27,36 +29,68 @@ public class MonstersAndHeros extends Games{
         i.displayMonstersAndHeros();
         setUpGame();
         map.initializeMap();
-        //player can start moving here
-        System.out.println("Enter your move: (W/A/S/D)");
-        ch = inp.stringInput();
 
-        while (flag == false)
-        {
-            System.out.println("Enter your move: (W/A/S/D)");
-            ch = inp.stringInput();
-            flag = checkInput(ch);
-
-            if (flag == false)
+        do {
+            while (!isGameDone)
             {
-                error.invalidMove();
-            }
-            else
-            {
-                flag = map.isMoveLegal(ch, player.currentPos);
-                if (flag == false)
+                while (flag == false)
                 {
-                    error.invalidMove();
+                    displayOptions();
+                    System.out.println("Enter your move:");
+                    ch = inp.stringInput();
+                    flag = checkInput(ch);
+
+                    if (flag == false)
+                    {
+                        error.invalidMove();
+                    }
+                    else
+                    {
+                        flag = map.isMoveLegal(ch, player.currentPos);
+                        if (flag == false)
+                        {
+                            error.invalidMove();
+                        }
+                    }
+                }
+
+                switch(ch.toUpperCase())
+                {
+                    case "W":
+                    case "A":
+                    case "S":
+                    case "D":
+                        flag = map.isMoveLegal(ch, player.currentPos);
+                        if (flag == false)
+                        {
+                            error.invalidMove();
+                            break;
+                        }
+                        map.makeMove(player, ch);
+                        typeOfMove();
+                        break;
+                    case "I":
+                        break;
+                    case "Q":
+                        isGameDone = true;
+                        break;
+                    default:
+                        flag = false;
+                        error.invalidMove();
+                }
+
+                if (flag)
+                {
+                    map.printMap();
                 }
             }
-        }
 
+            restore();
+            System.out.println("Do you want to play again?");
+            System.out.println("[Y] [N]");
+            continue = inp.stringInput().toUpperCase();
 
-        switch(ch)
-        {
-
-        }
-
+        } while(continue.equals("Y"));
     }
 
     public void setUpGame()
@@ -106,5 +140,33 @@ public class MonstersAndHeros extends Games{
             System.out.println(name);
         }
 
+    }
+
+    public void typeOfMove()
+    {
+        String choice;
+
+        switch(grid[player.currentPos.getRow()][player.currentPos.getColumn()].tileVal.getValueOnTile())
+        {
+            case "M":
+                System.out.println("~ Would you like to buy/sell anything at the market? ~");
+                choice = inp.stringInput().toUpperCase();
+                if (choice.equals("Y"))
+                {
+                    //display the party of heros, player will select which hero has to go to market
+                    if (market == null)
+                    {
+                        market = new Market();
+                    }
+                    market.enter();
+                }
+                break;
+            case " ":
+                randomChoice = random.randint(0,1);
+                if (randomChoice == 1)
+                {
+                    //battle begins
+                }
+        }
     }
 }
