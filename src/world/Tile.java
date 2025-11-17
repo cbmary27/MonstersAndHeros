@@ -1,11 +1,18 @@
-package map;
+package world;
 
 import java.util.*;
+import market.Market;
 
 public class Tile{
-    private Piece<String> tileVal; //M, C, X
+    public Piece<String> tileVal; //M, C, X
     private int row;
     private int col;
+    public Market market;
+
+    public Tile()
+    {
+
+    }
 
     public void setRow(int row)
     {
@@ -14,17 +21,23 @@ public class Tile{
 
     public void setColumn(int column)
     {
-        this.col = col;
+        this.col = column;
     }
 
-    public int getRow(int row)
+    public int getRow()
     {
         return row;
     }
 
-    public int getColumn(int row)
+    public int getColumn()
     {
         return col;
+    }
+
+    public void getMarketInstance()
+    {
+        if (market == null)
+           {market = new Market();}
     }
 
     // public void setVal(String val)

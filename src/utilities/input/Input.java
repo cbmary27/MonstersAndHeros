@@ -1,4 +1,4 @@
-package input;
+package utilities.input;
 
 import java.util.*;
 

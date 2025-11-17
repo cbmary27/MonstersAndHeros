@@ -1,4 +1,4 @@
-package map;
+package world;
 
 import java.util.*;
 

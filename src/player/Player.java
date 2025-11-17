@@ -1,8 +1,8 @@
 package player;
 
 import java.util.*;
-import map.Tile;
-import map.Piece;
+import world.Tile;
+import world.Piece;
 
 public class Player{
 

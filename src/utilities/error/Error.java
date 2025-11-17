@@ -9,6 +9,6 @@ public class Error{
 
     public void inaccessibleSpace()
     {
-        System.out.println("You cannot enter this area!")
+        System.out.println("You cannot enter this area!");
     }
 }

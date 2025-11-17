@@ -6,6 +6,7 @@ import java.io.*;
 public class FileParser
 {
     FileReader fr;
+    String filePath;
     String tuple;
     List<String> entityDetails; //to store a tuple
     List<String> names;
@@ -13,6 +14,7 @@ public class FileParser
 
     public FileParser()
     {
+        filePath = "Legends_Monsters_and_Heroes/";
         entityDetails = new ArrayList<String>();
         names = new ArrayList<String>();
     }
@@ -24,7 +26,7 @@ public class FileParser
         //Paladins
         //Paladins.txt Sorcerers.txt Warriors.txt
         tuple = "";
-        try (BufferedReader br = new BufferedReader(new FileReader("files/"+type+".txt"))){
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath+type+".txt"))){
 
         br.readLine();
         tuple = br.readLine();
@@ -51,7 +53,7 @@ public class FileParser
         //Paladins
         //Paladins.txt Sorcerers.txt Warriors.txt
         tuple = "";
-        try (BufferedReader br = new BufferedReader(new FileReader("files/"+type+".txt"))){
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath+type+".txt"))){
 
         br.readLine();
         tuple = br.readLine();
@@ -76,5 +78,39 @@ public class FileParser
         }
 
         return entityDetails;
+    }
+
+    public List<List<String>> getItemDetails(String type)
+    {
+        Random rand = new Random();
+        List<List<String>> itemDetails = new ArrayList<>();
+
+        tuple = "";
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath+type+".txt"))){
+
+        br.readLine();
+        tuple = br.readLine();
+
+        while (tuple != null)
+        {
+            if (rand.nextBoolean())
+            {
+                tuple = br.readLine();
+                continue;
+            }
+
+            String[] details = tuple.split("\\s+");
+
+            List<String> i = Arrays.asList(details);
+            itemDetails.add(new ArrayList<>(i));
+
+            tuple = br.readLine();
+        } }
+        catch (IOException io)
+        {
+            io.printStackTrace();
+        }
+
+        return itemDetails;
     }
 }

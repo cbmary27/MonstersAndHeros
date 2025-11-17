@@ -1,9 +1,10 @@
-package map;
+package world;
 
 import java.util.*;
-import utilities.error;
+import utilities.error.Error;
+import player.Player;
 
-public class Map
+public class World
 {
     public Tile[][] grid;
     public Tile[][] playerPosition;
@@ -13,10 +14,12 @@ public class Map
 
     //public Tile currentPos;
 
-    public Map(rows, columns)
+    public World(int rows, int columns)
     {
         this.rows = rows;
         this.columns = columns;
+        playerPosition = new Tile[rows][columns];
+        grid = new Tile[rows][columns];
     }
 
     public void setRows(int rows)
@@ -95,7 +98,7 @@ public class Map
         }
     }
 
-    public void intializePlayerPosition()
+    public void initializePlayerPosition()
     {
         for (int i = 0; i < rows; i++)
         {
@@ -116,30 +119,31 @@ public class Map
         {
             for (int j = 0; j < columns; j++)
             {
-                System.out.print("*---");
+                System.out.print("*--");
             }
 
             System.out.println();
 
             for (int j = 0; j < columns; j++)
             {
-                if (!playerPosition[i][j].getVal().equals("0"))
+                if (playerPosition[i][j].tileVal.getValueOnTile().equals("0"))
                 {
-                    System.out.print("|" + grid[i][j].tilePiece.getValueOnTile() + " ");
+                    System.out.print("|" + grid[i][j].tileVal.getValueOnTile() + " ");
                 }
                 else
                 {
                     System.out.print("|" + playerPosition[i][j].tileVal.getValueOnTile() + " ");
                 }
             }
-
             System.out.println("|");
         }
 
         for (int j = 0; j < columns; j++)
         {
-            System.out.print("*---");
+            System.out.print("*--");
         }
+
+        System.out.println();
     }
 
     public boolean isMoveLegal(String ch, Tile pos)
@@ -167,13 +171,13 @@ public class Map
             error.inaccessibleSpace();
             return false;
         }
-
+        return true;
     }
 
     public void makeMove(Player player, String choice)
     {
-        playerPosition[currentPos.getRow()][currentPos.getColumn()];
-        switch(ch)
+        playerPosition[player.currentPos.getRow()][player.currentPos.getColumn()].tileVal.setValueOnTile("0");
+        switch(choice)
         {
             case "W":
                 player.currentPos.setRow(player.currentPos.getRow() - 1);
@@ -185,12 +189,10 @@ public class Map
                 player.currentPos.setColumn(player.currentPos.getColumn() + 1);
                 break;
             case "D":
-                player.currentPos.setRow(player.currentPos.getColumn() + 1);
+                player.currentPos.setRow(player.currentPos.getRow() + 1);
                 break;
-            default:
-                return false;
         }
 
-        playerPosition[currentPos.getRow()][currentPos.getColumn()].tileVal.setValueOnTile(player.playerPiece.getValueOnTile());
+        playerPosition[player.currentPos.getRow()][player.currentPos.getColumn()].tileVal.setValueOnTile(player.playerPiece.getValueOnTile());
     }
 }

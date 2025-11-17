@@ -8,7 +8,7 @@ public abstract class Monsters extends Entity{
     int defense;
     int dodgeAbility;
 
-    public Monsters(name, baseDamage, defense, dodgeAbility)
+    public Monsters(String name, int baseDamage, int defense, int dodgeAbility)
     {
         super(name);
         this.baseDamage = baseDamage;

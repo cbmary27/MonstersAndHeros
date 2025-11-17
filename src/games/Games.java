@@ -1,17 +1,21 @@
 package games;
 
 import java.util.*;
-import utilities.*;
+import utilities.error.Error;
+import utilities.instructions.Instructions;
+import utilities.input.Input;
+import player.Player;
+import world.World;
 
 public abstract class Games{
 
     public Error error;
     public Instructions i;
     public Input inp;
-    public Map map;
+    public World world;
     public Player player;
     public boolean isGameDone;
-    public String continue;
+    public String continueGame;
 
     public Games()
     {
@@ -26,20 +30,17 @@ public abstract class Games{
 
     public boolean checkInput(String input)
     {
-        switch(ch)
+        switch(input.toUpperCase())
         {
-            switch(ch.toUpperCase())
-            {
-                case "W":
-                case "A":
-                case "S":
-                case "D":
-                case "I":
-                case "Q":
-                    return true;
-                default:
-                    return false;
-            }
+            case "W":
+            case "A":
+            case "S":
+            case "D":
+            case "I":
+            case "Q":
+                return true;
+            default:
+                return false;
         }
     }
 

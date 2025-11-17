@@ -1,34 +1,32 @@
 package games;
 
 import java.util.*;
-import utilities.*;
-//import instructions.Instructions;
-import map.Map;
-import player.Player;
 import fileparser.FileParser;
-//import input.Input;
 import entity.hero.HeroFactory;
+import world.World;
 
 public class MonstersAndHeros extends Games{
     public FileParser file;
     public HeroFactory hf = new HeroFactory();
-    public Market market;
+    //public Market market;
 
     public MonstersAndHeros()
     {
-        map = new Map(8, 8);
-        player.currentPos.row = 7;
-        player.currentPos.col = 7;
+        world = new World(8, 8);
+        player.currentPos.setRow(7);
+        player.currentPos.setColumn(7);
+        System.out.println(player.currentPos.getColumn());
     }
 
     @Override
     public void start()
     {
-        String ch;
+        String ch = "";
         boolean flag = false;
         i.displayMonstersAndHeros();
         setUpGame();
-        map.initializeMap();
+        world.initializeMap();
+        world.printMap();
 
         do {
             while (!isGameDone)
@@ -44,14 +42,6 @@ public class MonstersAndHeros extends Games{
                     {
                         error.invalidMove();
                     }
-                    else
-                    {
-                        flag = map.isMoveLegal(ch, player.currentPos);
-                        if (flag == false)
-                        {
-                            error.invalidMove();
-                        }
-                    }
                 }
 
                 switch(ch.toUpperCase())
@@ -60,13 +50,13 @@ public class MonstersAndHeros extends Games{
                     case "A":
                     case "S":
                     case "D":
-                        flag = map.isMoveLegal(ch, player.currentPos);
+                        flag = world.isMoveLegal(ch, player.currentPos);
                         if (flag == false)
                         {
                             error.invalidMove();
                             break;
                         }
-                        map.makeMove(player, ch);
+                        world.makeMove(player, ch);
                         typeOfMove();
                         break;
                     case "I":
@@ -81,16 +71,17 @@ public class MonstersAndHeros extends Games{
 
                 if (flag)
                 {
-                    map.printMap();
+                    world.printMap();
                 }
+                flag = false;
             }
 
             restore();
             System.out.println("Do you want to play again?");
             System.out.println("[Y] [N]");
-            continue = inp.stringInput().toUpperCase();
+            continueGame = inp.stringInput().toUpperCase();
 
-        } while(continue.equals("Y"));
+        } while(continueGame.equals("Y"));
     }
 
     public void setUpGame()
@@ -99,7 +90,7 @@ public class MonstersAndHeros extends Games{
         System.out.println("Time to assemble your league!");
         getHeros();
         System.out.println("How many heros will accompany you on your journey?");
-        choice = inp.integerInput();
+        //choice = inp.integerInput();
         //display heros from file parser
         //call party of heros to create the objects
         //store in list of player
@@ -146,23 +137,27 @@ public class MonstersAndHeros extends Games{
     {
         String choice;
 
-        switch(grid[player.currentPos.getRow()][player.currentPos.getColumn()].tileVal.getValueOnTile())
+        int i = player.currentPos.getRow();
+        int j = player.currentPos.getColumn();
+
+        switch(world.grid[i][j].tileVal.getValueOnTile())
         {
             case "M":
                 System.out.println("~ Would you like to buy/sell anything at the market? ~");
+                System.out.println("[Y] [N]");
+
                 choice = inp.stringInput().toUpperCase();
                 if (choice.equals("Y"))
                 {
                     //display the party of heros, player will select which hero has to go to market
-                    if (market == null)
-                    {
-                        market = new Market();
-                    }
-                    market.enter();
+                    world.grid[i][j].getMarketInstance();
+                    //world.grid[i][j].market.enter(hero);
+
                 }
                 break;
             case " ":
-                randomChoice = random.randint(0,1);
+                Random random = new Random();
+                int randomChoice = random.nextInt(2);
                 if (randomChoice == 1)
                 {
                     //battle begins

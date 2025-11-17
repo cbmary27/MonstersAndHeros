@@ -37,4 +37,39 @@ public abstract class Hero extends Entity{
     {
         //increases when hero levels up
     }
+
+    public void updateGold(int price)
+    {
+        gold = gold - price;
+    }
+
+    public void setGold(int gold)
+    {
+        this.gold = gold;
+    }
+
+    public int getGold()
+    {
+        return gold;
+    }
+
+    public void setLevel(int gold)
+    {
+        this.level = level;
+    }
+
+    public int getLevel()
+    {
+        return level;
+    }
+
+    // public void setLevel(int gold)
+    // {
+    //     this.level = level;
+    // }
+
+    public Inventory getInventory()
+    {
+        return inventory;
+    }
 }
