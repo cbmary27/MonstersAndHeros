@@ -151,27 +151,36 @@ public class World
         switch(ch)
         {
             case "W":
-                if (pos.getRow() - 1 >= 0)
-                    break;
+                if (pos.getRow() - 1 < 0 || checkIfTileInaccessible(pos.getRow() - 1, pos.getColumn()))
+                    return false;
+                break;
             case "A":
-                if (pos.getColumn() - 1 >= 0)
-                    break;
+                if (pos.getColumn() - 1 < 0 || checkIfTileInaccessible(pos.getRow(), pos.getColumn() - 1))
+                    return false;
+                break;
             case "S":
-                if (pos.getColumn() + 1 < columns)
-                    break;
+                if (pos.getRow() + 1 >= rows || checkIfTileInaccessible(pos.getRow() + 1, pos.getColumn()))
+                    return false;
+                break;
             case "D":
-                if (pos.getRow() + 1 < rows)
-                    break;
+                if (pos.getColumn() + 1 >= columns || checkIfTileInaccessible(pos.getRow(), pos.getColumn() + 1))
+                    return false;
+                break;
             default:
                 return false;
         }
 
-        if (grid[pos.getRow()][pos.getColumn()].tileVal.getValueOnTile().equals("X"))
+        return true;
+    }
+
+    public boolean checkIfTileInaccessible(int i, int j)
+    {
+        if (grid[i][j].tileVal.getValueOnTile().equals("X"))
         {
             error.inaccessibleSpace();
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public void makeMove(Player player, String choice)
@@ -186,10 +195,10 @@ public class World
                 player.currentPos.setColumn(player.currentPos.getColumn() - 1);
                 break;
             case "S":
-                player.currentPos.setColumn(player.currentPos.getColumn() + 1);
+                player.currentPos.setRow(player.currentPos.getRow() + 1);
                 break;
             case "D":
-                player.currentPos.setRow(player.currentPos.getRow() + 1);
+                player.currentPos.setColumn(player.currentPos.getColumn() + 1);
                 break;
         }
 

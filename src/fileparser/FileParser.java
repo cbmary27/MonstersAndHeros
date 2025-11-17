@@ -22,9 +22,6 @@ public class FileParser
     public List<String> get(String type)
     {
         names.clear();
-        //display heros of each type to the user
-        //Paladins
-        //Paladins.txt Sorcerers.txt Warriors.txt
         tuple = "";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath+type+".txt"))){
 
@@ -111,6 +108,43 @@ public class FileParser
             io.printStackTrace();
         }
 
+        return itemDetails;
+    }
+
+    public List<List<String>> getMultipleFileItems(List<String> fileType, String type)
+    {
+        List<List<String>> itemDetails = new ArrayList<>();
+        for (String ft : fileType)
+        {
+            Random rand = new Random();
+
+            tuple = "";
+            try (BufferedReader br = new BufferedReader(new FileReader(filePath + ft + type + ".txt"))){
+
+            br.readLine();
+            tuple = br.readLine();
+
+            while (tuple != null)
+            {
+                if (rand.nextBoolean())
+                {
+                    tuple = br.readLine();
+                    continue;
+                }
+
+                String[] details = tuple.split("\\s+");
+
+                List<String> i = new ArrayList<>(Arrays.asList(details));
+                i.add(ft);
+                itemDetails.add(new ArrayList<>(i));
+
+                tuple = br.readLine();
+            } }
+            catch (IOException io)
+            {
+                io.printStackTrace();
+            }
+        }
         return itemDetails;
     }
 }

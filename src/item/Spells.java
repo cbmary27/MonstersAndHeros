@@ -1,6 +1,7 @@
 package item;
 
 import java.util.*;
+import fileparser.SpellDetails;
 
 public class Spells extends Item{
 
@@ -15,6 +16,30 @@ public class Spells extends Item{
         this.damage = damage;
         this.affectedMana = affectedMana;
         this.spellType  = spellType;
+    }
+
+    @Override
+    public String toString()
+    {
+        return type + ": " + name + " | " + price + " | " + requiredLevel + " | " + damage + " | " + affectedMana + "| " + spellType;
+    }
+
+    @Override
+    public updateUsage()
+    {
+        this.usage = 0;
+    }
+
+    public SpellDetails toDetails() {
+        List<String> d = new ArrayList<>();
+        d.add(name);
+        d.add(String.valueOf(price));
+        d.add(String.valueOf(requiredLevel));
+        d.add(String.valueOf(damage));
+        d.add(String.valueOf(affectedMana));
+        d.add(spellType);
+
+        return new SpellDetails(d);
     }
 
 }

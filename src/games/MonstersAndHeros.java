@@ -15,7 +15,6 @@ public class MonstersAndHeros extends Games{
         world = new World(8, 8);
         player.currentPos.setRow(7);
         player.currentPos.setColumn(7);
-        System.out.println(player.currentPos.getColumn());
     }
 
     @Override
@@ -60,6 +59,7 @@ public class MonstersAndHeros extends Games{
                         typeOfMove();
                         break;
                     case "I":
+                        player.getInformation();
                         break;
                     case "Q":
                         isGameDone = true;
@@ -86,42 +86,45 @@ public class MonstersAndHeros extends Games{
 
     public void setUpGame()
     {
-        int choice;
+        String choice;
         System.out.println("Time to assemble your league!");
-        getHeros();
+        //getHeros();
         System.out.println("How many heros will accompany you on your journey?");
-        //choice = inp.integerInput();
-        //display heros from file parser
-        //call party of heros to create the objects
-        //store in list of player
+        System.out.println("Your party can either have 1, 2 or 3 heros!");
+        choice = inp.stringInput();
+
+        player.addHero(hf.createHero("Eunoia_Cyn", "Warriors"));
+        player.addHero(hf.createHero("Amaryllis_Astra", "Paladins"));
+
+        player.getInformation();
     }
 
-    public void getHeros()
-    {
-        List<String> heroNames = new ArrayList<>();
-        file = new FileParser();
+    // public void getHeros()
+    // {
+    //     List<String> heroNames = new ArrayList<>();
+    //     file = new FileParser();
 
-        System.out.println("Paladins:");
+    //     System.out.println("Paladins: favoured for their strength and dexterity");
 
-        heroNames = file.get("Paladins");
-        displayHerosMenu(heroNames);
+    //     heroNames = file.get("Paladins");
+    //     displayHerosMenu(heroNames);
 
-        System.out.println();
-        System.out.println("Warriors:");
+    //     System.out.println();
+    //     System.out.println("Warriors: favoured for their strength and agility");
 
-        heroNames = file.get("Warriors");
+    //     heroNames = file.get("Warriors");
 
-        displayHerosMenu(heroNames);
+    //     displayHerosMenu(heroNames);
 
-        System.out.println();
-        System.out.println("Sorcerors:");
+    //     System.out.println();
+    //     System.out.println("Sorcerors: favoured for their dexterity and agility");
 
-        heroNames = file.get("Sorcerers");
-        displayHerosMenu(heroNames);
+    //     heroNames = file.get("Sorcerers");
+    //     displayHerosMenu(heroNames);
 
-        //display 3 heros and their strengths/weaknesses
+    //     //display 3 heros and their strengths/weaknesses
     
-    }
+    // }
 
     public void displayHerosMenu(List<String> names)
     {
@@ -147,12 +150,26 @@ public class MonstersAndHeros extends Games{
                 System.out.println("[Y] [N]");
 
                 choice = inp.stringInput().toUpperCase();
-                if (choice.equals("Y"))
+                while (true)
                 {
-                    //display the party of heros, player will select which hero has to go to market
-                    world.grid[i][j].getMarketInstance();
-                    //world.grid[i][j].market.enter(hero);
+                    if (choice.equals("Y"))
+                    {
+                        //display the party of heros, player will select which hero has to go to market
+                        player.display();
+                        System.out.println("Who will be going to the market?");
+                        choice = inp.stringInput();
 
+                        world.grid[i][j].getMarketInstance();
+                        world.grid[i][j].market.enter(player.getHero(choice));
+
+                        System.out.println("Do you want to visit the market again?");
+                        System.out.println("[Y] [N]");
+                        choice = inp.stringInput();
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
                 break;
             case " ":

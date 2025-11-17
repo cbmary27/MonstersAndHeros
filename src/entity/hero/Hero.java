@@ -22,6 +22,7 @@ public abstract class Hero extends Entity{
         this.agility = agility;
         this.gold = gold;
         this.exp = exp;
+        this.inventory = new Inventory();
     }
 
     @Override
@@ -36,6 +37,11 @@ public abstract class Hero extends Entity{
     public void calcMP()
     {
         //increases when hero levels up
+    }
+
+    public void increaseGold(int price)
+    {
+        gold = gold + price;
     }
 
     public void updateGold(int price)
@@ -71,5 +77,10 @@ public abstract class Hero extends Entity{
     public Inventory getInventory()
     {
         return inventory;
+    }
+
+    public String toString()
+    {
+        return name + ": " + strength + " | " + dexterity + " | " + agility + " | " + gold + " | " + level;
     }
 }

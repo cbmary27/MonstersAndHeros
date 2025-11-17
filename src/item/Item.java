@@ -8,6 +8,7 @@ public abstract class Item{
     protected int price;
     protected int requiredLevel;
     protected String type;
+    protected int usage;
 
     public Item(String name, int price, int level)
     {
@@ -25,4 +26,26 @@ public abstract class Item{
     {
         return this.price;
     }
+
+    public int getUsage()
+    {
+        return this.usage;
+    }
+
+    public void updateUsage()
+    {
+        this.usage = usage * 0.8;
+    }
+
+    public String getType()
+    {
+        return this.type;
+    }
+
+    public String getName()
+    {
+        return this.name;
+    }
+
+    public abstract void effectOfItem();
 }
