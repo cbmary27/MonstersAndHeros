@@ -1,6 +1,7 @@
 package fileparser;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PotionDetails
 {
@@ -23,5 +24,10 @@ public class PotionDetails
     public String toString()
     {
         return name + " | " + price + " | " + level + " | " + increaseAtt + " | " + affectedAtt;
+    }
+
+    public static List<String> affectedAttributesList(String affectedAtt)
+    {
+        return Arrays.stream(affectedAtt.split("/")).map(String::trim).collect(Collectors.toList());
     }
 }

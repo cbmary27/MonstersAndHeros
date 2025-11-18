@@ -18,6 +18,17 @@ public class Spells extends Item{
         this.spellType  = spellType;
     }
 
+    public int getAffectedMana()
+    {
+        return affectedMana;
+    }
+
+    // @Override
+    // public void effectOfItem()
+    // {
+
+    // }
+
     @Override
     public String toString()
     {
@@ -25,7 +36,7 @@ public class Spells extends Item{
     }
 
     @Override
-    public updateUsage()
+    public void updateUsage()
     {
         this.usage = 0;
     }

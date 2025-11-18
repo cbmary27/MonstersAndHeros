@@ -34,7 +34,7 @@ public abstract class Item{
 
     public void updateUsage()
     {
-        this.usage = usage * 0.8;
+        this.usage = (int) (usage * 0.8);
     }
 
     public String getType()
@@ -47,5 +47,5 @@ public abstract class Item{
         return this.name;
     }
 
-    public abstract void effectOfItem();
+    //public abstract void effectOfItem();
 }

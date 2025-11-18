@@ -3,6 +3,7 @@ package games;
 import java.util.*;
 import utilities.error.Error;
 import utilities.instructions.Instructions;
+import utilities.constants.Constants;
 import utilities.input.Input;
 import player.Player;
 import world.World;
@@ -32,12 +33,13 @@ public abstract class Games{
     {
         switch(input.toUpperCase())
         {
-            case "W":
-            case "A":
-            case "S":
-            case "D":
-            case "I":
-            case "Q":
+            case Constants.W:
+            case Constants.A:
+            case Constants.S:
+            case Constants.D:
+            case Constants.M:
+            case Constants.I:
+            case Constants.QUIT:
                 return true;
             default:
                 return false;
@@ -55,6 +57,7 @@ public abstract class Games{
         System.out.println("[A] - move left");
         System.out.println("[S] - move right");
         System.out.println("[D] - move down");
+        System.out.println("[M] - enter Market");
         System.out.println("[I] - Information");
         System.out.println("[Q] - Quit");
     }

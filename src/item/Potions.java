@@ -2,6 +2,7 @@ package item;
 
 import java.util.*;
 import fileparser.PotionDetails;
+import utilities.constants.Constants;
 
 public class Potions extends Item{
 
@@ -17,15 +18,19 @@ public class Potions extends Item{
     }
 
     @Override
-    public updateUsage()
+    public void updateUsage()
     {
         this.usage = 0;
     }
 
-    @Override
-    public void effectOfItem()
+    public List<String> getAffectedAttribute()
     {
+        return PotionDetails.affectedAttributesList(affectedAtt);
+    }
 
+    public int getIncreaseAttribute()
+    {
+        return this.increaseAtt;
     }
 
     @Override
@@ -41,7 +46,6 @@ public class Potions extends Item{
         d.add(String.valueOf(requiredLevel));
         d.add(String.valueOf(increaseAtt));
         d.add(affectedAtt);
-
         return new PotionDetails(d);
     }
 }

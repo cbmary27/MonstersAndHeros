@@ -2,6 +2,8 @@ package inventory;
 
 import java.util.*;
 import item.*;
+import utilities.constants.Constants;
+import interfaces.Equippable;
 
 public class Inventory
 {
@@ -12,11 +14,6 @@ public class Inventory
         items = new ArrayList<>();
     }
 
-    public void open()
-    {
-
-    }
-
     public void display()
     {
         int i = 1;
@@ -25,17 +22,14 @@ public class Inventory
             for (Item item : items)
             {
                 System.out.println("["+i+"] " + item);
+                i++;
             }
         }
         else
         {
             System.out.println("Inventory is empty!");
         }
-        
-        System.out.println("[U] Use a potion");
-        System.out.println("[E] Equip a weapon");
-
-
+        System.out.println();
     }
 
     public void addItem(Item item)
@@ -48,19 +42,49 @@ public class Inventory
         items.remove(Integer.parseInt(index) - 1);
     }
 
+    public void removeItem(Item item)
+    {
+        items.remove(item);
+    }
+
     public Item getItem(String index)
     {
         return items.get(Integer.parseInt(index) - 1);
     }
 
-    public void useItem(String index)
+    public int checkAnyWeaponEquipped()
     {
-        Item item = getItem(index);
-        item.updateUsage();
-        
-        if (item.getUsage() <= 0)
+        int hands = 0;
+        for (Item item : items)
         {
-            System.out.println("You have completely used up " + item.getName() + "! You can replenish this item at the market!");
+            if (item.getType().equals(Constants.WEAPON))
+            {
+                Weaponry w = (Weaponry) item;
+                int temp = w.getRequiredHands();
+
+                Equippable wa = (Equippable) item;
+                if (wa.isItemEquipped())
+                {
+                    hands = hands + temp;
+                }
+            }
         }
+        return hands;
+    }
+
+    public boolean checkAnyArmorEquipped()
+    {
+        for (Item item : items)
+        {
+            if (item.getType().equals(Constants.ARMOR))
+            {
+                Equippable wa = (Equippable) item;
+                if (wa.isItemEquipped())
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

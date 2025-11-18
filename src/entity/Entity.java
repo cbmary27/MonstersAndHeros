@@ -2,6 +2,7 @@ package entity;
 
 import java.util.*;
 import inventory.Inventory;
+import item.*;
 
 public abstract class Entity{
     protected String name;

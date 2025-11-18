@@ -3,11 +3,14 @@ package games;
 import java.util.*;
 import fileparser.FileParser;
 import entity.hero.HeroFactory;
+import utilities.constants.Constants;
 import world.World;
+import battle.Battle;
 
 public class MonstersAndHeros extends Games{
     public FileParser file;
     public HeroFactory hf = new HeroFactory();
+    public Battle battle;
     //public Market market;
 
     public MonstersAndHeros()
@@ -45,10 +48,10 @@ public class MonstersAndHeros extends Games{
 
                 switch(ch.toUpperCase())
                 {
-                    case "W":
-                    case "A":
-                    case "S":
-                    case "D":
+                    case Constants.W:
+                    case Constants.A:
+                    case Constants.S:
+                    case Constants.D:
                         flag = world.isMoveLegal(ch, player.currentPos);
                         if (flag == false)
                         {
@@ -58,10 +61,13 @@ public class MonstersAndHeros extends Games{
                         world.makeMove(player, ch);
                         typeOfMove();
                         break;
-                    case "I":
+                    case Constants.M:
+                        initializeMarket();
+                        break;
+                    case Constants.I:
                         player.getInformation();
                         break;
-                    case "Q":
+                    case Constants.QUIT:
                         isGameDone = true;
                         break;
                     default:
@@ -81,59 +87,32 @@ public class MonstersAndHeros extends Games{
             System.out.println("[Y] [N]");
             continueGame = inp.stringInput().toUpperCase();
 
-        } while(continueGame.equals("Y"));
+        } while(continueGame.equals(Constants.Y));
     }
 
     public void setUpGame()
     {
+        int i = 0;
         String choice;
+        System.out.println();
         System.out.println("Time to assemble your league!");
-        //getHeros();
+        System.out.println();
+
+        List<String> heros = hf.getHeros();
+        System.out.println();
         System.out.println("How many heros will accompany you on your journey?");
         System.out.println("Your party can either have 1, 2 or 3 heros!");
         choice = inp.stringInput();
 
-        player.addHero(hf.createHero("Eunoia_Cyn", "Warriors"));
-        player.addHero(hf.createHero("Amaryllis_Astra", "Paladins"));
-
-        player.getInformation();
-    }
-
-    // public void getHeros()
-    // {
-    //     List<String> heroNames = new ArrayList<>();
-    //     file = new FileParser();
-
-    //     System.out.println("Paladins: favoured for their strength and dexterity");
-
-    //     heroNames = file.get("Paladins");
-    //     displayHerosMenu(heroNames);
-
-    //     System.out.println();
-    //     System.out.println("Warriors: favoured for their strength and agility");
-
-    //     heroNames = file.get("Warriors");
-
-    //     displayHerosMenu(heroNames);
-
-    //     System.out.println();
-    //     System.out.println("Sorcerors: favoured for their dexterity and agility");
-
-    //     heroNames = file.get("Sorcerers");
-    //     displayHerosMenu(heroNames);
-
-    //     //display 3 heros and their strengths/weaknesses
-    
-    // }
-
-    public void displayHerosMenu(List<String> names)
-    {
-        System.out.println();
-        for (String name: names)
+        while ( i < Integer.parseInt(choice))
         {
-            System.out.println(name);
+            player.addHero(hf.createHero(heros.get(i), hf.types.get(i)));
+            i++;
         }
 
+        System.out.println();
+
+        player.getInformation();
     }
 
     public void typeOfMove()
@@ -145,40 +124,54 @@ public class MonstersAndHeros extends Games{
 
         switch(world.grid[i][j].tileVal.getValueOnTile())
         {
-            case "M":
-                System.out.println("~ Would you like to buy/sell anything at the market? ~");
-                System.out.println("[Y] [N]");
-
-                choice = inp.stringInput().toUpperCase();
-                while (true)
-                {
-                    if (choice.equals("Y"))
-                    {
-                        //display the party of heros, player will select which hero has to go to market
-                        player.display();
-                        System.out.println("Who will be going to the market?");
-                        choice = inp.stringInput();
-
-                        world.grid[i][j].getMarketInstance();
-                        world.grid[i][j].market.enter(player.getHero(choice));
-
-                        System.out.println("Do you want to visit the market again?");
-                        System.out.println("[Y] [N]");
-                        choice = inp.stringInput();
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                break;
             case " ":
                 Random random = new Random();
                 int randomChoice = random.nextInt(2);
                 if (randomChoice == 1)
                 {
-                    //battle begins
+                    battle = new Battle();
+                    battle.fight();
                 }
+        }
+    }
+
+    public void initializeMarket()
+    {
+        String choice = "";
+
+        int i = player.currentPos.getRow();
+        int j = player.currentPos.getColumn();
+
+        if (world.grid[i][j].tileVal.getValueOnTile().equals("M"))
+        {
+            System.out.println("~ Would you like to buy/sell anything at the market? ~");
+            System.out.println("[Y] [N]");
+
+            choice = inp.stringInput().toUpperCase();
+            while (true)
+            {
+                if (choice.equals(Constants.Y))
+                {
+                    player.display();
+                    System.out.println("Who will be going to the market?");
+                    choice = inp.stringInput();
+
+                    world.grid[i][j].getMarketInstance();
+                    world.grid[i][j].market.enter(player.getHero(choice));
+
+                    System.out.println("Do you want to visit the market again?");
+                    System.out.println("[Y] [N]");
+                    choice = inp.stringInput();
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            error.notAMarket();
         }
     }
 }

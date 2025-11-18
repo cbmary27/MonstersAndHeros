@@ -3,6 +3,9 @@ package entity.hero;
 import java.util.*;
 import inventory.Inventory;
 import entity.Entity;
+import interfaces.*;
+import item.*;
+import utilities.constants.Constants;
 
 public abstract class Hero extends Entity{
     protected int mp;
@@ -12,6 +15,8 @@ public abstract class Hero extends Entity{
     protected int gold; //basically money to use at the market
     protected int exp;
     protected Inventory inventory;
+    protected List<Item> equippedWeapons;
+    protected Item equippedArmor;
 
     public Hero(String name, int mp, int strength, int dexterity, int agility, int gold, int exp)
     {
@@ -23,6 +28,7 @@ public abstract class Hero extends Entity{
         this.gold = gold;
         this.exp = exp;
         this.inventory = new Inventory();
+        equippedWeapons = new ArrayList<>();
     }
 
     @Override
@@ -69,14 +75,153 @@ public abstract class Hero extends Entity{
         return level;
     }
 
-    // public void setLevel(int gold)
-    // {
-    //     this.level = level;
-    // }
+    public void usePotion(Item item)
+    {
+        //item.updateUsage();
+        Potions potion = (Potions) item;
+        List<String> affectedAttribtues = potion.getAffectedAttribute();
+
+        for (String affectedAttribute : affectedAttribtues)
+        {
+            switch (affectedAttribute)
+            {
+                case Constants.HEALTH:
+                    hp = increase(hp, potion.getIncreaseAttribute());
+                    break;
+                case Constants.AGILITY:
+                    agility = increase(agility, potion.getIncreaseAttribute());
+                    break;
+                case Constants.DEXTERITY:
+                    dexterity = increase(dexterity, potion.getIncreaseAttribute());
+                    break;
+                case Constants.MANA:
+                    mp = increase(mp, potion.getIncreaseAttribute());
+                    break;
+                case Constants.STRENGTH:
+                    strength = increase(strength, potion.getIncreaseAttribute());
+                    break;
+            }
+        }
+
+        inventory.removeItem(item);
+    }
+
+    public int increase(int amt, int incAtt)
+    {
+        return amt + incAtt;
+    }
+
+    public void useSpell(Item item)
+    {
+        Spells spell = (Spells) item;
+
+        if (mp >= spell.getAffectedMana())
+        {
+            mp = mp - spell.getAffectedMana();
+        }
+        else
+        {
+            System.out.println("Not enough MP to cast the spell!");
+        }
+    }
+
+    public void useWeapon(Item item)
+    {
+
+    }
+
+    public void useArmor(Item item)
+    {
+
+    }
 
     public Inventory getInventory()
     {
         return inventory;
+    }
+
+    public void openInventory()
+    {
+        inventory.display();
+    }
+
+    public Item selectItem(String choice)
+    {
+        return inventory.getItem(choice);
+    }
+
+    public void equipWeapon(Item item)
+    {
+        int hands;
+        if (item instanceof Equippable)
+        {
+            Equippable wa = (Equippable) item;
+            if (!wa.isItemEquipped())
+            {
+                hands = inventory.checkAnyWeaponEquipped();
+                if (hands == 2)
+                {
+                    System.out.println("Cannot equip any more weapons!");
+                }
+                else
+                {
+                    System.out.println(item.getName() + " is equipped!");
+                    wa.equipItem();
+                    equippedWeapons.add(item);
+                }
+            }
+        }
+    }
+
+    public void unEquipWeapon(Item item)
+    {
+        if (item instanceof Equippable)
+        {
+            Equippable wa = (Equippable) item;
+            if (wa.isItemEquipped())
+            {
+                    System.out.println(item.getName() + " is unequipped");
+                    wa.unequipItem();
+                    equippedWeapons.remove(item);
+            }
+        }
+    }
+
+    public void equipArmor(Item item)
+    {
+        boolean flag;
+        if (item instanceof Equippable)
+        {
+            Equippable wa = (Equippable) item;
+            if (!wa.isItemEquipped())
+            {
+                flag = inventory.checkAnyArmorEquipped();
+                if (flag)
+                {
+                    System.out.println("You already have an armor equipped!");
+                }
+                else
+                {
+                    System.out.println(item.getName() + " is equipped!");
+                    wa.equipItem();
+                    equippedArmor = item;
+                }
+            }
+        }
+    }
+
+    public void unEquipArmor(Item item)
+    {
+        if (item instanceof Equippable)
+        {
+            Equippable wa = (Equippable) item;
+            if (wa.isItemEquipped())
+            {
+                System.out.println(item.getName() + " is unequipped!");
+                wa.unequipItem();
+                equippedArmor = null;
+            }
+        }
     }
 
     public String toString()
