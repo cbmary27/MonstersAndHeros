@@ -27,9 +27,21 @@ public class Constants{
     public static final String DEFENSE = "Defense";
     public static final String MANA = "Mana";
 
+    public static final String MONSTER = "Monster";
+    public static final String HERO = "Hero";
+
     public static final String PALADINS = "Paladins";
     public static final String WARRIORS = "Warriors";
     public static final String SORCERERS = "Sorcerers";
+
+    public static final String EXOSKELETONS = "Exoskeletons";
+    public static final String DRAGONS = "Dragons";
+    public static final String SPIRITS = "Spirits";
+
+    public static final int ONE = 1;
+    public static final int TWO = 2;
+    public static final int THREE = 3;
+    public static final int FIVE = 5;
 
 
 }

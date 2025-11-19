@@ -2,6 +2,7 @@ package entity.hero;
 
 import java.util.*;
 import fileparser.*;
+import utilities.constants.Constants;
 
 public class HeroFactory{
 
@@ -11,30 +12,30 @@ public class HeroFactory{
 
     public HeroFactory()
     {
+        file = new FileParser();
         defaultDetails = new ArrayList<String>();
         types = new ArrayList<>();
     }
 
     public Hero createHero(String name, String type)
     {
-        if (file == null)
-        {
-            file = new FileParser();
-        }
-
         defaultDetails = file.getChosenHeroDetails(name, type);
-        EntityDetails ed = new EntityDetails(defaultDetails);
+        EntityDetails ed = new EntityDetails(defaultDetails, Constants.HERO);
 
         switch(type)
         {
-            case "Paladins":
-                return new Paladins(ed.name, ed.mp, ed.strength, ed.dexterity, ed.agility, ed.gold, ed. exp);
-            case "Sorcerers":
-                return new Sorcerers(ed.name, ed.mp, ed.strength, ed.dexterity, ed.agility, ed.gold, ed. exp);
-            case "Warriors":
-                return new Warriors(ed.name, ed.mp, ed.strength, ed.dexterity, ed.agility, ed.gold, ed. exp);
+            // case Constants.PALADINS:
+            //     return new Paladins(ed.name, ed.mp, ed.strength, ed.dexterity, ed.agility, ed.gold, ed. exp);
+            // case Constants.SORCERERS:
+            //     return new Sorcerers(ed.name, ed.mp, ed.strength, ed.dexterity, ed.agility, ed.gold, ed. exp);
+            // case Constants.WARRIORS:
+            //     return new Warriors(ed.name, ed.mp, ed.strength, ed.dexterity, ed.agility, ed.gold, ed. exp);
+
+            case Constants.PALADINS:
+            case Constants.SORCERERS:
+            case Constants.WARRIORS:
+                return new Hero(ed.name, ed.mp, ed.strength, ed.dexterity, ed.agility, ed.gold, ed. exp, type);
             default:
-                System.out.println("Error");
                 return null;
         }
     }
@@ -43,18 +44,16 @@ public class HeroFactory{
     {
         String heroTemp = " ";
 
-        types.add("Paladins");
-        types.add("Warriors");
-        types.add("Sorcerers");
+        types.add(Constants.PALADINS);
+        types.add(Constants.WARRIORS);
+        types.add(Constants.SORCERERS);
 
         List<String> heros = new ArrayList<>();
         List<String> heroNames = new ArrayList<>();
 
-        file = new FileParser();
-
         System.out.println("Paladins: favoured for their strength and dexterity");
 
-        heroNames = file.get("Paladins");
+        heroNames = file.get(Constants.PALADINS);
 
         heroTemp = pickRandomHero(heroNames);
         displayHero(heroTemp);
@@ -63,7 +62,7 @@ public class HeroFactory{
         System.out.println();
         System.out.println("Warriors: favoured for their strength and agility");
 
-        heroNames = file.get("Warriors");
+        heroNames = file.get(Constants.WARRIORS);
 
         heroTemp = pickRandomHero(heroNames);
         displayHero(heroTemp);
@@ -72,7 +71,7 @@ public class HeroFactory{
         System.out.println();
         System.out.println("Sorcerers: favoured for their dexterity and agility");
 
-        heroNames = file.get("Sorcerers");
+        heroNames = file.get(Constants.SORCERERS);
         heroTemp = pickRandomHero(heroNames);
         displayHero(heroTemp);
         heros.add(heroTemp);

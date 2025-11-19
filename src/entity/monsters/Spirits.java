@@ -3,9 +3,9 @@
 // import java.util.*;
 // import fileparser.EntityDetails;
 
-// public class Exoskeletons extends Monsters{
+// public class Spirits extends Monsters{
 
-//     public Exoskeletons(String name, int level, int baseDamage, int defense, int dodgeAbility)
+//     public Spirits(String name, int level, int baseDamage, int defense, int dodgeAbility)
 //     {
 //         super(name, baseDamage, defense, dodgeAbility);
 //         this.level = level;

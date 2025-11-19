@@ -35,6 +35,11 @@ public class Weaponry extends Item implements Equippable{
         equipped = false;
     }
 
+    public int getDamage()
+    {
+        return damage;
+    }
+
     public int getRequiredHands()
     {
         return requiredHands;

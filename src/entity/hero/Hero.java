@@ -5,9 +5,10 @@ import inventory.Inventory;
 import entity.Entity;
 import interfaces.*;
 import item.*;
+import interfaces.takeDamage;
 import utilities.constants.Constants;
 
-public abstract class Hero extends Entity{
+public class Hero extends Entity implements takeDamage{
     protected int mp;
     protected int strength; //increases when using a weapon
     protected int dexterity; //increases when casting a spell
@@ -17,8 +18,9 @@ public abstract class Hero extends Entity{
     protected Inventory inventory;
     protected List<Item> equippedWeapons;
     protected Item equippedArmor;
+    protected String type;
 
-    public Hero(String name, int mp, int strength, int dexterity, int agility, int gold, int exp)
+    public Hero(String name, int mp, int strength, int dexterity, int agility, int gold, int exp, String type)
     {
         super(name);
         this.mp = mp;
@@ -27,22 +29,86 @@ public abstract class Hero extends Entity{
         this.agility = agility;
         this.gold = gold;
         this.exp = exp;
+        this.type = type;
         this.inventory = new Inventory();
         equippedWeapons = new ArrayList<>();
     }
 
-    @Override
     public void increaseLevel()
     {
+        level++;
+        calcHP();
+        calcMP();
+        calcStrength();
+        calcDexterity();
+        calcAgility();
 
-        //calcHP();
-        //calcMana();
+        switch(type)
+        {
+            case Constants.WARRIORS:
+                calcStrength();
+                calcAgility();
+                break;
+            case Constants.PALADINS:
+                calcDexterity();
+                calcAgility();
+                break;
+            case Constants.SORCERERS:
+                calcStrength();
+                calcDexterity();
+                break;
+        }
+    }
 
+    public void calcAgility()
+    {
+        agility = agility + (agility * 5 / 100);
+    }
+
+    public void calcStrength()
+    {
+        strength = strength + (strength * 5 / 100);
+
+    }
+
+    public void calcDexterity()
+    {
+        dexterity = dexterity + (dexterity * 5 / 100);
+    }
+
+    public void calcEXP(int n)
+    {
+        exp = level * n; //needs to be modified
+        checkForLevelUp();
+    }
+
+    public void checkForLevelUp()
+    {
+        if (exp >= (level * 10))
+        {
+            increaseLevel();
+            exp = 1;
+        }
     }
 
     public void calcMP()
     {
-        //increases when hero levels up
+        mp = mp * 11 / 10;
+    }
+
+    public int calcDodge()
+    {
+        return (agility * 2 / 1000);
+    }
+
+    public void expGain(int n)
+    {
+        exp = exp * n;
+    }
+
+    public void goldReward(int level)
+    {
+        gold = gold + (level * 100);
     }
 
     public void increaseGold(int price)
@@ -75,6 +141,21 @@ public abstract class Hero extends Entity{
         return level;
     }
 
+    public List<Item> getEquippedWeapons()
+    {
+        return equippedWeapons;
+    }
+
+    public void displayEquippedWeapons()
+    {
+        int i = 0;
+
+        for (Item item : equippedWeapons)
+        {
+            System.out.println("[" + i + "] " + item);
+        }
+    }
+
     public void usePotion(Item item)
     {
         //item.updateUsage();
@@ -102,7 +183,6 @@ public abstract class Hero extends Entity{
                     break;
             }
         }
-
         inventory.removeItem(item);
     }
 
@@ -111,28 +191,44 @@ public abstract class Hero extends Entity{
         return amt + incAtt;
     }
 
-    public void useSpell(Item item)
+    public int useSpell(Item item)
     {
         Spells spell = (Spells) item;
 
         if (mp >= spell.getAffectedMana())
         {
             mp = mp - spell.getAffectedMana();
+            return spell.getDamage() + dexterity / 10000 * (spell.getDamage());
         }
         else
         {
             System.out.println("Not enough MP to cast the spell!");
+            return 0;
         }
     }
 
-    public void useWeapon(Item item)
+    public int useWeapon(Item item)
     {
-
+        item.updateUsage();
+        Weaponry w = (Weaponry) item;
+        return (strength + w.getDamage()) * 5/100;
     }
 
     public void useArmor(Item item)
     {
 
+    }
+
+    @Override
+    public void takeDamage(int damageDealt)
+    {
+        if (damageDealt > hp)
+        {
+            hp = 0;
+            return;
+        }
+        
+        hp = hp - damageDealt;
     }
 
     public Inventory getInventory()

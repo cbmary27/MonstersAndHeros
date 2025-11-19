@@ -130,7 +130,7 @@ public class MonstersAndHeros extends Games{
                 if (randomChoice == 1)
                 {
                     battle = new Battle();
-                    battle.fight();
+                    battle.initializeBattle(player.getParty());
                 }
         }
     }

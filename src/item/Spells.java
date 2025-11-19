@@ -23,6 +23,11 @@ public class Spells extends Item{
         return affectedMana;
     }
 
+    public int getDamage()
+    {
+        return damage;
+    }
+
     // @Override
     // public void effectOfItem()
     // {

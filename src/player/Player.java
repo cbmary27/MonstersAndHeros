@@ -26,6 +26,11 @@ public class Player{
       playerPiece.setValueOnTile("P");
    }
 
+   public List<Hero> getParty()
+   {
+      return this.party;
+   }
+
    public void getInformation()
    {
       while (true)

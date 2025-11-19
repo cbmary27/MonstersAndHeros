@@ -9,7 +9,7 @@ public abstract class Entity{
     protected int level;
     protected int hp;
     protected int type;
-
+    
     public Entity(String name)
     {
         this.name = name;
@@ -17,15 +17,31 @@ public abstract class Entity{
         calcHP();
     }
 
+    public int getLevel()
+    {
+        return this.level;
+    }
+
     public String getName()
     {
         return name;
     }
 
-    public abstract void increaseLevel();
+    //public abstract void increaseLevel();
+
     public void calcHP()
     {
         hp = level * 100;
+    }
+
+    public int getHP()
+    {
+        return this.hp;
+    }
+
+    public void increaseHP()
+    {
+        this.hp = this.hp * 11 / 10;
     }
 }
 
