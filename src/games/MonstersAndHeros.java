@@ -1,20 +1,24 @@
 package games;
 
 import java.util.*;
-import fileparser.FileParser;
-import entity.hero.HeroFactory;
+import fileparser.*;
+import entity.hero.*;
+import market.MarketFactory;
 import utilities.constants.Constants;
+import item.*;
 import world.World;
 import battle.Battle;
 
 public class MonstersAndHeros extends Games{
     public FileParser file;
-    public HeroFactory hf = new HeroFactory();
+    public HeroFactory hf;
+    public MarketFactory mf;
     public Battle battle;
-    //public Market market;
 
     public MonstersAndHeros()
     {
+        hf = new HeroFactory();
+        mf = new MarketFactory();
         world = new World(8, 8);
         player.currentPos.setRow(7);
         player.currentPos.setColumn(7);
@@ -59,7 +63,7 @@ public class MonstersAndHeros extends Games{
                             break;
                         }
                         world.makeMove(player, ch);
-                        typeOfMove();
+                        commonTile();
                         break;
                     case Constants.M:
                         initializeMarket();
@@ -112,10 +116,12 @@ public class MonstersAndHeros extends Games{
 
         System.out.println();
 
+        getComplimentaryWeapons();
+
         player.getInformation();
     }
 
-    public void typeOfMove()
+    public void commonTile()
     {
         String choice;
 
@@ -124,13 +130,18 @@ public class MonstersAndHeros extends Games{
 
         switch(world.grid[i][j].tileVal.getValueOnTile())
         {
-            case " ":
+            case "*":
                 Random random = new Random();
                 int randomChoice = random.nextInt(2);
-                if (randomChoice == 1)
+                if (randomChoice == 1 && checkHPOfParty())
                 {
                     battle = new Battle();
                     battle.initializeBattle(player.getParty());
+                    // if (battle.checkIfAllHerosDefeated())
+                    // {
+                    //     isGameDone = true;
+                    //     System.out.println("All the heros are defeated! Better luck next time!");
+                    // }
                 }
         }
     }
@@ -172,6 +183,30 @@ public class MonstersAndHeros extends Games{
         else
         {
             error.notAMarket();
+        }
+    }
+
+    public void getComplimentaryWeapons()
+    {
+        int i = 0;
+        mf.createComplimentaryWeapons();
+
+        System.out.println("Now...we don't want your heros out in the wild without a weapon now, do we?");
+        System.out.println("Here's a complimentary weapon to get you started! (and keep you safe from the monsters)");
+
+        System.out.println();
+
+        for (Hero hero : player.getParty())
+        {
+            WeaponryDetails compWeapon = mf.weaponryDetails.get(i);
+            Item newWeapon = mf.createWeaponry(compWeapon);
+
+            hero.getInventory().addItem(newWeapon);
+
+            System.out.print(hero.getName() + ": ");
+
+            hero.equipWeapon(newWeapon);
+            System.out.println();
         }
     }
 }

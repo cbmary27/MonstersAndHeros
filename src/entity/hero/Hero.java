@@ -22,7 +22,7 @@ public class Hero extends Entity implements takeDamage{
 
     public Hero(String name, int mp, int strength, int dexterity, int agility, int gold, int exp, String type)
     {
-        super(name);
+        super(name, 1);
         this.mp = mp;
         this.strength = strength;
         this.dexterity = dexterity;
@@ -96,9 +96,9 @@ public class Hero extends Entity implements takeDamage{
         mp = mp * 11 / 10;
     }
 
-    public int calcDodge()
+    public double calcDodge()
     {
-        return (agility * 2 / 1000);
+        return (agility * 0.002);
     }
 
     public void expGain(int n)
@@ -214,21 +214,23 @@ public class Hero extends Entity implements takeDamage{
         return (strength + w.getDamage()) * 5/100;
     }
 
-    public void useArmor(Item item)
+    public int useArmor(Item item)
     {
-
+        Armor a = (Armor) item;
+        return a.getDamageReduction();
     }
 
     @Override
     public void takeDamage(int damageDealt)
     {
-        if (damageDealt > hp)
+        int defense = 0;
+
+        if (equippedArmor != null)
         {
-            hp = 0;
-            return;
+            defense = useArmor(equippedArmor);
         }
         
-        hp = hp - damageDealt;
+        hp = Math.max( 0, hp - Math.max(0, (damageDealt - defense)));
     }
 
     public Inventory getInventory()
@@ -320,8 +322,10 @@ public class Hero extends Entity implements takeDamage{
         }
     }
 
+    @Override
     public String toString()
     {
-        return name + ": " + strength + " | " + dexterity + " | " + agility + " | " + gold + " | " + level;
+        return super.toString() + " | EXP : " + exp +
+        " | Strength : " + strength + " | Dexterity : " + dexterity + " | Agility : " + agility + " | Gold : " + gold;
     }
 }

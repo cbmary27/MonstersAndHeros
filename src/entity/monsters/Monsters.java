@@ -14,7 +14,7 @@ public class Monsters extends Entity implements takeDamage{
 
     public Monsters(String name, int level, int baseDamage, int defense, int dodgeAbility, String type)
     {
-        super(name);
+        super(name, level);
         this.baseDamage = baseDamage;
         this.defense = defense;
         this.dodgeAbility = dodgeAbility;
@@ -29,7 +29,8 @@ public class Monsters extends Entity implements takeDamage{
     @Override
     public String toString()
     {
-        return name + " | " + level + " | " + baseDamage + " | " + defense + " | " + dodgeAbility;
+        return super.toString() +
+        " | Base Damage : " + baseDamage + " | Defense : " + defense + " | Dodge Ability : " + dodgeAbility;
     }
 
     // @Override
@@ -40,14 +41,8 @@ public class Monsters extends Entity implements takeDamage{
     @Override
     public void takeDamage(int damageDealt)
     {
-        if (damageDealt > hp)
-        {
-            hp = 0;
-            return;
-        }
-
-        hp = hp - damageDealt + defense;
-        skillLoss();
+        System.out.println(damageDealt);
+        hp = Math.max( 0, hp - Math.max(0, (damageDealt - defense)));
     }
 
     public void skillLoss()
@@ -66,8 +61,8 @@ public class Monsters extends Entity implements takeDamage{
         }
     }
 
-    public int calcDodge()
+    public double calcDodge()
     {
-        return (dodgeAbility * 1 / 100);
+        return (dodgeAbility / 100.0);
     }
 }

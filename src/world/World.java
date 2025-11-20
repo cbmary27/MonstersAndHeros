@@ -3,6 +3,8 @@ package world;
 import java.util.*;
 import utilities.error.Error;
 import player.Player;
+import utilities.colour.colour;
+import utilities.constants.Constants;
 
 public class World
 {
@@ -49,23 +51,23 @@ public class World
 
         int k = 0;
         int x = (rows*columns) - 1;
-        int numMarkets = (int) ((0.3 * x) + 1);
-        int numCommon = (int) (0.5 * x);
+        int numMarkets = (int) ((0.3 * x)) - 1;
+        int numCommon = (int) (0.5 * x) + 2;
         int numInaccessible = (int) ((0.2 * x) + 1);
 
         for (int i = 0; i < numMarkets; i++)
         {
-            l.add("M");
+            l.add(Constants.M);
         }
 
         for (int i = 0; i < numCommon; i++)
         {
-            l.add("C");
+            l.add(Constants.C);
         }
 
         for (int i = 0; i < numInaccessible; i++)
         {
-            l.add("X");
+            l.add(Constants.X);
         }
 
         Collections.shuffle(l);
@@ -80,17 +82,17 @@ public class World
 
                 if(i == 7 && j == 7)
                 {
-                    grid[i][j].tileVal = new Piece<>("S"); //Start Position
+                    grid[i][j].tileVal = new Piece<>(Constants.S); //Start Position
                 }
                 else
                 {
-                    if (l.get(k).equals("C"))
+                    if (l.get(k).equals(Constants.C))
                     {
-                        grid[i][j].tileVal = new Piece<>(" "); //Start Position
+                        grid[i][j].tileVal = new Piece<>("*");
                     }
 
                     else{
-                        grid[i][j].tileVal = new Piece<>(l.get(k)); //Start Position
+                        grid[i][j].tileVal = new Piece<>(l.get(k));
                     }
                     k++;
                 }
@@ -119,7 +121,7 @@ public class World
         {
             for (int j = 0; j < columns; j++)
             {
-                System.out.print("*--");
+                System.out.print("+----");
             }
 
             System.out.println();
@@ -128,11 +130,25 @@ public class World
             {
                 if (playerPosition[i][j].tileVal.getValueOnTile().equals("0"))
                 {
-                    System.out.print("|" + grid[i][j].tileVal.getValueOnTile() + " ");
+                    switch(grid[i][j].tileVal.getValueOnTile())
+                    {
+                        case Constants.M:
+                            System.out.print("| " + colour.PURPLE_BOLD + grid[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
+                            break;
+                        case Constants.X:
+                            System.out.print("| " + colour.RED_BOLD + grid[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
+                            break;
+                        case Constants.S:
+                            System.out.print("| " + grid[i][j].tileVal.getValueOnTile() + "  ");
+                            break;
+                        case "*":
+                            System.out.print("| " + colour.GREEN + grid[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
+                            break;
+                    }
                 }
                 else
                 {
-                    System.out.print("|" + playerPosition[i][j].tileVal.getValueOnTile() + " ");
+                    System.out.print("| " + colour.YELLOW + playerPosition[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
                 }
             }
             System.out.println("|");
@@ -140,7 +156,7 @@ public class World
 
         for (int j = 0; j < columns; j++)
         {
-            System.out.print("*--");
+            System.out.print("+----");
         }
 
         System.out.println();
@@ -150,19 +166,19 @@ public class World
     {
         switch(ch)
         {
-            case "W":
+            case Constants.W:
                 if (pos.getRow() - 1 < 0 || checkIfTileInaccessible(pos.getRow() - 1, pos.getColumn()))
                     return false;
                 break;
-            case "A":
+            case Constants.A:
                 if (pos.getColumn() - 1 < 0 || checkIfTileInaccessible(pos.getRow(), pos.getColumn() - 1))
                     return false;
                 break;
-            case "S":
+            case Constants.S:
                 if (pos.getRow() + 1 >= rows || checkIfTileInaccessible(pos.getRow() + 1, pos.getColumn()))
                     return false;
                 break;
-            case "D":
+            case Constants.D:
                 if (pos.getColumn() + 1 >= columns || checkIfTileInaccessible(pos.getRow(), pos.getColumn() + 1))
                     return false;
                 break;
@@ -188,16 +204,16 @@ public class World
         playerPosition[player.currentPos.getRow()][player.currentPos.getColumn()].tileVal.setValueOnTile("0");
         switch(choice)
         {
-            case "W":
+            case Constants.W:
                 player.currentPos.setRow(player.currentPos.getRow() - 1);
                 break;
-            case "A":
+            case Constants.A:
                 player.currentPos.setColumn(player.currentPos.getColumn() - 1);
                 break;
-            case "S":
+            case Constants.S:
                 player.currentPos.setRow(player.currentPos.getRow() + 1);
                 break;
-            case "D":
+            case Constants.D:
                 player.currentPos.setColumn(player.currentPos.getColumn() + 1);
                 break;
         }

@@ -12,7 +12,7 @@ public class HeroFactory{
 
     public HeroFactory()
     {
-        file = new FileParser();
+        file = FileParser.getInstance();
         defaultDetails = new ArrayList<String>();
         types = new ArrayList<>();
     }

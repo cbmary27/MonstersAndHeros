@@ -5,6 +5,8 @@ import java.io.*;
 
 public class FileParser
 {
+    private static FileParser fileParser;
+
     FileReader fr;
     String filePath;
     String tuple;
@@ -17,6 +19,15 @@ public class FileParser
         filePath = "Legends_Monsters_and_Heroes/";
         entityDetails = new ArrayList<String>();
         names = new ArrayList<String>();
+    }
+
+    public static FileParser getInstance()
+    {
+        if (fileParser == null)
+        {
+            fileParser = new FileParser();
+        }
+        return fileParser;
     }
 
     public List<String> get(String type)
@@ -46,10 +57,8 @@ public class FileParser
     public List<String> getChosenHeroDetails(String name, String type)
     {
         entityDetails.clear();
-        //display heros of each type to the user
-        //Paladins
-        //Paladins.txt Sorcerers.txt Warriors.txt
         tuple = "";
+
         try (BufferedReader br = new BufferedReader(new FileReader(filePath+type+".txt"))){
 
         br.readLine();
@@ -145,6 +154,34 @@ public class FileParser
                 io.printStackTrace();
             }
         }
+        return itemDetails;
+    }
+
+    public List<List<String>> getComplimentaryWeaponDetails(String type)
+    {
+        List<List<String>> itemDetails = new ArrayList<>();
+
+        tuple = "";
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath+type+".txt"))){
+
+        br.readLine();
+        tuple = br.readLine();
+
+        while (tuple != null)
+        {
+            String[] details = tuple.split("\\s+");
+
+            List<String> i = Arrays.asList(details);
+            itemDetails.add(new ArrayList<>(i));
+
+            tuple = br.readLine();
+        }
+        }
+        catch (IOException io)
+        {
+            io.printStackTrace();
+        }
+
         return itemDetails;
     }
 }

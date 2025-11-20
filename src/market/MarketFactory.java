@@ -3,6 +3,7 @@ package market;
 import java.util.*;
 import fileparser.*;
 import item.*;
+import utilities.constants.Constants;
 
 public class MarketFactory
 {
@@ -15,6 +16,7 @@ public class MarketFactory
 
     public MarketFactory()
     {
+        file = FileParser.getInstance();
         potionDetails = new ArrayList<>();
         weaponryDetails = new ArrayList<>();
         armorDetails = new ArrayList<>();
@@ -23,11 +25,6 @@ public class MarketFactory
 
     public void createMarket()
     {
-        if (file == null)
-        {
-            file = new FileParser();
-        }
-
         List<List<String>> p = file.getItemDetails("Potions");
         List<List<String>> w = file.getItemDetails("Weaponry");
         List<List<String>> a = file.getItemDetails("Armory");
@@ -51,6 +48,21 @@ public class MarketFactory
         for (List<String> item : s)
         {
             spellDetails.add(new SpellDetails(item));
+        }
+    }
+
+    public void createComplimentaryWeapons()
+    {
+        // if (file == null)
+        // {
+        //     file = new FileParser();
+        // }
+
+        List<List<String>> w = file.getComplimentaryWeaponDetails("Initial");
+
+        for (List<String> item : w)
+        {
+            weaponryDetails.add(new WeaponryDetails(item));
         }
     }
 

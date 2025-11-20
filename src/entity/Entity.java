@@ -10,10 +10,10 @@ public abstract class Entity{
     protected int hp;
     protected int type;
     
-    public Entity(String name)
+    public Entity(String name, int level)
     {
         this.name = name;
-        this.level = 1;
+        this.level = level;
         calcHP();
     }
 
@@ -25,6 +25,11 @@ public abstract class Entity{
     public String getName()
     {
         return name;
+    }
+
+    public void setHP(int val)
+    {
+        this.hp = val;
     }
 
     //public abstract void increaseLevel();
@@ -42,6 +47,12 @@ public abstract class Entity{
     public void increaseHP()
     {
         this.hp = this.hp * 11 / 10;
+    }
+
+    @Override
+    public String toString()
+    {
+        return name + " | HP : " + hp + " | Level : " + level;
     }
 }
 

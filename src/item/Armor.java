@@ -17,6 +17,11 @@ public class Armor extends Item implements Equippable{
         this.equipped = false;
     }
 
+    public int getDamageReduction()
+    {
+        return damageReduction;
+    }
+
     // @Override
     // public void effectOfItem()
     // {

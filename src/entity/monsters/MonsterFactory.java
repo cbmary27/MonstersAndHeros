@@ -13,7 +13,7 @@ public class MonsterFactory{
 
     public MonsterFactory()
     {
-        file = new FileParser();
+        file = FileParser.getInstance();
         types = new ArrayList<>();
         monsters = new ArrayList<>();
         defaultDetails = new ArrayList<>();
@@ -66,12 +66,13 @@ public class MonsterFactory{
         return monsters;
     }
 
-    public void displayMonsters()
+    public void displayMonsters(List<Monsters> monsters)
     {
-        int i = 0;
-        for (String m : monsters)
+        int i = 1;
+        for (Monsters m : monsters)
         {
-            System.out.println("[" + i + "] " + m);
+            System.out.println("[" + i + "] " + m.getName());
+            i++;
         }
     }
 

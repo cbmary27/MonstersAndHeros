@@ -55,11 +55,6 @@ public class Battle{
             i++;
         }
 
-        for (Monsters m : monsters)
-        {
-            System.out.println(m);
-        }
-
         fight();
     }
 
@@ -85,7 +80,14 @@ public class Battle{
                 target = chooseTarget();
                 currentHero = hero;
 
+                System.out.println();
+                System.out.println("[A] Attack");
+                System.out.println("[O] Open Inventory");
+                System.out.println();
+
                 System.out.println("Alright " + hero.getName() + ", what's your move?");
+                choice = inp.stringInput();
+
                 switch(choice)
                 {
                     case "A":
@@ -101,6 +103,10 @@ public class Battle{
                                 heroWin();
                             }
                         }
+
+                        System.out.println(target);
+                        System.out.println(currentHero);
+
                         break;
 
                     case "O": //open inventory
@@ -123,10 +129,17 @@ public class Battle{
     public void monsterTurn()
     {
         int i = 0;
+
         for (Monsters monster: monsters)
         {
+            i = (int) (Math.random() * heros.size());
+
+            System.out.println(monster.getName() +" is attacking " + heros.get(i).getName());
+
+            System.out.println();
+
             damageDealt = monster.getBaseDamage();
-            dodgeProbability = Math.random() * 10 / 100 < heros.get(i).calcDodge();
+            dodgeProbability = Math.random() < heros.get(i).calcDodge();
 
             if (dodgeProbability)
             {
@@ -136,16 +149,17 @@ public class Battle{
 
             heros.get(i).takeDamage(damageDealt);
 
+            System.out.println(monster);
+            System.out.println(heros.get(i));
+
             if (isHeroDefeated())
             {
-                isBattleDone = true;
                 if (checkIfAllHerosDefeated())
                 {
                     isBattleDone = true;
+                    break;
                 }
             }
-
-            i++;
         }
     }
 
@@ -163,8 +177,9 @@ public class Battle{
             chosenWeapon = currentHero.getEquippedWeapons().get(Integer.parseInt(choice) - 1);
         }
 
-        damageDealt = currentHero.useWeapon(chosenWeapon);
-        dodgeProbability = Math.random() * 10 / 100 < target.calcDodge();
+        damageDealt = currentHero.useWeapon(currentHero.getEquippedWeapons().get(0));
+                
+        dodgeProbability = Math.random() < target.calcDodge();
 
         if (dodgeProbability)
         {
@@ -182,54 +197,77 @@ public class Battle{
     {
         currentHero.getInventory().display();
 
-        switch(choice)
+        System.out.println();
+        System.out.println("[P] Use a Potion");
+        System.out.println("[S] Cast a Spell");
+        System.out.println("[E] Equip a Weapon/Armor");
+        System.out.println("[UE] Unequip a Weapon/Armor");
+        System.out.println();
+
+        System.out.println();
+
+        if (!currentHero.getInventory().getItems().isEmpty())
         {
-            case "P":
-                System.out.println("Which potion do you want to consume?");
-                choice = inp.stringInput();
-                Item item = currentHero.selectItem(choice);
-                currentHero.usePotion(item);
-                break;
+            System.out.println("Choose what you would like to do");
 
-            case "S":
-                System.out.println("Which spell do you want to cast?");
-                choice = inp.stringInput();
-                Item item3 = currentHero.selectItem(choice);
-                damageDealt = currentHero.useSpell(item3);
-                target.takeDamage(damageDealt);
-                break;
+            choice = inp.stringInput();
 
-            case Constants.EQUIP:
-                System.out.println("Enter the weapon/armor number you want to equip");
-                choice = inp.stringInput();
-                Item item1 = currentHero.selectItem(choice);
-                if (item1.getType().equals(Constants.WEAPON))
-                {
-                    currentHero.equipWeapon(item1);
-                }
-                else if (item1.getType().equals(Constants.ARMOR))
-                {
-                    currentHero.equipArmor(item1);
-                }
-                break;
+            switch(choice)
+            {
+                case "P":
+                    System.out.println("Which potion do you want to consume?");
+                    choice = inp.stringInput();
+                    Item item = currentHero.selectItem(choice);
+                    currentHero.usePotion(item);
+                    break;
 
-            case Constants.UNEQUIP:
-                System.out.println("Enter the weapon/armor number you want to unequip");
-                choice = inp.stringInput();
-                Item item2 = currentHero.selectItem(choice);
-                if (item2.getType().equals(Constants.WEAPON))
-                {
-                    currentHero.unEquipWeapon(item2);
-                }
-                else if (item2.getType().equals(Constants.ARMOR))
-                {
-                    currentHero.unEquipArmor(item2);
-                }
-                break;
+                case "S":
+                    System.out.println("Which spell do you want to cast?");
+                    choice = inp.stringInput();
+                    Item item3 = currentHero.selectItem(choice);
+                    damageDealt = currentHero.useSpell(item3);
+                    target.takeDamage(damageDealt);
+                    target.skillLoss();
 
-            default:
-                Error.invalidChoice();
-                break;
+                    System.out.println(target);
+                    System.out.println(currentHero);
+                    break;
+
+                case Constants.EQUIP:
+                    System.out.println("Enter the weapon/armor number you want to equip");
+                    choice = inp.stringInput();
+                    Item item1 = currentHero.selectItem(choice);
+                    if (item1.getType().equals(Constants.WEAPON))
+                    {
+                        currentHero.equipWeapon(item1);
+                    }
+                    else if (item1.getType().equals(Constants.ARMOR))
+                    {
+                        currentHero.equipArmor(item1);
+                    }
+                    break;
+
+                case Constants.UNEQUIP:
+                    System.out.println("Enter the weapon/armor number you want to unequip");
+                    choice = inp.stringInput();
+                    Item item2 = currentHero.selectItem(choice);
+                    if (item2.getType().equals(Constants.WEAPON))
+                    {
+                        currentHero.unEquipWeapon(item2);
+                    }
+                    else if (item2.getType().equals(Constants.ARMOR))
+                    {
+                        currentHero.unEquipArmor(item2);
+                    }
+                    break;
+                
+                case Constants.QUIT:
+                    break;
+
+                default:
+                    Error.invalidChoice();
+                    break;
+            }
         }
     }
 
@@ -258,10 +296,20 @@ public class Battle{
 
         if (count == heros.size())
         {
+            System.out.println("Battle over - monsters won!");
+            heroLose();
             return true;
         }
 
         return false;
+    }
+
+    public void heroLose()
+    {
+        for (Hero hero : heros)
+        {
+            hero.setHP(25);
+        }
     }
 
     public void heroWin()
@@ -272,18 +320,19 @@ public class Battle{
             {
                 continue;
             }
-
             hero.increaseGold(highestLevel);
             hero.expGain(heros.size());
+
+            System.out.println("Battle over - heros won!");
         }
     }
 
     public Monsters chooseTarget()
     {
         System.out.println("Choose your target!");
-        mf.displayMonsters();
+        mf.displayMonsters(monsters);
         choice = inp.stringInput();
-        return monsters.get(Integer.parseInt(choice));
+        return monsters.get(Integer.parseInt(choice) - 1);
     }
 
     public void dodgedAttack(String receiver, String attacker)
@@ -304,6 +353,8 @@ public class Battle{
     {
         if (currentHero.getHP() == 0)
         {
+            System.out.println(currentHero.getName() + " has fainted!");
+            System.out.println();
             return true;
         }
         return false;

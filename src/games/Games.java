@@ -6,6 +6,7 @@ import utilities.instructions.Instructions;
 import utilities.constants.Constants;
 import utilities.input.Input;
 import player.Player;
+import entity.hero.*;
 import world.World;
 
 public abstract class Games{
@@ -60,5 +61,17 @@ public abstract class Games{
         System.out.println("[M] - enter Market");
         System.out.println("[I] - Information");
         System.out.println("[Q] - Quit");
+    }
+
+    public boolean checkHPOfParty()
+    {
+        for (Hero hero : player.getParty())
+        {
+            if (hero.getHP() == 0)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

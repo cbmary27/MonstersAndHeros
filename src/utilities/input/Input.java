@@ -7,12 +7,14 @@ public class Input{
 
     public int integerInput()
     {
+        System.out.print("<>");
         return inp.nextInt();
 
     }
 
     public String stringInput()
     {
+        System.out.print("<> ");
         return inp.nextLine();
     }
 }

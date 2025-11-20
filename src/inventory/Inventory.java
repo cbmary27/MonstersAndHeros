@@ -14,6 +14,11 @@ public class Inventory
         items = new ArrayList<>();
     }
 
+    public List<Item> getItems()
+    {
+        return items;
+    }
+
     public void display()
     {
         int i = 1;
