@@ -78,7 +78,7 @@ public class Hero extends Entity implements takeDamage{
 
     public void calcEXP(int n)
     {
-        exp = level * n; //needs to be modified
+        exp = level * (n + 10); //needs to be modified
         checkForLevelUp();
     }
 
@@ -87,7 +87,7 @@ public class Hero extends Entity implements takeDamage{
         if (exp >= (level * 10))
         {
             increaseLevel();
-            exp = 1;
+            exp = Math.max(1, exp - (level * 10));
         }
     }
 
@@ -101,10 +101,10 @@ public class Hero extends Entity implements takeDamage{
         return (agility * 0.002);
     }
 
-    public void expGain(int n)
-    {
-        exp = exp * n;
-    }
+    // public void expGain(int n)
+    // {
+    //     exp = exp * n;
+    // }
 
     public void goldReward(int level)
     {
@@ -113,7 +113,7 @@ public class Hero extends Entity implements takeDamage{
 
     public void increaseGold(int price)
     {
-        gold = gold + price;
+        gold = gold + (price * 50);
     }
 
     public void updateGold(int price)
@@ -228,6 +228,10 @@ public class Hero extends Entity implements takeDamage{
         if (equippedArmor != null)
         {
             defense = useArmor(equippedArmor);
+        }
+        else
+        {
+            defense = (int)(damageDealt * 0.7);
         }
         
         hp = Math.max( 0, hp - Math.max(0, (damageDealt - defense)));

@@ -4,12 +4,15 @@ import java.util.*;
 import entity.*;
 import entity.hero.*;
 import entity.monsters.*;
+import interfaces.Listeners;
 import utilities.constants.Constants;
 import utilities.error.Error;
 import utilities.input.Input;
 import item.*;
 
-public class Battle{
+import stats.BattleStats;
+
+public class Battle implements Listeners{
 
     private int round;
     private List<Monsters> monsters;
@@ -20,6 +23,7 @@ public class Battle{
     private boolean dodgeProbability;
     private boolean isBattleDone;
     private int highestLevel;
+    private BattleStats blistener;
 
     String choice;
     private Input inp;
@@ -27,6 +31,7 @@ public class Battle{
 
     public Battle()
     {
+        addListener();
         mf = new MonsterFactory();
         monsters = new ArrayList<>(); 
         inp = new Input();
@@ -34,20 +39,21 @@ public class Battle{
         round = 0;
     }
 
+    public void addListener()
+    {
+        blistener = new BattleStats();
+    }
+
     public void initializeBattle(List<Hero> party)
     {
         heros = party;
 
-        System.out.println("Grrrrr......");
-        System.out.println("Uh Oh, What was that?");
-        System.out.println("MONSTERS!!!!!");
+        blistener.monsterEntrance();
 
         int i = 0;
         int numOfHeros = party.size();
         highestLevel = getHighestLevel();
         List<String> randMonsters = mf.getMonsters();
-
-        //calcNumOfRounds(highestLevel);
 
         while (i < numOfHeros)
         {
@@ -80,6 +86,8 @@ public class Battle{
                 target = chooseTarget();
                 currentHero = hero;
 
+                displayStats();
+
                 System.out.println();
                 System.out.println("[A] Attack");
                 System.out.println("[O] Open Inventory");
@@ -93,20 +101,7 @@ public class Battle{
                     case "A":
                         heroAttack();
                         target.takeDamage(damageDealt);
-                        if (isMonsterDefeated())
-                        {
-                            monsters.remove(target);
-
-                            if (checkIfAllMonstersDefeated())
-                            {
-                                isBattleDone = true;
-                                heroWin();
-                            }
-                        }
-
-                        System.out.println(target);
-                        System.out.println(currentHero);
-
+                        check();
                         break;
 
                     case "O": //open inventory
@@ -134,9 +129,7 @@ public class Battle{
         {
             i = (int) (Math.random() * heros.size());
 
-            System.out.println(monster.getName() +" is attacking " + heros.get(i).getName());
-
-            System.out.println();
+            blistener.eventAttack(monster.getName(), heros.get(i).getName());
 
             damageDealt = monster.getBaseDamage();
             dodgeProbability = Math.random() < heros.get(i).calcDodge();
@@ -148,9 +141,7 @@ public class Battle{
             }
 
             heros.get(i).takeDamage(damageDealt);
-
-            System.out.println(monster);
-            System.out.println(heros.get(i));
+            blistener.eventEntityDamage(monster.getName(), damageDealt);
 
             if (isHeroDefeated())
             {
@@ -170,6 +161,8 @@ public class Battle{
         currentHero.displayEquippedWeapons();
         Item chosenWeapon = null;
 
+        blistener.eventAttack(currentHero.getName(), target.getName());
+
         if (currentHero.getEquippedWeapons().size() == Constants.TWO)
         {
             System.out.println("Which weapon do you want to use?");
@@ -185,12 +178,10 @@ public class Battle{
         {
             damageDealt = 0;
             dodgedAttack(target.getName(), currentHero.getName());
-        }    
-    }
+            return;
+        }
 
-    public void displayStats()
-    {
-        System.out.println();
+        blistener.eventEntityDamage(currentHero.getName(), damageDealt);
     }
 
     public void battleInventory()
@@ -229,8 +220,12 @@ public class Battle{
                     target.takeDamage(damageDealt);
                     target.skillLoss();
 
-                    System.out.println(target);
-                    System.out.println(currentHero);
+                    if (damageDealt != 0)
+                    {
+                        blistener.eventEntityDamage(currentHero.getName(), damageDealt);
+                        blistener.eventCastSpell(currentHero.getName(), target.getName(), item3.getName());
+                    }
+                    check();
                     break;
 
                 case Constants.EQUIP:
@@ -271,12 +266,25 @@ public class Battle{
         }
     }
 
+    public void check()
+    {
+        if (isMonsterDefeated())
+        {
+            monsters.remove(target);
+
+            if (checkIfAllMonstersDefeated())
+                {
+                    heroWin();
+                }
+        }
+    }
+
     public boolean checkIfAllMonstersDefeated()
     {
         if (monsters.isEmpty())
         {
-            System.out.println(" All Monsters have been defeated ! ");
-
+            isBattleDone = true;
+            blistener.eventHeroWin();
             return true;
         }
         return false;
@@ -296,7 +304,6 @@ public class Battle{
 
         if (count == heros.size())
         {
-            System.out.println("Battle over - monsters won!");
             heroLose();
             return true;
         }
@@ -321,9 +328,7 @@ public class Battle{
                 continue;
             }
             hero.increaseGold(highestLevel);
-            hero.expGain(heros.size());
-
-            System.out.println("Battle over - heros won!");
+            hero.calcEXP(heros.size());
         }
     }
 
@@ -337,13 +342,14 @@ public class Battle{
 
     public void dodgedAttack(String receiver, String attacker)
     {
-        System.out.println(receiver + " dodged " + attacker + " 's attack !" );
+        blistener.eventDodgeAttack(receiver, attacker);
     }
 
     public boolean isMonsterDefeated()
     {
         if (target.getHP() == 0)
         {
+            blistener.eventEntityFaint(target.getName());
             return true;
         }
         return false;
@@ -353,11 +359,16 @@ public class Battle{
     {
         if (currentHero.getHP() == 0)
         {
-            System.out.println(currentHero.getName() + " has fainted!");
-            System.out.println();
+            blistener.eventEntityFaint(currentHero.getName());
             return true;
         }
         return false;
+    }
+
+    public void displayStats()
+    {
+        System.out.println(currentHero);
+        System.out.println(target);
     }
 
     public int getHighestLevel()
@@ -371,23 +382,6 @@ public class Battle{
                 maxLevel = hero.getLevel();
             }
         }
-
         return maxLevel;
     }
-
-    // public void calcNumOfRounds(int highestLevel)
-    // {
-    //     if (highestLevel >= Constants.ONE && highestLevel <= Constants.THREE)
-    //     {
-    //         rounds = Constants.ONE;
-    //     }
-    //     else if (highestLevel > Constants.THREE && highestLevel <= Constants.FIVE)
-    //     {
-    //         rounds = Constants.TWO;
-    //     }
-    //     else
-    //     {
-    //         rounds = Constants.THREE;
-    //     }
-    // }    
 }

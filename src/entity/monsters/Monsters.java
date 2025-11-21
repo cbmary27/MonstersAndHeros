@@ -33,16 +33,13 @@ public class Monsters extends Entity implements takeDamage{
         " | Base Damage : " + baseDamage + " | Defense : " + defense + " | Dodge Ability : " + dodgeAbility;
     }
 
-    // @Override
-    // public void increaseLevel()
-    // {
-    // }
-
     @Override
     public void takeDamage(int damageDealt)
     {
         System.out.println(damageDealt);
-        hp = Math.max( 0, hp - Math.max(0, (damageDealt - defense)));
+        //defense = (int) (defense* 0.2);
+        int reduceDefense = (int) (defense * damageDealt / 100);
+        hp = Math.max( 0, hp - Math.max(0, (damageDealt - reduceDefense)));
     }
 
     public void skillLoss()
