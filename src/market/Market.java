@@ -3,6 +3,8 @@ package market;
 import java.util.*;
 import utilities.error.Error;
 import utilities.input.Input;
+import utilities.constants.Constants;
+import menu.MarketMenu;
 import entity.hero.*;
 import item.*;
 import fileparser.*;
@@ -14,40 +16,41 @@ public class Market{
     public Input inp;
     public Error error;
     public String choice;
+    private MarketMenu menu;
 
     public Market()
     {
         inp = new Input();
         error = new Error();
+        menu = new MarketMenu();
     }
 
     public void enter(Hero hero)
     {
-        System.out.println("~ Entering the market! ~");
-        System.out.println("What brings you here?");
+        menu.enterMarket();
 
         while (true) {
-            System.out.println("Buy [B] | Sell [S] | Quit [Q]");
+            menu.showMenu();
             choice = inp.stringInput().toUpperCase();
 
             switch(choice)
             {
-                case "B":
-                    System.out.println("Take a look at what we offer!");
+                case Constants.BUY:
+                    menu.buy();
                     createMarketFactoryInstance();
                     display(hero);
                     choice = " ";
                     break;
 
-                case "S":
-                    System.out.println("Alright! Show me what you got!");
+                case Constants.SELL:
+                    menu.sell();
                     createMarketFactoryInstance();
                     sell(hero);
                     choice = " ";
                     break;
 
-                case "Q":
-                    System.out.println("Come again soon!");
+                case Constants.QUIT:
+                    menu.quit();
                     break;
 
                 default:
@@ -55,23 +58,17 @@ public class Market{
                     break;
             }
 
-            if (choice.equals("Q"))
+            if (choice.equals(Constants.QUIT))
             {
                 break;
             }
-            System.out.println("What else can I do for you today?");
+            menu.message();
         }
     }
 
     public void display(Hero hero)
     {
-        System.out.println("[1] Potions");
-        System.out.println("[2] Spells");
-        System.out.println("[3] Weapons");
-        System.out.println("[4] Armor");
-        System.out.println("[Q] Quit");
-
-        System.out.println("What would you like to take a look at?");        
+        menu.displayItems();
         choice = inp.stringInput();
 
         switch(choice)
@@ -88,7 +85,7 @@ public class Market{
             case "4":
                 displayArmor(hero);
                 break;
-            case "Q":
+            case Constants.QUIT:
                 break;
             default:
                 error.invalidMove();
@@ -109,39 +106,43 @@ public class Market{
         while (true)
         {
             hero.getInventory().display();
-            System.out.println("What do you want to sell? or [Q] Quit");
+            menu.sellItem();
             choice = inp.stringInput();
 
-            if (choice.equals("Q"))
+            if (choice.equals(Constants.QUIT))
             {
                 break;
             }
 
-            System.out.println("That's a very valuable item, thanks!");
+            menu.soldItem();
+
             Item sold = hero.getInventory().getItem(choice);
             hero.getInventory().dropItem(choice);
 
             switch(sold.getType())
             {
-                case "Potion":
+                case Constants.POTION:
                     Potions potionItem = (Potions) sold;
                     PotionDetails pd = potionItem.toDetails();
                     hero.increaseGold(potionItem.getPrice()/2);
                     mf.potionDetails.add(pd);
                     break;
-                case "Spell":
+
+                case Constants.SPELL:
                     Spells spellItem = (Spells) sold;
                     SpellDetails sd = spellItem.toDetails();
                     hero.increaseGold(spellItem.getPrice()/2);
                     mf.spellDetails.add(sd);
                     break;
-                case "Weaponry":
+
+                case Constants.WEAPONRY:
                     Weaponry weaponItem = (Weaponry) sold;
                     WeaponryDetails wd = weaponItem.toDetails();
                     hero.increaseGold(weaponItem.getPrice()/2);
                     mf.weaponryDetails.add(wd);
                     break;
-                case "Armor":
+                    
+                case Constants.ARMOR:
                     Armor armorItem = (Armor) sold;
                     ArmorDetails ad = armorItem.toDetails();
                     hero.increaseGold(armorItem.getPrice()/2);
@@ -149,8 +150,6 @@ public class Market{
                     break;
             }
         }
-
-        System.out.println();
     }
 
     public void displayPotions(Hero hero)
@@ -169,11 +168,13 @@ public class Market{
                 System.out.println();
             }
 
-            System.out.println("[Q] Quit");
-            System.out.println("Which potion do you want to buy?");
+            menu.buyItem(Constants.POTION);
+
             choice = inp.stringInput();
 
-            if (choice.toUpperCase().equals("Q"))
+            boolean check = checkQuit(choice);
+
+            if (check)
             {
                 break;
             }
@@ -186,12 +187,12 @@ public class Market{
                 Item newPotion = mf.createPotion(chosenPotion);
                 mf.potionDetails.remove(chosenPotion);
                 buy(newPotion, hero);
-                System.out.println(hero.getName()+ " bought " + newPotion.getName() + "!");
-                System.out.println();
+
+                menu.boughtItem(hero.getName(), newPotion.getName());
             }
             else
             {
-                System.out.println("Not enough gold or not the required level!");
+                menu.cannotBuy();
                 flag = false;
             }
         }
@@ -213,11 +214,13 @@ public class Market{
                 System.out.println();
             }
 
-            System.out.println("[Q] Quit");
-            System.out.println("Which spell do you want to buy?");
+            menu.buyItem(Constants.SPELL);
+
             choice = inp.stringInput();
 
-            if (choice.toUpperCase().equals("Q"))
+            boolean check = checkQuit(choice);
+
+            if (check)
             {
                 break;
             }
@@ -230,12 +233,12 @@ public class Market{
                 Item newSpell = mf.createSpell(chosenSpell);
                 mf.potionDetails.remove(chosenSpell);
                 buy(newSpell, hero);
-                System.out.println(hero.getName()+ " bought " + newSpell.getName() + "!");
-                System.out.println();
+
+                menu.boughtItem(hero.getName(), newSpell.getName());
             }
             else
             {
-                System.out.println("Not enough gold or not the required level!");
+                menu.cannotBuy();
                 flag = false;
             }
         }
@@ -257,11 +260,13 @@ public class Market{
                 System.out.println();
             }
 
-            System.out.println("[Q] Quit");
-            System.out.println("Which weapon do you want to buy?");
+            menu.buyItem(Constants.WEAPON);
+
             choice = inp.stringInput();
 
-            if (choice.toUpperCase().equals("Q"))
+            boolean check = checkQuit(choice);
+
+            if (check)
             {
                 break;
             }
@@ -274,12 +279,12 @@ public class Market{
                 Item newWeapon = mf.createWeaponry(chosenWeapon);
                 mf.weaponryDetails.remove(chosenWeapon);
                 buy(newWeapon, hero);
-                System.out.println(hero.getName()+ " bought " + newWeapon.getName() + "!");
-                System.out.println();
+
+                menu.boughtItem(hero.getName(), newWeapon.getName());
             }
             else
             {
-                System.out.println("Not enough gold or not the required level!");
+                menu.cannotBuy();
                 flag = false;
             }
         }
@@ -302,11 +307,13 @@ public class Market{
                 System.out.println();
             }
 
-            System.out.println("[Q] Quit");
-            System.out.println("Which armor do you want to buy?");
+            menu.buyItem(Constants.ARMOR);
+
             choice = inp.stringInput();
 
-            if (choice.toUpperCase().equals("Q"))
+            boolean check = checkQuit(choice);
+
+            if (check)
             {
                 break;
             }
@@ -319,12 +326,12 @@ public class Market{
                 Item newArmor = mf.createArmor(chosenArmor);
                 mf.armorDetails.remove(chosenArmor);
                 buy(newArmor, hero);
-                System.out.println(hero.getName()+ " bought " + newArmor.getName() + "!");
-                System.out.println();
+
+                menu.boughtItem(hero.getName(), newArmor.getName());
             }
             else
             {
-                System.out.println("Not enough gold or not the required level!");
+                menu.cannotBuy();
                 flag = false;
             }
         }
@@ -338,5 +345,14 @@ public class Market{
                 mf = new MarketFactory();
                 mf.createMarket();
             }
+    }
+
+    public boolean checkQuit(String choice)
+    {
+        if (choice.toUpperCase().equals(Constants.QUIT))
+        {
+            return false;
+        }
+        return true;
     }
 }

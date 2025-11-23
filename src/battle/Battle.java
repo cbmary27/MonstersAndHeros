@@ -8,6 +8,7 @@ import interfaces.Listeners;
 import utilities.constants.Constants;
 import utilities.error.Error;
 import utilities.input.Input;
+import menu.BattleMenu;
 import item.*;
 
 import stats.BattleStats;
@@ -28,12 +29,14 @@ public class Battle implements Listeners{
     String choice;
     private Input inp;
     MonsterFactory mf;
+    private BattleMenu bmenu;
 
     public Battle()
     {
         addListener();
         mf = new MonsterFactory();
-        monsters = new ArrayList<>(); 
+        monsters = new ArrayList<>();
+        bmenu = new BattleMenu(); 
         inp = new Input();
         isBattleDone = false;
         round = 0;
@@ -88,24 +91,32 @@ public class Battle implements Listeners{
 
                 displayStats();
 
-                System.out.println();
-                System.out.println("[A] Attack");
-                System.out.println("[O] Open Inventory");
-                System.out.println();
+                bmenu.showMenu();
+                bmenu.nextMove(hero.getName());
 
-                System.out.println("Alright " + hero.getName() + ", what's your move?");
                 choice = inp.stringInput();
 
                 switch(choice)
                 {
-                    case "A":
+                    case Constants.ATTACK:
                         heroAttack();
                         target.takeDamage(damageDealt);
                         check();
+                        //nextHeroTurn();
                         break;
 
-                    case "O": //open inventory
+                    case Constants.OPEN: //open inventory
                         battleInventory();
+                        //nextHeroTurn();
+                        break;
+
+                    case Constants.FORFEIT:
+                        isBattleDone = true;
+                        blistener.eventForfeitBattle();
+                        break;
+
+                    default:
+                        Error.invalidChoice();
                         break;
                 }
             }
@@ -165,7 +176,7 @@ public class Battle implements Listeners{
 
         if (currentHero.getEquippedWeapons().size() == Constants.TWO)
         {
-            System.out.println("Which weapon do you want to use?");
+            bmenu.whichItem(Constants.WEAPON);
             choice = inp.stringInput();
             chosenWeapon = currentHero.getEquippedWeapons().get(Integer.parseInt(choice) - 1);
         }
@@ -188,32 +199,25 @@ public class Battle implements Listeners{
     {
         currentHero.getInventory().display();
 
-        System.out.println();
-        System.out.println("[P] Use a Potion");
-        System.out.println("[S] Cast a Spell");
-        System.out.println("[E] Equip a Weapon/Armor");
-        System.out.println("[UE] Unequip a Weapon/Armor");
-        System.out.println();
-
-        System.out.println();
+        bmenu.battleInventoryDisplay();
 
         if (!currentHero.getInventory().getItems().isEmpty())
         {
-            System.out.println("Choose what you would like to do");
+            bmenu.menuChoice();
 
             choice = inp.stringInput();
 
             switch(choice)
             {
-                case "P":
-                    System.out.println("Which potion do you want to consume?");
+                case Constants.USEPOTION:
+                    bmenu.whichItem(Constants.POTION);
                     choice = inp.stringInput();
                     Item item = currentHero.selectItem(choice);
                     currentHero.usePotion(item);
                     break;
 
-                case "S":
-                    System.out.println("Which spell do you want to cast?");
+                case Constants.USESPELL:
+                    bmenu.whichItem(Constants.SPELL);
                     choice = inp.stringInput();
                     Item item3 = currentHero.selectItem(choice);
                     damageDealt = currentHero.useSpell(item3);
@@ -229,7 +233,7 @@ public class Battle implements Listeners{
                     break;
 
                 case Constants.EQUIP:
-                    System.out.println("Enter the weapon/armor number you want to equip");
+                    bmenu.whichItemEquip(Constants.EQUIP);
                     choice = inp.stringInput();
                     Item item1 = currentHero.selectItem(choice);
                     if (item1.getType().equals(Constants.WEAPON))
@@ -243,7 +247,7 @@ public class Battle implements Listeners{
                     break;
 
                 case Constants.UNEQUIP:
-                    System.out.println("Enter the weapon/armor number you want to unequip");
+                    bmenu.whichItemEquip(Constants.UNEQUIP);
                     choice = inp.stringInput();
                     Item item2 = currentHero.selectItem(choice);
                     if (item2.getType().equals(Constants.WEAPON))
@@ -334,7 +338,7 @@ public class Battle implements Listeners{
 
     public Monsters chooseTarget()
     {
-        System.out.println("Choose your target!");
+        bmenu.chooseWhichTarget();
         mf.displayMonsters(monsters);
         choice = inp.stringInput();
         return monsters.get(Integer.parseInt(choice) - 1);

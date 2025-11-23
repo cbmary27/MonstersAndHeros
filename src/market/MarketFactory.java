@@ -53,11 +53,6 @@ public class MarketFactory
 
     public void createComplimentaryWeapons()
     {
-        // if (file == null)
-        // {
-        //     file = new FileParser();
-        // }
-
         List<List<String>> w = file.getComplimentaryWeaponDetails("Initial");
 
         for (List<String> item : w)

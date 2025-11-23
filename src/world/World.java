@@ -57,17 +57,17 @@ public class World
 
         for (int i = 0; i < numMarkets; i++)
         {
-            l.add(Constants.M);
+            l.add(Constants.MARKET);
         }
 
         for (int i = 0; i < numCommon; i++)
         {
-            l.add(Constants.C);
+            l.add(Constants.COMMONTILE);
         }
 
         for (int i = 0; i < numInaccessible; i++)
         {
-            l.add(Constants.X);
+            l.add(Constants.NOENTRY);
         }
 
         Collections.shuffle(l);
@@ -82,13 +82,13 @@ public class World
 
                 if(i == 7 && j == 7)
                 {
-                    grid[i][j].tileVal = new Piece<>(Constants.S); //Start Position
+                    grid[i][j].tileVal = new Piece<>(Constants.START); //Start Position
                 }
                 else
                 {
-                    if (l.get(k).equals(Constants.C))
+                    if (l.get(k).equals(Constants.COMMONTILE))
                     {
-                        grid[i][j].tileVal = new Piece<>("*");
+                        grid[i][j].tileVal = new Piece<>(Constants.BOARDSTAR);
                     }
 
                     else{
@@ -121,7 +121,7 @@ public class World
         {
             for (int j = 0; j < columns; j++)
             {
-                System.out.print("+----");
+                System.out.print(Constants.BOARDHEDGE);
             }
 
             System.out.println();
@@ -132,31 +132,31 @@ public class World
                 {
                     switch(grid[i][j].tileVal.getValueOnTile())
                     {
-                        case Constants.M:
-                            System.out.print("| " + colour.PURPLE_BOLD + grid[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
+                        case Constants.MARKET:
+                            System.out.print(Constants.BOARDVEDGE + " " + colour.PURPLE_BOLD + grid[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
                             break;
-                        case Constants.X:
-                            System.out.print("| " + colour.RED_BOLD + grid[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
+                        case Constants.NOENTRY:
+                            System.out.print(Constants.BOARDVEDGE + " " + colour.RED_BOLD + grid[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
                             break;
-                        case Constants.S:
-                            System.out.print("| " + grid[i][j].tileVal.getValueOnTile() + "  ");
+                        case Constants.START:
+                            System.out.print(Constants.BOARDVEDGE + " " + grid[i][j].tileVal.getValueOnTile() + "  ");
                             break;
-                        case "*":
-                            System.out.print("| " + colour.GREEN + grid[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
+                        case Constants.BOARDSTAR:
+                            System.out.print(Constants.BOARDVEDGE + " " + colour.GREEN + grid[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
                             break;
                     }
                 }
                 else
                 {
-                    System.out.print("| " + colour.YELLOW + playerPosition[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
+                    System.out.print(Constants.BOARDVEDGE + " " + colour.YELLOW + playerPosition[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
                 }
             }
-            System.out.println("|");
+            System.out.println(Constants.BOARDVEDGE + " " );
         }
 
         for (int j = 0; j < columns; j++)
         {
-            System.out.print("+----");
+            System.out.print(Constants.BOARDHEDGE);
         }
 
         System.out.println();
@@ -166,19 +166,19 @@ public class World
     {
         switch(ch)
         {
-            case Constants.W:
+            case Constants.UP:
                 if (pos.getRow() - 1 < 0 || checkIfTileInaccessible(pos.getRow() - 1, pos.getColumn()))
                     return false;
                 break;
-            case Constants.A:
+            case Constants.LEFT:
                 if (pos.getColumn() - 1 < 0 || checkIfTileInaccessible(pos.getRow(), pos.getColumn() - 1))
                     return false;
                 break;
-            case Constants.S:
+            case Constants.DOWN:
                 if (pos.getRow() + 1 >= rows || checkIfTileInaccessible(pos.getRow() + 1, pos.getColumn()))
                     return false;
                 break;
-            case Constants.D:
+            case Constants.RIGHT:
                 if (pos.getColumn() + 1 >= columns || checkIfTileInaccessible(pos.getRow(), pos.getColumn() + 1))
                     return false;
                 break;
@@ -191,7 +191,7 @@ public class World
 
     public boolean checkIfTileInaccessible(int i, int j)
     {
-        if (grid[i][j].tileVal.getValueOnTile().equals("X"))
+        if (grid[i][j].tileVal.getValueOnTile().equals(Constants.NOENTRY))
         {
             error.inaccessibleSpace();
             return true;
@@ -204,16 +204,16 @@ public class World
         playerPosition[player.currentPos.getRow()][player.currentPos.getColumn()].tileVal.setValueOnTile("0");
         switch(choice)
         {
-            case Constants.W:
+            case Constants.UP:
                 player.currentPos.setRow(player.currentPos.getRow() - 1);
                 break;
-            case Constants.A:
+            case Constants.LEFT:
                 player.currentPos.setColumn(player.currentPos.getColumn() - 1);
                 break;
-            case Constants.S:
+            case Constants.DOWN:
                 player.currentPos.setRow(player.currentPos.getRow() + 1);
                 break;
-            case Constants.D:
+            case Constants.RIGHT:
                 player.currentPos.setColumn(player.currentPos.getColumn() + 1);
                 break;
         }

@@ -12,4 +12,5 @@ public interface BattleEventListener
     public void eventDodgeAttack(String receiver, String attacker);
     public void eventAttack(String attacker, String target);
     public void eventCastSpell(String name, String mname, String itemName);
+    public void eventForfeitBattle();
 }

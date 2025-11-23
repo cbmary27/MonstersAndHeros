@@ -5,6 +5,7 @@ import fileparser.*;
 import entity.hero.*;
 import market.MarketFactory;
 import utilities.constants.Constants;
+import menu.GameMenu;
 import item.*;
 import world.World;
 import battle.Battle;
@@ -14,11 +15,13 @@ public class MonstersAndHeros extends Games{
     public HeroFactory hf;
     public MarketFactory mf;
     public Battle battle;
+    public GameMenu gmenu;
 
     public MonstersAndHeros()
     {
         hf = new HeroFactory();
         mf = new MarketFactory();
+        gmenu = new GameMenu();
         world = new World(8, 8);
         player.currentPos.setRow(7);
         player.currentPos.setColumn(7);
@@ -40,7 +43,7 @@ public class MonstersAndHeros extends Games{
                 while (flag == false)
                 {
                     displayOptions();
-                    System.out.println("Enter your move:");
+                    gmenu.enterMove();
                     ch = inp.stringInput();
                     flag = checkInput(ch);
 
@@ -52,10 +55,10 @@ public class MonstersAndHeros extends Games{
 
                 switch(ch.toUpperCase())
                 {
-                    case Constants.W:
-                    case Constants.A:
-                    case Constants.S:
-                    case Constants.D:
+                    case Constants.UP:
+                    case Constants.LEFT:
+                    case Constants.DOWN:
+                    case Constants.RIGHT:
                         flag = world.isMoveLegal(ch, player.currentPos);
                         if (flag == false)
                         {
@@ -65,10 +68,10 @@ public class MonstersAndHeros extends Games{
                         world.makeMove(player, ch);
                         commonTile();
                         break;
-                    case Constants.M:
+                    case Constants.MARKET:
                         initializeMarket();
                         break;
-                    case Constants.I:
+                    case Constants.INFORMATION:
                         player.getInformation();
                         break;
                     case Constants.QUIT:
@@ -87,25 +90,22 @@ public class MonstersAndHeros extends Games{
             }
 
             restore();
-            System.out.println("Do you want to play again?");
-            System.out.println("[Y] [N]");
+            gmenu.playAgain();
             continueGame = inp.stringInput().toUpperCase();
 
-        } while(continueGame.equals(Constants.Y));
+        } while(continueGame.equals(Constants.YES));
     }
 
     public void setUpGame()
     {
         int i = 0;
         String choice;
-        System.out.println();
-        System.out.println("Time to assemble your league!");
-        System.out.println();
-
+        
+        gmenu.assembleParty();
         List<String> heros = hf.getHeros();
-        System.out.println();
-        System.out.println("How many heros will accompany you on your journey?");
-        System.out.println("Your party can either have 1, 2 or 3 heros!");
+
+        gmenu.numberOfHeros();
+      
         choice = inp.stringInput();
 
         while ( i < Integer.parseInt(choice))
@@ -130,7 +130,7 @@ public class MonstersAndHeros extends Games{
 
         switch(world.grid[i][j].tileVal.getValueOnTile())
         {
-            case "*":
+            case Constants.BOARDSTAR:
                 Random random = new Random();
                 int randomChoice = random.nextInt(2);
                 if (randomChoice == 1 && checkHPOfParty())
@@ -153,25 +153,24 @@ public class MonstersAndHeros extends Games{
         int i = player.currentPos.getRow();
         int j = player.currentPos.getColumn();
 
-        if (world.grid[i][j].tileVal.getValueOnTile().equals("M"))
+        if (world.grid[i][j].tileVal.getValueOnTile().equals(Constants.MARKET))
         {
-            System.out.println("~ Would you like to buy/sell anything at the market? ~");
-            System.out.println("[Y] [N]");
+            gmenu.initialMarket();
 
             choice = inp.stringInput().toUpperCase();
             while (true)
             {
-                if (choice.equals(Constants.Y))
+                if (choice.equals(Constants.YES))
                 {
                     player.display();
-                    System.out.println("Who will be going to the market?");
+                    gmenu.whichHeroMarket();
                     choice = inp.stringInput();
 
                     world.grid[i][j].getMarketInstance();
                     world.grid[i][j].market.enter(player.getHero(choice));
 
-                    System.out.println("Do you want to visit the market again?");
-                    System.out.println("[Y] [N]");
+                    gmenu.optionMarket();
+
                     choice = inp.stringInput();
                 }
                 else
@@ -191,8 +190,7 @@ public class MonstersAndHeros extends Games{
         int i = 0;
         mf.createComplimentaryWeapons();
 
-        System.out.println("Now...we don't want your heros out in the wild without a weapon now, do we?");
-        System.out.println("Here's a complimentary weapon to get you started! (and keep you safe from the monsters)");
+        gmenu.complimentaryMessage();
 
         System.out.println();
 

@@ -153,6 +153,7 @@ public class Hero extends Entity implements takeDamage{
         for (Item item : equippedWeapons)
         {
             System.out.println("[" + i + "] " + item);
+            i++;
         }
     }
 
@@ -198,7 +199,7 @@ public class Hero extends Entity implements takeDamage{
         if (mp >= spell.getAffectedMana())
         {
             mp = mp - spell.getAffectedMana();
-            return spell.getDamage() + dexterity / 10000 * (spell.getDamage());
+            return (int) (spell.getDamage() + (dexterity / 10000.0f) * (spell.getDamage()));
         }
         else
         {
@@ -231,7 +232,7 @@ public class Hero extends Entity implements takeDamage{
         }
         else
         {
-            defense = (int)(damageDealt * 0.7);
+            defense = (int) (damageDealt * 0.7);
         }
         
         hp = Math.max( 0, hp - Math.max(0, (damageDealt - defense)));

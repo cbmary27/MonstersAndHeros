@@ -19,7 +19,6 @@ public class BattleStats implements BattleEventListener
     @Override
     public void eventEntityDamage(String name, int damage)
     {
-        System.out.println();
         System.out.println(name + " dealt " + damage + " damage");
         System.out.println();
     }
@@ -27,7 +26,6 @@ public class BattleStats implements BattleEventListener
     @Override
     public void eventHeroWin()
     {
-        System.out.println();
         System.out.println("The Hero(s) have won!");
         System.out.println();
     }
@@ -35,7 +33,6 @@ public class BattleStats implements BattleEventListener
     @Override
     public void eventMonsterWin()
     {
-        System.out.println();
         System.out.println("The Monster(s) have won");
         System.out.println();
     }
@@ -43,7 +40,6 @@ public class BattleStats implements BattleEventListener
     @Override
     public void eventEntityFaint(String name)
     {
-        System.out.println();
         System.out.println("...");
         System.out.println(name + " has fainted");
         System.out.println();
@@ -52,7 +48,6 @@ public class BattleStats implements BattleEventListener
     @Override
     public void eventDodgeAttack(String receiver, String attacker)
     {
-        System.out.println();
         System.out.println(receiver + " dodged " + attacker + "'s attack!");
         System.out.println();
     }
@@ -60,7 +55,6 @@ public class BattleStats implements BattleEventListener
     @Override
     public void eventAttack(String attacker, String target)
     {
-        System.out.println();
         System.out.println(attacker + " is attacking " + target);
         System.out.println();
     }
@@ -68,8 +62,14 @@ public class BattleStats implements BattleEventListener
     @Override
     public void eventCastSpell(String name, String target, String itemName)
     {
-        System.out.println();
         System.out.println(name + " cast a " + itemName + " spell on " + target);
+        System.out.println();
+    }
+
+    @Override
+    public void eventForfeitBattle()
+    {
+        System.out.println("The heroes have forfeited the battle!");
         System.out.println();
     }
 

@@ -5,6 +5,7 @@ import utilities.error.Error;
 import utilities.instructions.Instructions;
 import utilities.constants.Constants;
 import utilities.input.Input;
+import menu.GameMenu;
 import player.Player;
 import entity.hero.*;
 import world.World;
@@ -18,9 +19,11 @@ public abstract class Games{
     public Player player;
     public boolean isGameDone;
     public String continueGame;
+    public GameMenu gmenu;
 
     public Games()
     {
+        gmenu = new GameMenu();
         error = new Error();
         i = new Instructions();
         inp = new Input();
@@ -34,12 +37,12 @@ public abstract class Games{
     {
         switch(input.toUpperCase())
         {
-            case Constants.W:
-            case Constants.A:
-            case Constants.S:
-            case Constants.D:
-            case Constants.M:
-            case Constants.I:
+            case Constants.UP:
+            case Constants.LEFT:
+            case Constants.DOWN:
+            case Constants.RIGHT:
+            case Constants.MARKET:
+            case Constants.INFORMATION:
             case Constants.QUIT:
                 return true;
             default:
@@ -49,18 +52,13 @@ public abstract class Games{
 
     public void restore()
     {
-
+        player.getParty().clear();
+        isGameDone = false;
     }
 
     public void displayOptions()
     {
-        System.out.println("[W] - move up");
-        System.out.println("[A] - move left");
-        System.out.println("[S] - move right");
-        System.out.println("[D] - move down");
-        System.out.println("[M] - enter Market");
-        System.out.println("[I] - Information");
-        System.out.println("[Q] - Quit");
+        gmenu.showMenu();
     }
 
     public boolean checkHPOfParty()
