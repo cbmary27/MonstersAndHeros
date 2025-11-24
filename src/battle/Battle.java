@@ -51,18 +51,20 @@ public class Battle implements Listeners{
     {
         heros = party;
 
-        blistener.monsterEntrance();
-
         int i = 0;
         int numOfHeros = party.size();
         highestLevel = getHighestLevel();
         List<String> randMonsters = mf.getMonsters();
+        List<String> monsterNames = new ArrayList<>();
 
         while (i < numOfHeros)
         {
             monsters.add(mf.createMonster(randMonsters.get(i), mf.types.get(i), highestLevel));
+            monsterNames.add(randMonsters.get(i));
             i++;
         }
+
+        blistener.monsterEntrance(monsterNames);
 
         fight();
     }
@@ -86,8 +88,8 @@ public class Battle implements Listeners{
                     hero.calcMP();
                 }
 
-                target = chooseTarget();
                 currentHero = hero;
+                target = chooseTarget();
 
                 displayStats();
 
@@ -102,12 +104,10 @@ public class Battle implements Listeners{
                         heroAttack();
                         target.takeDamage(damageDealt);
                         check();
-                        //nextHeroTurn();
                         break;
 
-                    case Constants.OPEN: //open inventory
+                    case Constants.OPEN:
                         battleInventory();
-                        //nextHeroTurn();
                         break;
 
                     case Constants.FORFEIT:
@@ -118,6 +118,11 @@ public class Battle implements Listeners{
                     default:
                         Error.invalidChoice();
                         break;
+                }
+
+                if (isBattleDone)
+                {
+                    break;
                 }
             }
 
@@ -154,7 +159,7 @@ public class Battle implements Listeners{
             heros.get(i).takeDamage(damageDealt);
             blistener.eventEntityDamage(monster.getName(), damageDealt);
 
-            if (isHeroDefeated())
+            if (isHeroDefeated(heros.get(i)))
             {
                 if (checkIfAllHerosDefeated())
                 {
@@ -192,7 +197,10 @@ public class Battle implements Listeners{
             return;
         }
 
-        blistener.eventEntityDamage(currentHero.getName(), damageDealt);
+        if (damageDealt != 0)
+        {
+            blistener.eventEntityDamage(currentHero.getName(), damageDealt);
+        }
     }
 
     public void battleInventory()
@@ -213,6 +221,7 @@ public class Battle implements Listeners{
                     bmenu.whichItem(Constants.POTION);
                     choice = inp.stringInput();
                     Item item = currentHero.selectItem(choice);
+                    blistener.eventUsedItem(currentHero.getName(), item.getName());
                     currentHero.usePotion(item);
                     break;
 
@@ -331,14 +340,14 @@ public class Battle implements Listeners{
             {
                 continue;
             }
-            hero.increaseGold(highestLevel);
+            hero.goldReward(highestLevel);
             hero.calcEXP(heros.size());
         }
     }
 
     public Monsters chooseTarget()
     {
-        bmenu.chooseWhichTarget();
+        bmenu.chooseWhichTarget(currentHero.getName());
         mf.displayMonsters(monsters);
         choice = inp.stringInput();
         return monsters.get(Integer.parseInt(choice) - 1);
@@ -359,11 +368,11 @@ public class Battle implements Listeners{
         return false;
     }
 
-    public boolean isHeroDefeated()
+    public boolean isHeroDefeated(Hero hero)
     {
-        if (currentHero.getHP() == 0)
+        if (hero.getHP() == 0)
         {
-            blistener.eventEntityFaint(currentHero.getName());
+            blistener.eventEntityFaint(hero.getName());
             return true;
         }
         return false;

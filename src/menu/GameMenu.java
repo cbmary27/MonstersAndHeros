@@ -2,6 +2,7 @@ package menu;
 
 import java.util.*;
 import interfaces.ShowMenu;
+import utilities.colour.colour;
 
 public class GameMenu implements ShowMenu
 {
@@ -19,28 +20,29 @@ public class GameMenu implements ShowMenu
 
     public void enterMove()
     {
-        System.out.println("Enter your move:");
+        System.out.println();
+        System.out.println(colour.CYAN_BOLD + "Enter your move:" + colour.RESET);
     }
 
     public void playAgain()
     {
         System.out.println();
-        System.out.println("Do you want to play again?");
+        System.out.println(colour.CYAN_BOLD + "Do you want to play again?");
         System.out.println("[Y] [N]");
     }
 
     public void assembleParty()
     {
         System.out.println();
-        System.out.println("Time to assemble your league!");
+        System.out.println(colour.CYAN_BOLD + "Time to assemble your league!" + colour.RESET);
         System.out.println();
     }
 
     public void numberOfHeros()
     {
         System.out.println();
-        System.out.println("How many heros will accompany you on your journey?");
-        System.out.println("Your party can either have 1, 2 or 3 heros!");
+        System.out.println(colour.CYAN_BOLD + "How many heros will accompany you on your journey?");
+        System.out.println("Your party can either have 1, 2 or 3 heros!" + colour.RESET);
     }
 
     public void initialMarket()
@@ -57,14 +59,13 @@ public class GameMenu implements ShowMenu
 
     public void optionMarket()
     {
-        System.out.println("Do you want to visit the market again?");
-        System.out.println("[Y] [N]");
+        System.out.println(colour.CYAN_BOLD + "Do you want to visit the market again?");
+        System.out.println("[Y] [N]" + colour.RESET);
     }
 
     public void complimentaryMessage()
     {
-        System.out.println("Now...we don't want your heros out in the wild without a weapon now, do we?");
-        System.out.println("Here's a complimentary weapon to get you started! (and keep you safe from the monsters)");
+        System.out.println(colour.CYAN_BOLD + "Now...we don't want your heros out in the wild without a weapon now, do we?");
+        System.out.println("Here's a complimentary weapon to get you started! (and keep you safe from the monsters)" + colour.RESET);
     }
-
 }

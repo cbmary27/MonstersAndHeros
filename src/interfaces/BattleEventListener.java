@@ -4,7 +4,7 @@ import java.util.*;
 
 public interface BattleEventListener
 {
-    public void monsterEntrance();
+    public void monsterEntrance(List<String> monsterNames);
     public void eventEntityDamage(String name, int damage);
     public void eventHeroWin();
     public void eventMonsterWin();
@@ -13,4 +13,5 @@ public interface BattleEventListener
     public void eventAttack(String attacker, String target);
     public void eventCastSpell(String name, String mname, String itemName);
     public void eventForfeitBattle();
+    public void eventUsedItem(String name, String itemName);
 }

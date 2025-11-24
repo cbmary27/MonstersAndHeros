@@ -19,12 +19,6 @@ public class Weaponry extends Item implements Equippable{
         this.equipped = false;
     }
 
-    // @Override
-    // public void effectOfItem()
-    // {
-
-    // }
-
     public void equipItem()
     {
         equipped = true;
@@ -64,7 +58,7 @@ public class Weaponry extends Item implements Equippable{
         {
             e = "No";
         }
-        return type + ": " + name + " | Price " + price + " | Damage Induced " + damage + " | Required Hands" + requiredHands + " | Equipped " + e;
+        return super.toString() + " | Damage Induced : " + damage + " | Required Hands : " + requiredHands + " | Equipped : " + e;
     }
 
     public WeaponryDetails toDetails() {

@@ -58,7 +58,7 @@ public class Armor extends Item implements Equippable{
         {
             e = "No";
         }
-        return type + ": " + name + " | Price " + price + " | Damage induced " + damageReduction + " | Equipped " + e;
+        return super.toString() + " | Damage Reduction : " + damageReduction + " | Equipped : " + e;
     }
 
     public ArmorDetails toDetails() {

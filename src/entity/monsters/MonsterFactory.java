@@ -26,12 +26,6 @@ public class MonsterFactory{
 
         switch(type)
         {
-            // case Constants.EXOSKELETONS:
-            //     return new Exoskeletons(ed.name, level, ed.baseDamage, ed.defense, ed.dodgeAbility);
-            // case Constants.SPIRITS:
-            //     return new Spirits(ed.name, level, ed.baseDamage, ed.defense, ed.dodgeAbility);
-            // case Constants.DRAGONS:
-            //     return new Dragons(ed.name, level, ed.baseDamage, ed.defense, ed.dodgeAbility);
             case Constants.EXOSKELETONS:
             case Constants.SPIRITS:
             case Constants.DRAGONS:
@@ -69,11 +63,13 @@ public class MonsterFactory{
     public void displayMonsters(List<Monsters> monsters)
     {
         int i = 1;
+        System.out.println();
         for (Monsters m : monsters)
         {
-            System.out.println("[" + i + "] " + m.getName());
+            System.out.println("[" + i + "] " + m);
             i++;
         }
+        System.out.println();
     }
 
     public String pickRandomMonster(List<String> names)

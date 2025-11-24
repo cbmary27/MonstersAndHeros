@@ -22,6 +22,7 @@ public class WeaponryDetails
     @Override
     public String toString()
     {
-        return name + " | " + price + " | " + level + " | " + damage + " | " + requiredHands;
+        return name + " | Price : " + price + " | Required Level : " + level + 
+        " | Damage : " + damage + " |  Required Hands : " + requiredHands;
     }
 }

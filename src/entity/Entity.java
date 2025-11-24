@@ -46,7 +46,7 @@ public abstract class Entity{
 
     public void increaseHP()
     {
-        this.hp = this.hp + 10;
+        this.hp = this.hp + 2;
     }
 
     @Override

@@ -10,9 +10,7 @@ public class Tile{
     public Market market;
 
     public Tile()
-    {
-
-    }
+    {}
 
     public void setRow(int row)
     {
@@ -39,16 +37,6 @@ public class Tile{
         if (market == null)
            {market = new Market();}
     }
-
-    // public void setVal(String val)
-    // {
-    //     this.tileVal = val;
-    // }
-
-    // public String getVal()
-    // {
-    //     return tileVal;
-    // }
 
     public void copy(Tile pos)
     {

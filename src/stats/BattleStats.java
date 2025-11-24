@@ -7,13 +7,21 @@ import utilities.colour.colour;
 public class BattleStats implements BattleEventListener
 {
     @Override
-    public void monsterEntrance()
+    public void monsterEntrance(List<String> monsterNames)
     {
         System.out.println();
         System.out.println("Grrrrr......");
         System.out.println("Uh Oh, What was that?");
         System.out.println("MONSTERS!!!!!");
         System.out.println();
+        for (String m : monsterNames)
+        {
+            System.out.println("Monster " + m + " has appeared!");
+        }
+        System.out.println();
+        System.out.println(" ----------------------------------");
+        System.out.println("|       BATTLE BEGINS : FIGHT!     |");
+        System.out.println(" ----------------------------------");    
     }
 
     @Override
@@ -63,6 +71,7 @@ public class BattleStats implements BattleEventListener
     public void eventCastSpell(String name, String target, String itemName)
     {
         System.out.println(name + " cast a " + itemName + " spell on " + target);
+        System.out.println("Critical Damage!");
         System.out.println();
     }
 
@@ -71,6 +80,12 @@ public class BattleStats implements BattleEventListener
     {
         System.out.println("The heroes have forfeited the battle!");
         System.out.println();
+    }
+
+    @Override
+    public void eventUsedItem(String name, String itemName)
+    {
+        System.out.println(name + " has used " + itemName);
     }
 
 }

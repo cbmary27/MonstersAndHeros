@@ -6,6 +6,7 @@ import interfaces.ShowMenu;
 
 public class BattleMenu implements ShowMenu
 {
+    @Override
     public void showMenu()
     {
         System.out.println();
@@ -17,6 +18,7 @@ public class BattleMenu implements ShowMenu
 
     public void nextMove(String name)
     {
+        System.out.println();
         System.out.println("Alright " + name + ", what's your move?");
     }
 
@@ -68,8 +70,8 @@ public class BattleMenu implements ShowMenu
         }
     }
 
-    public void chooseWhichTarget()
+    public void chooseWhichTarget(String name)
     {
-        System.out.println("Choose your target!");
+        System.out.println(name + ", choose your target!");
     }
 }

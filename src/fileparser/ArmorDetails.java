@@ -20,6 +20,7 @@ public class ArmorDetails
     @Override
     public String toString()
     {
-        return name + " | " + price + " | " + level + " | " + damageReduction;
+        return name + " | Price : " + price + " | Required Level : " + level + 
+        " | Damage Reduction : " + damageReduction;    
     }
 }

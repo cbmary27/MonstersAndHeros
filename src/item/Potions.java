@@ -36,7 +36,7 @@ public class Potions extends Item{
     @Override
     public String toString()
     {
-        return type + ": " + name + " | " + price + " | " + requiredLevel + " | " + increaseAtt + " | " + affectedAtt;
+        return super.toString() + " | Attribute affected : " + affectedAtt + " | Attribute increase : " + increaseAtt;    
     }
 
     public PotionDetails toDetails() {

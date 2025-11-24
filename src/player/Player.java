@@ -7,6 +7,7 @@ import entity.hero.Hero;
 import utilities.input.Input;
 import utilities.error.Error;
 import utilities.constants.Constants;
+import menu.InventoryMenu;
 import item.*;
 
 
@@ -18,12 +19,14 @@ public class Player{
    public String choice;
    public Input inp = new Input();
    public Error error = new Error();
+   public InventoryMenu menu;
 
    public Player()
    {
       currentPos = new Tile();
       playerPiece = new Piece<String>();
-      playerPiece.setValueOnTile("P");
+      playerPiece.setValueOnTile(Constants.PARTY);
+      menu = new InventoryMenu();
    }
 
    public List<Hero> getParty()
@@ -36,33 +39,27 @@ public class Player{
       while (true)
       {
          display();
-         System.out.println("Select whose inventory you want to see or [Q] Quit");
+         menu.displayInventoryMessage();
          choice = inp.stringInput();
 
-         if (!choice.equals("Q") && Integer.parseInt(choice) <= party.size())
+         if (!choice.equals(Constants.QUIT) && Integer.parseInt(choice) <= party.size())
          {
             Hero hero =  party.get(Integer.parseInt(choice) - 1);
-             //party.get(Integer.parseInt(choice) - 1).openInventory();
-             hero.openInventory();
-
-             System.out.println("[U] Use a potion");
-             System.out.println("[E] Equip a weapon or armor");
-             System.out.println("[UE] Unequip a weapon or armor");
-             System.out.println("[Q] QUIT");
-
+            hero.openInventory();
+            menu.inventoryMenu();
             choice = inp.stringInput();
 
             switch(choice)
             {
                   case Constants.USE:
-                        System.out.println("Enter the potion number you want to consume");
+                        menu.useItem(Constants.POTION);
                         choice = inp.stringInput();
                         Item item = hero.selectItem(choice);
                         hero.usePotion(item);
                         break;
 
                   case Constants.EQUIP:
-                        System.out.println("Enter the weapon/armor number you want to equip");
+                        menu.useItem(Constants.EQUIP);
                         choice = inp.stringInput();
                         Item item1 = hero.selectItem(choice);
                         if (item1.getType().equals(Constants.WEAPON))
@@ -76,7 +73,7 @@ public class Player{
                         break;
 
                   case Constants.UNEQUIP:
-                        System.out.println("Enter the weapon/armor number you want to unequip");
+                        menu.useItem(Constants.UNEQUIP);
                         choice = inp.stringInput();
                         Item item2 = hero.selectItem(choice);
                         if (item2.getType().equals(Constants.WEAPON))
@@ -108,7 +105,6 @@ public class Player{
                break;
             }        
          }
-        System.out.println();
       }
    }
 

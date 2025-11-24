@@ -29,15 +29,12 @@ public class Monsters extends Entity implements takeDamage{
     @Override
     public String toString()
     {
-        return super.toString() +
-        " | Base Damage : " + baseDamage + " | Defense : " + defense + " | Dodge Ability : " + dodgeAbility;
+        return super.toString();
     }
 
     @Override
     public void takeDamage(int damageDealt)
     {
-        System.out.println(damageDealt);
-        //defense = (int) (defense* 0.2);
         int reduceDefense = (int) (defense * damageDealt / 100);
         hp = Math.max( 0, hp - Math.max(0, (damageDealt - reduceDefense)));
     }

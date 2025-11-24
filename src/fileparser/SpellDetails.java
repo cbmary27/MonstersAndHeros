@@ -24,6 +24,7 @@ public class SpellDetails
     @Override
     public String toString()
     {
-        return name + " | " + price + " | " + level + " | " + damage + " | " + affectedMana + "|" + spellType;
+        return name + " | Price : " + price + " | Required Level : " + level + 
+        " | Damage : " + damage + " |  MP Affected : " + affectedMana + " | Spell Type : " + spellType;
     }
 }

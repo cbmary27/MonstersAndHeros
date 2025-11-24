@@ -24,6 +24,7 @@ public class Constants{
     public static final String START = "S";
     public static final String BUY = "B";
     public static final String SELL = "S";
+    public static final String PARTY = "P";
 
     public static final String BOARDSTAR = "*";
     public static final String BOARDHEDGE = "+----";

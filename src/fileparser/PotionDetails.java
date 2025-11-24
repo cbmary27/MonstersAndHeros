@@ -23,7 +23,8 @@ public class PotionDetails
     @Override
     public String toString()
     {
-        return name + " | " + price + " | " + level + " | " + increaseAtt + " | " + affectedAtt;
+        return name + " | Price : " + price + " | Required Level : " + level + 
+        " |  Attribute Affected : " + affectedAtt + " | Attribute Increase : " + increaseAtt;    
     }
 
     public static List<String> affectedAttributesList(String affectedAtt)

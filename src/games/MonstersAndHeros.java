@@ -33,11 +33,13 @@ public class MonstersAndHeros extends Games{
         String ch = "";
         boolean flag = false;
         i.displayMonstersAndHeros();
-        setUpGame();
-        world.initializeMap();
-        world.printMap();
 
         do {
+
+            setUpGame();
+            world.initializeMap();
+            world.printMap();
+
             while (!isGameDone)
             {
                 while (flag == false)

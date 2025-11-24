@@ -84,4 +84,18 @@ public class MarketMenu implements ShowMenu
         System.out.println("What else can I do for you today?");
     }
 
+    public void title(String itemType)
+    {
+        System.out.println();
+        System.out.println(" --------------------");
+        System.out.println("|      " + itemType + "s" + "     |");
+        System.out.println(" --------------------");
+    }
+
+    public void showGold(String name, int gold)
+    {
+        System.out.println(name + "'s gold : " + gold);
+        System.out.println();
+    }
+
 }

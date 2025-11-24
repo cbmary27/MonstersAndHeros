@@ -37,7 +37,7 @@ public class Spells extends Item{
     @Override
     public String toString()
     {
-        return type + ": " + name + " | " + price + " | " + requiredLevel + " | " + damage + " | " + affectedMana + "| " + spellType;
+        return super.toString() + " | Damage : " + damage + " | Mana Affected : " + affectedMana + "| Spell Type : " + spellType;
     }
 
     @Override

@@ -7,8 +7,9 @@ import interfaces.*;
 import item.*;
 import interfaces.takeDamage;
 import utilities.constants.Constants;
+import stats.HeroStats;
 
-public class Hero extends Entity implements takeDamage{
+public class Hero extends Entity implements takeDamage, Listeners{
     protected int mp;
     protected int strength; //increases when using a weapon
     protected int dexterity; //increases when casting a spell
@@ -19,6 +20,7 @@ public class Hero extends Entity implements takeDamage{
     protected List<Item> equippedWeapons;
     protected Item equippedArmor;
     protected String type;
+    HeroStats hlistener;
 
     public Hero(String name, int mp, int strength, int dexterity, int agility, int gold, int exp, String type)
     {
@@ -32,6 +34,12 @@ public class Hero extends Entity implements takeDamage{
         this.type = type;
         this.inventory = new Inventory();
         equippedWeapons = new ArrayList<>();
+        addListener();
+    }
+
+    public void addListener()
+    {
+        hlistener = new HeroStats();
     }
 
     public void increaseLevel()
@@ -58,6 +66,8 @@ public class Hero extends Entity implements takeDamage{
                 calcDexterity();
                 break;
         }
+
+        hlistener.eventLevelIncrease(name, level);
     }
 
     public void calcAgility()
@@ -68,7 +78,6 @@ public class Hero extends Entity implements takeDamage{
     public void calcStrength()
     {
         strength = strength + (strength * 5 / 100);
-
     }
 
     public void calcDexterity()
@@ -78,16 +87,17 @@ public class Hero extends Entity implements takeDamage{
 
     public void calcEXP(int n)
     {
-        exp = level * (n + 10); //needs to be modified
+        exp = exp + level * (n + 10); //needs to be modified
+        hlistener.eventExpGain(name, level * (n + 10));
         checkForLevelUp();
     }
 
     public void checkForLevelUp()
     {
-        if (exp >= (level * 10))
+        if (exp >= (level * 20))
         {
             increaseLevel();
-            exp = Math.max(1, exp - (level * 10));
+            exp = Math.max(1, exp - (level * 20));
         }
     }
 
@@ -101,14 +111,10 @@ public class Hero extends Entity implements takeDamage{
         return (agility * 0.002);
     }
 
-    // public void expGain(int n)
-    // {
-    //     exp = exp * n;
-    // }
-
     public void goldReward(int level)
     {
         gold = gold + (level * 100);
+        hlistener.eventGainedGold(name, level * 100);
     }
 
     public void increaseGold(int price)
@@ -148,11 +154,12 @@ public class Hero extends Entity implements takeDamage{
 
     public void displayEquippedWeapons()
     {
-        int i = 0;
+        int i = 1;
 
         for (Item item : equippedWeapons)
         {
             System.out.println("[" + i + "] " + item);
+            System.out.println();
             i++;
         }
     }
@@ -169,18 +176,23 @@ public class Hero extends Entity implements takeDamage{
             {
                 case Constants.HEALTH:
                     hp = increase(hp, potion.getIncreaseAttribute());
+                    hlistener.eventAttributeIncrease(Constants.HEALTH, potion.getIncreaseAttribute());
                     break;
                 case Constants.AGILITY:
                     agility = increase(agility, potion.getIncreaseAttribute());
+                    hlistener.eventAttributeIncrease(Constants.AGILITY, potion.getIncreaseAttribute());
                     break;
                 case Constants.DEXTERITY:
                     dexterity = increase(dexterity, potion.getIncreaseAttribute());
+                    hlistener.eventAttributeIncrease(Constants.DEXTERITY, potion.getIncreaseAttribute());
                     break;
                 case Constants.MANA:
                     mp = increase(mp, potion.getIncreaseAttribute());
+                    hlistener.eventAttributeIncrease(Constants.MANA, potion.getIncreaseAttribute());
                     break;
                 case Constants.STRENGTH:
                     strength = increase(strength, potion.getIncreaseAttribute());
+                    hlistener.eventAttributeIncrease(Constants.STRENGTH, potion.getIncreaseAttribute());
                     break;
             }
         }

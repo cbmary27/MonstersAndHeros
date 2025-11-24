@@ -14,19 +14,19 @@ public class Market{
 
     public MarketFactory mf;
     public Input inp;
-    public Error error;
     public String choice;
     private MarketMenu menu;
+    private Hero customer;
 
     public Market()
     {
         inp = new Input();
-        error = new Error();
         menu = new MarketMenu();
     }
 
     public void enter(Hero hero)
     {
+        customer = hero;
         menu.enterMarket();
 
         while (true) {
@@ -37,15 +37,17 @@ public class Market{
             {
                 case Constants.BUY:
                     menu.buy();
+                    menu.showGold(customer.getName(), customer.getGold());
                     createMarketFactoryInstance();
-                    display(hero);
+                    display();
                     choice = " ";
                     break;
 
                 case Constants.SELL:
                     menu.sell();
+                    menu.showGold(customer.getName(), customer.getGold());
                     createMarketFactoryInstance();
-                    sell(hero);
+                    sell();
                     choice = " ";
                     break;
 
@@ -54,7 +56,7 @@ public class Market{
                     break;
 
                 default:
-                    error.invalidMove();
+                    Error.invalidMove();
                     break;
             }
 
@@ -66,7 +68,7 @@ public class Market{
         }
     }
 
-    public void display(Hero hero)
+    public void display()
     {
         menu.displayItems();
         choice = inp.stringInput();
@@ -74,38 +76,38 @@ public class Market{
         switch(choice)
         {
             case "1":
-                displayPotions(hero);
+                displayPotions();
                 break;
             case "2":
-                displaySpells(hero);
+                displaySpells();
                 break;
             case "3":
-                displayWeapons(hero);
+                displayWeapons();
                 break;
             case "4":
-                displayArmor(hero);
+                displayArmor();
                 break;
             case Constants.QUIT:
                 break;
             default:
-                error.invalidMove();
+                Error.invalidMove();
         }
 
     }
 
-    public void buy(Item item, Hero hero)
+    public void buy(Item item)
     {
-        hero.getInventory().addItem(item);
-        hero.updateGold(item.getPrice());
+        customer.getInventory().addItem(item);
+        customer.updateGold(item.getPrice());
     }
 
-    public void sell(Hero hero)
+    public void sell()
     {
         String choice;
-
+        
         while (true)
         {
-            hero.getInventory().display();
+            customer.getInventory().display();
             menu.sellItem();
             choice = inp.stringInput();
 
@@ -116,46 +118,48 @@ public class Market{
 
             menu.soldItem();
 
-            Item sold = hero.getInventory().getItem(choice);
-            hero.getInventory().dropItem(choice);
+            Item sold = customer.getInventory().getItem(choice);
+            customer.getInventory().dropItem(choice);
 
             switch(sold.getType())
             {
                 case Constants.POTION:
                     Potions potionItem = (Potions) sold;
                     PotionDetails pd = potionItem.toDetails();
-                    hero.increaseGold(potionItem.getPrice()/2);
+                    customer.increaseGold(potionItem.getPrice()/2);
                     mf.potionDetails.add(pd);
                     break;
 
                 case Constants.SPELL:
                     Spells spellItem = (Spells) sold;
                     SpellDetails sd = spellItem.toDetails();
-                    hero.increaseGold(spellItem.getPrice()/2);
+                    customer.increaseGold(spellItem.getPrice()/2);
                     mf.spellDetails.add(sd);
                     break;
 
                 case Constants.WEAPONRY:
                     Weaponry weaponItem = (Weaponry) sold;
                     WeaponryDetails wd = weaponItem.toDetails();
-                    hero.increaseGold(weaponItem.getPrice()/2);
+                    customer.increaseGold(weaponItem.getPrice()/2);
                     mf.weaponryDetails.add(wd);
                     break;
                     
                 case Constants.ARMOR:
                     Armor armorItem = (Armor) sold;
                     ArmorDetails ad = armorItem.toDetails();
-                    hero.increaseGold(armorItem.getPrice()/2);
+                    customer.increaseGold(armorItem.getPrice()/2);
                     mf.armorDetails.add(ad);
                     break;
             }
         }
     }
 
-    public void displayPotions(Hero hero)
+    public void displayPotions()
     {
         int i = 1;
         boolean flag = false;
+
+        menu.title(Constants.POTION);
 
         while (flag == false)
         {
@@ -181,14 +185,14 @@ public class Market{
 
             PotionDetails chosenPotion = mf.potionDetails.get(Integer.parseInt(choice)- 1);
 
-            if (chosenPotion.price <= hero.getGold() && chosenPotion.level <= hero.getLevel())
+            if (chosenPotion.price <= customer.getGold() && chosenPotion.level <= customer.getLevel())
             {
                 flag = true;
                 Item newPotion = mf.createPotion(chosenPotion);
                 mf.potionDetails.remove(chosenPotion);
-                buy(newPotion, hero);
+                buy(newPotion);
 
-                menu.boughtItem(hero.getName(), newPotion.getName());
+                menu.boughtItem(customer.getName(), newPotion.getName());
             }
             else
             {
@@ -198,14 +202,17 @@ public class Market{
         }
     }
 
-    public void displaySpells(Hero hero)
+    public void displaySpells()
     {
         int i = 1;
         boolean flag = false;
 
+        menu.title(Constants.SPELL);
+
         while (flag == false)
         {
             i = 1;
+
             for (SpellDetails p : mf.spellDetails)
             {
                 System.out.print("["+ i + "]");
@@ -227,14 +234,14 @@ public class Market{
 
             SpellDetails chosenSpell = mf.spellDetails.get(Integer.parseInt(choice)- 1);
 
-            if (chosenSpell.price <= hero.getGold() && chosenSpell.level <= hero.getLevel())
+            if (chosenSpell.price <= customer.getGold() && chosenSpell.level <= customer.getLevel())
             {
                 flag = true;
                 Item newSpell = mf.createSpell(chosenSpell);
                 mf.potionDetails.remove(chosenSpell);
-                buy(newSpell, hero);
+                buy(newSpell);
 
-                menu.boughtItem(hero.getName(), newSpell.getName());
+                menu.boughtItem(customer.getName(), newSpell.getName());
             }
             else
             {
@@ -244,10 +251,12 @@ public class Market{
         }
     }
 
-    public void displayWeapons(Hero hero)
+    public void displayWeapons()
     {
         int i = 1;
         boolean flag = false;
+
+        menu.title(Constants.WEAPON);
 
         while (flag == false)
         {
@@ -273,14 +282,14 @@ public class Market{
 
             WeaponryDetails chosenWeapon = mf.weaponryDetails.get(Integer.parseInt(choice)- 1);
 
-            if (chosenWeapon.price <= hero.getGold() && chosenWeapon.level <= hero.getLevel())
+            if (chosenWeapon.price <= customer.getGold() && chosenWeapon.level <= customer.getLevel())
             {
                 flag = true;
                 Item newWeapon = mf.createWeaponry(chosenWeapon);
                 mf.weaponryDetails.remove(chosenWeapon);
-                buy(newWeapon, hero);
+                buy(newWeapon);
 
-                menu.boughtItem(hero.getName(), newWeapon.getName());
+                menu.boughtItem(customer.getName(), newWeapon.getName());
             }
             else
             {
@@ -291,10 +300,12 @@ public class Market{
 
     }
 
-    public void displayArmor(Hero hero)
+    public void displayArmor()
     {
         int i = 1;
         boolean flag = false;
+
+        menu.title(Constants.ARMOR);
 
         while (flag == false)
         {
@@ -320,14 +331,14 @@ public class Market{
 
             ArmorDetails chosenArmor = mf.armorDetails.get(Integer.parseInt(choice)- 1);
 
-            if (chosenArmor.price <= hero.getGold() && chosenArmor.level <= hero.getLevel())
+            if (chosenArmor.price <= customer.getGold() && chosenArmor.level <= customer.getLevel())
             {
                 flag = true;
                 Item newArmor = mf.createArmor(chosenArmor);
                 mf.armorDetails.remove(chosenArmor);
-                buy(newArmor, hero);
+                buy(newArmor);
 
-                menu.boughtItem(hero.getName(), newArmor.getName());
+                menu.boughtItem(customer.getName(), newArmor.getName());
             }
             else
             {
@@ -351,8 +362,8 @@ public class Market{
     {
         if (choice.toUpperCase().equals(Constants.QUIT))
         {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }

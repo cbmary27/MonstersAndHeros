@@ -47,5 +47,9 @@ public abstract class Item{
         return this.name;
     }
 
-    //public abstract void effectOfItem();
+    @Override
+    public String toString()
+    {
+        return type + ": " + name;
+    }
 }
