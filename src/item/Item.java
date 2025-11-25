@@ -1,6 +1,7 @@
 package item;
 
 import java.util.*;
+import entity.hero.Hero;
 
 public abstract class Item{
 
@@ -34,7 +35,17 @@ public abstract class Item{
 
     public void updateUsage()
     {
-        this.usage = (int) (usage * 0.8);
+        this.usage--;
+    }
+
+    public boolean checkUsage()
+    {
+        if (usage <= 0)
+        {
+            System.out.println("This item needs to be repaired");
+            return false;
+        }
+        return true;
     }
 
     public String getType()
@@ -52,4 +63,7 @@ public abstract class Item{
     {
         return type + ": " + name;
     }
+
+    public abstract void applyEffect(Hero hero);
+    public abstract void setUsage();
 }

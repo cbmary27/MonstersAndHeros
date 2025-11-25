@@ -14,4 +14,7 @@ public interface BattleEventListener
     public void eventCastSpell(String name, String mname, String itemName);
     public void eventForfeitBattle();
     public void eventUsedItem(String name, String itemName);
+    public void eventNextRound(int round);
+    public void eventHeroTurn();
+    public void eventMonsterTurn();
 }

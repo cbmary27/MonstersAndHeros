@@ -2,6 +2,8 @@ package item;
 
 import java.util.*;
 import fileparser.SpellDetails;
+import entity.hero.Hero;
+
 
 public class Spells extends Item{
 
@@ -16,6 +18,7 @@ public class Spells extends Item{
         this.damage = damage;
         this.affectedMana = affectedMana;
         this.spellType  = spellType;
+        setUsage();
     }
 
     public int getAffectedMana()
@@ -28,22 +31,34 @@ public class Spells extends Item{
         return damage;
     }
 
-    // @Override
-    // public void effectOfItem()
-    // {
-
-    // }
-
-    @Override
-    public String toString()
+    public void setUsage()
     {
-        return super.toString() + " | Damage : " + damage + " | Mana Affected : " + affectedMana + "| Spell Type : " + spellType;
+        usage = 1;
     }
 
     @Override
     public void updateUsage()
     {
-        this.usage = 0;
+        usage = 0;
+    }
+
+    @Override
+    public void applyEffect(Hero hero)
+    {
+        if (checkUsage())
+        {
+            if (hero.getMP() >= affectedMana)
+            {
+                hero.setMP(hero.getMP() - affectedMana);
+                hero.getDamageFromItem((int) (damage + (hero.getDexterity() / 10000.0f) * damage));
+            }
+        }
+    }
+
+    @Override
+    public String toString()
+    {
+        return super.toString() + " | Damage : " + damage + " | Mana Affected : " + affectedMana + "| Spell Type : " + spellType;
     }
 
     public SpellDetails toDetails() {

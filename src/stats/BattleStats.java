@@ -61,6 +61,28 @@ public class BattleStats implements BattleEventListener
     }
 
     @Override
+    public void eventNextRound(int round)
+    {
+        System.out.println("ROUND " + round + " COMMENCE");
+    }
+
+    @Override
+    public void eventHeroTurn()
+    {
+        System.out.println();
+        System.out.println("[ HERO(S) TURN BEGINS ]");
+        System.out.println();
+    }
+
+    @Override
+    public void eventMonsterTurn()
+    {
+        System.out.println();
+        System.out.println("[ MONSTER(S) TURN BEGINS ]");
+        System.out.println();
+    }
+
+    @Override
     public void eventAttack(String attacker, String target)
     {
         System.out.println(attacker + " is attacking " + target);

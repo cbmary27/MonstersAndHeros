@@ -40,72 +40,17 @@ public class Player{
       {
          display();
          menu.displayInventoryMessage();
-         choice = inp.stringInput();
+         choice = inp.getIntInput(1, party.size());
 
-         if (!choice.equals(Constants.QUIT) && Integer.parseInt(choice) <= party.size())
+         if (choice.equals(Constants.QUIT))
          {
-            Hero hero =  party.get(Integer.parseInt(choice) - 1);
-            hero.openInventory();
-            menu.inventoryMenu();
-            choice = inp.stringInput();
-
-            switch(choice)
-            {
-                  case Constants.USE:
-                        menu.useItem(Constants.POTION);
-                        choice = inp.stringInput();
-                        Item item = hero.selectItem(choice);
-                        hero.usePotion(item);
-                        break;
-
-                  case Constants.EQUIP:
-                        menu.useItem(Constants.EQUIP);
-                        choice = inp.stringInput();
-                        Item item1 = hero.selectItem(choice);
-                        if (item1.getType().equals(Constants.WEAPON))
-                        {
-                           hero.equipWeapon(item1);
-                        }
-                        else if (item1.getType().equals(Constants.ARMOR))
-                        {
-                           hero.equipArmor(item1);
-                        }
-                        break;
-
-                  case Constants.UNEQUIP:
-                        menu.useItem(Constants.UNEQUIP);
-                        choice = inp.stringInput();
-                        Item item2 = hero.selectItem(choice);
-                        if (item2.getType().equals(Constants.WEAPON))
-                        {
-                           hero.unEquipWeapon(item2);
-                        }
-                        else if (item2.getType().equals(Constants.ARMOR))
-                        {
-                           hero.unEquipArmor(item2);
-                        }
-                        break;
-
-                  case Constants.QUIT:
-                        break;
-
-                  default:
-                        error.invalidMove();
-            }
-
-            if (choice.equals(Constants.QUIT))
-            {
-               break;
-            }
-        }
-        else
-        {
-            if (choice.equals(Constants.QUIT))
-            {
-               break;
-            }        
+            break;
          }
+       
+         Hero hero =  party.get(Integer.parseInt(choice) - 1);
+         hero.openInventory();    
       }
+
    }
 
    public void addHero(Hero hero)

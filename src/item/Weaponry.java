@@ -3,6 +3,8 @@ package item;
 import java.util.*;
 import fileparser.WeaponryDetails;
 import interfaces.Equippable;
+import entity.hero.Hero;
+
 
 public class Weaponry extends Item implements Equippable{
 
@@ -17,11 +19,19 @@ public class Weaponry extends Item implements Equippable{
         this.damage = damage;
         this.requiredHands = requiredHands;
         this.equipped = false;
+        setUsage();
     }
 
     public void equipItem()
     {
-        equipped = true;
+        if (usage != 0)
+        {
+            equipped = true;
+        }
+        else
+        {
+            System.out.println("Weapon is broken, cannot be equipped!");
+        }
     }
 
     public void unequipItem()
@@ -39,12 +49,31 @@ public class Weaponry extends Item implements Equippable{
         return requiredHands;
     }
 
+    public void setUsage()
+    {
+        usage = 10;
+    }
+
+
     @Override
     public boolean isItemEquipped()
     {
         return equipped;
     }
 
+    @Override
+    public void applyEffect(Hero hero)
+    {
+        if (checkUsage())
+        {
+            updateUsage();
+            hero.getDamageFromItem((hero.getStrength() + damage) * 5/100);
+            if (usage == 0)
+            {
+                System.out.println("The weapon broke!");
+            }
+        }
+    }
 
     @Override
     public String toString()

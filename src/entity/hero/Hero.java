@@ -20,6 +20,8 @@ public class Hero extends Entity implements takeDamage, Listeners{
     protected List<Item> equippedWeapons;
     protected Item equippedArmor;
     protected String type;
+    protected int itemDamage;
+    protected String status;
     HeroStats hlistener;
 
     public Hero(String name, int mp, int strength, int dexterity, int agility, int gold, int exp, String type)
@@ -33,6 +35,7 @@ public class Hero extends Entity implements takeDamage, Listeners{
         this.exp = exp;
         this.type = type;
         this.inventory = new Inventory();
+        status = Constants.HEALTHY;
         equippedWeapons = new ArrayList<>();
         addListener();
     }
@@ -92,6 +95,16 @@ public class Hero extends Entity implements takeDamage, Listeners{
         checkForLevelUp();
     }
 
+    public String getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(String state)
+    {
+        status = state;
+    }
+
     public void checkForLevelUp()
     {
         if (exp >= (level * 20))
@@ -109,6 +122,11 @@ public class Hero extends Entity implements takeDamage, Listeners{
     public double calcDodge()
     {
         return (agility * 0.002);
+    }
+
+    public int getItemDamage()
+    {
+        return itemDamage;
     }
 
     public void goldReward(int level)
@@ -152,6 +170,16 @@ public class Hero extends Entity implements takeDamage, Listeners{
         return equippedWeapons;
     }
 
+    public Item getEquippedArmor()
+    {
+        return equippedArmor;
+    }
+
+    public void setEquippedArmor(Item item)
+    {
+        equippedArmor = item;
+    }
+
     public void displayEquippedWeapons()
     {
         int i = 1;
@@ -164,67 +192,57 @@ public class Hero extends Entity implements takeDamage, Listeners{
         }
     }
 
-    public void usePotion(Item item)
+    public int getStrength()
     {
-        //item.updateUsage();
-        Potions potion = (Potions) item;
-        List<String> affectedAttribtues = potion.getAffectedAttribute();
-
-        for (String affectedAttribute : affectedAttribtues)
-        {
-            switch (affectedAttribute)
-            {
-                case Constants.HEALTH:
-                    hp = increase(hp, potion.getIncreaseAttribute());
-                    hlistener.eventAttributeIncrease(Constants.HEALTH, potion.getIncreaseAttribute());
-                    break;
-                case Constants.AGILITY:
-                    agility = increase(agility, potion.getIncreaseAttribute());
-                    hlistener.eventAttributeIncrease(Constants.AGILITY, potion.getIncreaseAttribute());
-                    break;
-                case Constants.DEXTERITY:
-                    dexterity = increase(dexterity, potion.getIncreaseAttribute());
-                    hlistener.eventAttributeIncrease(Constants.DEXTERITY, potion.getIncreaseAttribute());
-                    break;
-                case Constants.MANA:
-                    mp = increase(mp, potion.getIncreaseAttribute());
-                    hlistener.eventAttributeIncrease(Constants.MANA, potion.getIncreaseAttribute());
-                    break;
-                case Constants.STRENGTH:
-                    strength = increase(strength, potion.getIncreaseAttribute());
-                    hlistener.eventAttributeIncrease(Constants.STRENGTH, potion.getIncreaseAttribute());
-                    break;
-            }
-        }
-        inventory.removeItem(item);
+        return this.strength;
     }
 
-    public int increase(int amt, int incAtt)
+    public int getDexterity()
     {
-        return amt + incAtt;
+        return this.dexterity;
     }
 
-    public int useSpell(Item item)
+    public int getMP()
     {
-        Spells spell = (Spells) item;
+        return this.mp;
+    }
 
-        if (mp >= spell.getAffectedMana())
+    public void setMP(int val)
+    {
+        this.mp = val;
+    }
+
+    public void increaseAttribute(int amt, String incAtt)
+    {
+        switch(incAtt)
         {
-            mp = mp - spell.getAffectedMana();
-            return (int) (spell.getDamage() + (dexterity / 10000.0f) * (spell.getDamage()));
-        }
-        else
-        {
-            System.out.println("Not enough MP to cast the spell!");
-            return 0;
+            case Constants.HEALTH:
+                hp = hp + amt;
+                setStatus(Constants.HEALTHY);
+                hlistener.eventAttributeIncrease(Constants.HEALTH, amt);
+                break;
+            case Constants.AGILITY:
+                agility = agility + amt;
+                hlistener.eventAttributeIncrease(Constants.AGILITY, amt);
+                break;
+            case Constants.DEXTERITY:
+                dexterity = dexterity + amt;
+                hlistener.eventAttributeIncrease(Constants.DEXTERITY, amt);
+                break;
+            case Constants.MANA:
+                mp = mp + amt;
+                hlistener.eventAttributeIncrease(Constants.MANA, amt);
+                break;
+            case Constants.STRENGTH:
+                strength = strength + amt;
+                hlistener.eventAttributeIncrease(Constants.STRENGTH, amt);
+                break;
         }
     }
 
-    public int useWeapon(Item item)
+    public void getDamageFromItem(int damage)
     {
-        item.updateUsage();
-        Weaponry w = (Weaponry) item;
-        return (strength + w.getDamage()) * 5/100;
+        itemDamage = damage;
     }
 
     public int useArmor(Item item)
@@ -257,7 +275,7 @@ public class Hero extends Entity implements takeDamage, Listeners{
 
     public void openInventory()
     {
-        inventory.display();
+        inventory.open(this);
     }
 
     public Item selectItem(String choice)
@@ -343,6 +361,7 @@ public class Hero extends Entity implements takeDamage, Listeners{
     public String toString()
     {
         return super.toString() + " | EXP : " + exp +
-        " | Strength : " + strength + " | Dexterity : " + dexterity + " | Agility : " + agility + " | Gold : " + gold;
+         "| Status : " + status + " | Strength : " + strength + " | Dexterity : " + dexterity + " | Agility : " + agility + 
+          "| Gold : " + gold;
     }
 }

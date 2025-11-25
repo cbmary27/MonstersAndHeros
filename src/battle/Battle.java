@@ -75,6 +75,9 @@ public class Battle implements Listeners{
         {
             round++;
 
+            blistener.eventNextRound(round);
+            blistener.eventHeroTurn();
+
             for (Hero hero : heros)
             {
                 if (hero.getHP() == 0)
@@ -141,6 +144,8 @@ public class Battle implements Listeners{
     {
         int i = 0;
 
+        blistener.eventMonsterTurn();
+
         for (Monsters monster: monsters)
         {
             i = (int) (Math.random() * heros.size());
@@ -173,6 +178,8 @@ public class Battle implements Listeners{
     public void heroAttack()
     {
         String choice;
+        boolean chosen = true;
+        int count = 0;
 
         currentHero.displayEquippedWeapons();
         Item chosenWeapon = null;
@@ -181,25 +188,70 @@ public class Battle implements Listeners{
 
         if (currentHero.getEquippedWeapons().size() == Constants.TWO)
         {
-            bmenu.whichItem(Constants.WEAPON);
-            choice = inp.stringInput();
-            chosenWeapon = currentHero.getEquippedWeapons().get(Integer.parseInt(choice) - 1);
-        }
-
-        damageDealt = currentHero.useWeapon(currentHero.getEquippedWeapons().get(0));
+            while (chosen)
+            {
+                count = 0;
                 
-        dodgeProbability = Math.random() < target.calcDodge();
+                for(Item item : currentHero.getEquippedWeapons())
+                {
+                    if (item.getUsage() == 0)
+                    {
+                        count++;
+                    }
+                }
 
-        if (dodgeProbability)
+                if (count == Constants.TWO)
+                {
+                    bmenu.allWeaponsBroken();
+                    break;
+                }
+
+                bmenu.whichItem(Constants.WEAPON);
+                choice = inp.getIntInput(1, currentHero.getEquippedWeapons().size());
+                chosenWeapon = currentHero.getEquippedWeapons().get(Integer.parseInt(choice) - 1);
+                if (chosenWeapon.getUsage() == 0)
+                {
+                    bmenu.weaponBroken();
+                }
+                else
+                {
+                    chosen = false;
+                }
+            }
+        }
+        else
         {
-            damageDealt = 0;
-            dodgedAttack(target.getName(), currentHero.getName());
-            return;
+            chosenWeapon = currentHero.getEquippedWeapons().get(0);
+            if (chosenWeapon.getUsage() == 0)
+            {
+                chosen = true;
+                bmenu.weaponBroken();
+            }
+            else
+            {
+                chosen = false;
+            }
         }
 
-        if (damageDealt != 0)
+        if (!chosen)
         {
-            blistener.eventEntityDamage(currentHero.getName(), damageDealt);
+            chosenWeapon.applyEffect(currentHero);
+
+            damageDealt = currentHero.getItemDamage();
+                    
+            dodgeProbability = Math.random() < target.calcDodge();
+
+            if (dodgeProbability)
+            {
+                damageDealt = 0;
+                dodgedAttack(target.getName(), currentHero.getName());
+                return;
+            }
+
+            if (damageDealt != 0)
+            {
+                blistener.eventEntityDamage(currentHero.getName(), damageDealt);
+            }
         }
     }
 
@@ -209,73 +261,30 @@ public class Battle implements Listeners{
 
         bmenu.battleInventoryDisplay();
 
-        if (!currentHero.getInventory().getItems().isEmpty())
+        bmenu.menuChoice();
+
+        choice = inp.stringInput();
+
+        if (choice.equals(Constants.USESPELL))
         {
-            bmenu.menuChoice();
-
-            choice = inp.stringInput();
-
-            switch(choice)
+            bmenu.whichItem(Constants.SPELL);
+            choice = inp.getIntInput(1, currentHero.getInventory().getItems().size());
+            Item item = currentHero.selectItem(choice);
+            item.applyEffect(currentHero);
+            damageDealt = currentHero.getItemDamage();
+            target.takeDamage(damageDealt);
+            target.skillLoss();
+            if (damageDealt != 0)
             {
-                case Constants.USEPOTION:
-                    bmenu.whichItem(Constants.POTION);
-                    choice = inp.stringInput();
-                    Item item = currentHero.selectItem(choice);
-                    blistener.eventUsedItem(currentHero.getName(), item.getName());
-                    currentHero.usePotion(item);
-                    break;
-
-                case Constants.USESPELL:
-                    bmenu.whichItem(Constants.SPELL);
-                    choice = inp.stringInput();
-                    Item item3 = currentHero.selectItem(choice);
-                    damageDealt = currentHero.useSpell(item3);
-                    target.takeDamage(damageDealt);
-                    target.skillLoss();
-
-                    if (damageDealt != 0)
-                    {
-                        blistener.eventEntityDamage(currentHero.getName(), damageDealt);
-                        blistener.eventCastSpell(currentHero.getName(), target.getName(), item3.getName());
-                    }
-                    check();
-                    break;
-
-                case Constants.EQUIP:
-                    bmenu.whichItemEquip(Constants.EQUIP);
-                    choice = inp.stringInput();
-                    Item item1 = currentHero.selectItem(choice);
-                    if (item1.getType().equals(Constants.WEAPON))
-                    {
-                        currentHero.equipWeapon(item1);
-                    }
-                    else if (item1.getType().equals(Constants.ARMOR))
-                    {
-                        currentHero.equipArmor(item1);
-                    }
-                    break;
-
-                case Constants.UNEQUIP:
-                    bmenu.whichItemEquip(Constants.UNEQUIP);
-                    choice = inp.stringInput();
-                    Item item2 = currentHero.selectItem(choice);
-                    if (item2.getType().equals(Constants.WEAPON))
-                    {
-                        currentHero.unEquipWeapon(item2);
-                    }
-                    else if (item2.getType().equals(Constants.ARMOR))
-                    {
-                        currentHero.unEquipArmor(item2);
-                    }
-                    break;
-                
-                case Constants.QUIT:
-                    break;
-
-                default:
-                    Error.invalidChoice();
-                    break;
+                blistener.eventEntityDamage(currentHero.getName(), damageDealt);
+                blistener.eventCastSpell(currentHero.getName(), target.getName(), item.getName());
             }
+            check();
+        }
+
+        else
+        {
+            currentHero.getInventory().test(choice, currentHero);
         }
     }
 
@@ -318,6 +327,7 @@ public class Battle implements Listeners{
         if (count == heros.size())
         {
             heroLose();
+            blistener.eventMonsterWin();
             return true;
         }
 
@@ -349,7 +359,7 @@ public class Battle implements Listeners{
     {
         bmenu.chooseWhichTarget(currentHero.getName());
         mf.displayMonsters(monsters);
-        choice = inp.stringInput();
+        choice = inp.getIntInput(1, monsters.size());
         return monsters.get(Integer.parseInt(choice) - 1);
     }
 
@@ -372,6 +382,7 @@ public class Battle implements Listeners{
     {
         if (hero.getHP() == 0)
         {
+            hero.setStatus(Constants.FAINTED);
             blistener.eventEntityFaint(hero.getName());
             return true;
         }
@@ -380,6 +391,7 @@ public class Battle implements Listeners{
 
     public void displayStats()
     {
+        System.out.println();
         System.out.println(currentHero);
         System.out.println(target);
     }

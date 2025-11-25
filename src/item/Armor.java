@@ -3,6 +3,8 @@ package item;
 import java.util.*;
 import fileparser.ArmorDetails;
 import interfaces.Equippable;
+import entity.hero.Hero;
+
 
 public class Armor extends Item implements Equippable{
 
@@ -15,6 +17,7 @@ public class Armor extends Item implements Equippable{
         this.type = "Armor";
         this.damageReduction = damageReduction;
         this.equipped = false;
+        setUsage();
     }
 
     public int getDamageReduction()
@@ -22,11 +25,17 @@ public class Armor extends Item implements Equippable{
         return damageReduction;
     }
 
-    // @Override
-    // public void effectOfItem()
-    // {
+    @Override
+    public void setUsage()
+    {
+        usage = 15;
+    }
 
-    // }
+    @Override
+    public void applyEffect(Hero hero)
+    {
+        
+    }
 
     @Override
     public void equipItem()

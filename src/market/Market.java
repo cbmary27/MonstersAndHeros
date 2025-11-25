@@ -51,6 +51,13 @@ public class Market{
                     choice = " ";
                     break;
 
+                case Constants.REPAIR:
+                    menu.repair();
+                    menu.showGold(customer.getName(), customer.getGold());
+                    repairItem();
+                    choice = " ";
+                    break;
+
                 case Constants.QUIT:
                     menu.quit();
                     break;
@@ -71,7 +78,7 @@ public class Market{
     public void display()
     {
         menu.displayItems();
-        choice = inp.stringInput();
+        choice = inp.getIntInput(1, 4);
 
         switch(choice)
         {
@@ -107,49 +114,116 @@ public class Market{
         
         while (true)
         {
-            customer.getInventory().display();
-            menu.sellItem();
-            choice = inp.stringInput();
-
-            if (choice.equals(Constants.QUIT))
+            if (customer.getInventory().getItems().isEmpty())
             {
-                break;
+                customer.getInventory().display();
             }
-
-            menu.soldItem();
-
-            Item sold = customer.getInventory().getItem(choice);
-            customer.getInventory().dropItem(choice);
-
-            switch(sold.getType())
+            else
             {
-                case Constants.POTION:
-                    Potions potionItem = (Potions) sold;
-                    PotionDetails pd = potionItem.toDetails();
-                    customer.increaseGold(potionItem.getPrice()/2);
-                    mf.potionDetails.add(pd);
-                    break;
+                customer.getInventory().display();
+                menu.sellItem();
 
-                case Constants.SPELL:
-                    Spells spellItem = (Spells) sold;
-                    SpellDetails sd = spellItem.toDetails();
-                    customer.increaseGold(spellItem.getPrice()/2);
-                    mf.spellDetails.add(sd);
-                    break;
+                choice = inp.getIntInput(1, customer.getInventory().getItems().size());
 
-                case Constants.WEAPONRY:
-                    Weaponry weaponItem = (Weaponry) sold;
-                    WeaponryDetails wd = weaponItem.toDetails();
-                    customer.increaseGold(weaponItem.getPrice()/2);
-                    mf.weaponryDetails.add(wd);
+                if (choice.equals(Constants.QUIT))
+                {
                     break;
-                    
-                case Constants.ARMOR:
-                    Armor armorItem = (Armor) sold;
-                    ArmorDetails ad = armorItem.toDetails();
-                    customer.increaseGold(armorItem.getPrice()/2);
-                    mf.armorDetails.add(ad);
-                    break;
+                }
+
+                Item sold = customer.getInventory().getItem(choice);
+
+                switch(sold.getType())
+                {
+                    case Constants.POTION:
+                        Potions potionItem = (Potions) sold;
+                        PotionDetails pd = potionItem.toDetails();
+                        customer.increaseGold(potionItem.getPrice()/2);
+                        mf.potionDetails.add(pd);
+                        menu.soldItem();
+                        customer.getInventory().dropItem(choice);
+                        break;
+
+                    case Constants.SPELL:
+                        Spells spellItem = (Spells) sold;
+                        SpellDetails sd = spellItem.toDetails();
+                        customer.increaseGold(spellItem.getPrice()/2);
+                        mf.spellDetails.add(sd);
+                        menu.soldItem();
+                        customer.getInventory().dropItem(choice);
+                        break;
+
+                    case Constants.WEAPON:
+                        if (customer.getInventory().checkNumberOfWeapons() == 1)
+                        {
+                            menu.cannotSell();
+                            break;
+                        }
+                        Weaponry weaponItem = (Weaponry) sold;
+                        WeaponryDetails wd = weaponItem.toDetails();
+                        customer.increaseGold(weaponItem.getPrice()/2);
+                        if (customer.getEquippedWeapons().contains(sold))
+                        {
+                            customer.getEquippedWeapons().remove(sold);
+                        }
+                        mf.weaponryDetails.add(wd);
+                        menu.soldItem();
+                        customer.getInventory().dropItem(choice);
+                        break;
+                        
+                    case Constants.ARMOR:
+                        Armor armorItem = (Armor) sold;
+                        ArmorDetails ad = armorItem.toDetails();
+                        customer.increaseGold(armorItem.getPrice()/2);
+                        if (customer.getEquippedArmor().getName() == sold.getName())
+                        {
+                            customer.setEquippedArmor(null);
+                        }
+                        mf.armorDetails.add(ad);
+                        menu.soldItem();
+                        customer.getInventory().dropItem(choice);
+                        break;
+                }
+            }
+        }
+    }
+
+    public void repairItem()
+    {
+        String choice;
+        
+        customer.getInventory().checkForBrokenItems();
+
+        List<Item> brokenItems = customer.getInventory().getBrokenItems();
+
+        if (brokenItems.size() == 0)
+        {
+            menu.noBrokenItems();
+        }
+        else
+        {
+            if (customer.getGold() < customer.getGold()/2)
+            {
+                menu.cannotBuy();
+            }
+            else
+            {
+                customer.getInventory().displayBrokenItems();
+
+                menu.whichBrokenItem();
+
+                choice = inp.getIntInput(1, customer.getInventory().getBrokenItems().size());
+
+                if (!choice.equals(Constants.QUIT))
+                {
+                    Item repaired = customer.getInventory().getBrokenItem(choice);
+
+                    customer.updateGold(customer.getGold()/2);
+                    repaired.setUsage();
+                    customer.getInventory().getBrokenItems().remove(repaired);
+
+                    menu.repairedItem();
+
+                }
             }
         }
     }
@@ -174,7 +248,7 @@ public class Market{
 
             menu.buyItem(Constants.POTION);
 
-            choice = inp.stringInput();
+            choice = inp.getIntInput(1, mf.potionDetails.size());
 
             boolean check = checkQuit(choice);
 
@@ -223,7 +297,7 @@ public class Market{
 
             menu.buyItem(Constants.SPELL);
 
-            choice = inp.stringInput();
+            choice = inp.getIntInput(1, mf.spellDetails.size());
 
             boolean check = checkQuit(choice);
 
@@ -238,7 +312,7 @@ public class Market{
             {
                 flag = true;
                 Item newSpell = mf.createSpell(chosenSpell);
-                mf.potionDetails.remove(chosenSpell);
+                mf.spellDetails.remove(chosenSpell);
                 buy(newSpell);
 
                 menu.boughtItem(customer.getName(), newSpell.getName());
@@ -271,7 +345,7 @@ public class Market{
 
             menu.buyItem(Constants.WEAPON);
 
-            choice = inp.stringInput();
+            choice = inp.getIntInput(1, mf.weaponryDetails.size());
 
             boolean check = checkQuit(choice);
 
@@ -297,7 +371,6 @@ public class Market{
                 flag = false;
             }
         }
-
     }
 
     public void displayArmor()
@@ -320,7 +393,7 @@ public class Market{
 
             menu.buyItem(Constants.ARMOR);
 
-            choice = inp.stringInput();
+            choice = inp.getIntInput(1, mf.armorDetails.size());
 
             boolean check = checkQuit(choice);
 

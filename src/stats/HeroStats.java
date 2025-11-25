@@ -30,7 +30,7 @@ public class HeroStats implements HeroEventListener
     @Override
     public void eventAttributeIncrease(String attribute, int amt)
     {
-        System.out.println(attribute + " increased by " + amt + "points");
+        System.out.println(attribute + " increased by " + amt + " points");
     }
 
 }

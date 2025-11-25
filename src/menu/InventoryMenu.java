@@ -8,7 +8,7 @@ public class InventoryMenu{
 
     public void inventoryMenu()
     {
-        System.out.print("[U] Use a potion");
+        System.out.print("[P] Use a potion");
         System.out.print("  [E] Equip a weapon or armor");
         System.out.print("  [UE] Unequip a weapon or armor");
         System.out.print("  [Q] QUIT");
@@ -36,5 +36,10 @@ public class InventoryMenu{
                 break;
         }
         System.out.println(colour.RESET);
+    }
+
+    public void wrongItemIndex()
+    {
+        System.out.println("That is the wrong index for this type of item!");
     }
 }

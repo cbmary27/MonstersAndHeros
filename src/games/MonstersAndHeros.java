@@ -108,7 +108,7 @@ public class MonstersAndHeros extends Games{
 
         gmenu.numberOfHeros();
       
-        choice = inp.stringInput();
+        choice = inp.getIntInput(1, 3);
 
         while ( i < Integer.parseInt(choice))
         {
@@ -139,11 +139,6 @@ public class MonstersAndHeros extends Games{
                 {
                     battle = new Battle();
                     battle.initializeBattle(player.getParty());
-                    // if (battle.checkIfAllHerosDefeated())
-                    // {
-                    //     isGameDone = true;
-                    //     System.out.println("All the heros are defeated! Better luck next time!");
-                    // }
                 }
         }
     }
@@ -166,7 +161,7 @@ public class MonstersAndHeros extends Games{
                 {
                     player.display();
                     gmenu.whichHeroMarket();
-                    choice = inp.stringInput();
+                    choice = inp.getIntInput(1, player.getParty().size());
 
                     world.grid[i][j].getMarketInstance();
                     world.grid[i][j].market.enter(player.getHero(choice));
@@ -185,6 +180,15 @@ public class MonstersAndHeros extends Games{
         {
             error.notAMarket();
         }
+    }
+
+    @Override
+    public void restore()
+    {
+        super.restore();
+        world = new World(8, 8);
+        player.currentPos.setRow(7);
+        player.currentPos.setColumn(7);
     }
 
     public void getComplimentaryWeapons()
