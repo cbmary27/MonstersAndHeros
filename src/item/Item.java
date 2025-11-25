@@ -43,6 +43,7 @@ public abstract class Item{
         if (usage <= 0)
         {
             System.out.println("This item needs to be repaired");
+            System.out.println();
             return false;
         }
         return true;
@@ -61,7 +62,7 @@ public abstract class Item{
     @Override
     public String toString()
     {
-        return type + ": " + name;
+        return type + ": " + name + " | Uses Left : " + usage;
     }
 
     public abstract void applyEffect(Hero hero);

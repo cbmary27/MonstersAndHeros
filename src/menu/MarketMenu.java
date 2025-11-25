@@ -66,6 +66,7 @@ public class MarketMenu implements ShowMenu
 
     public void boughtItem(String name, String itemType)
     {
+        System.out.println();
         System.out.println(colour.YELLOW  + name + " bought " + itemType + "!" + colour.RESET);
         System.out.println();
     }
@@ -129,7 +130,7 @@ public class MarketMenu implements ShowMenu
     {
         System.out.println();
         System.out.println(" --------------------");
-        System.out.println("|      " + itemType + "s" + "     |");
+        System.out.println("|      " + itemType + "s" + "      1|");
         System.out.println(" --------------------");
     }
 

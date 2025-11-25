@@ -12,7 +12,7 @@ public class BattleStats implements BattleEventListener
         System.out.println();
         System.out.println("Grrrrr......");
         System.out.println("Uh Oh, What was that?");
-        System.out.println("MONSTERS!!!!!");
+        System.out.println(colour.RED + "MONSTERS!!!!!" + colour.RESET);
         System.out.println();
         for (String m : monsterNames)
         {
@@ -34,14 +34,14 @@ public class BattleStats implements BattleEventListener
     @Override
     public void eventHeroWin()
     {
-        System.out.println("The Hero(s) have won!");
+        System.out.println(colour.BLUE + "The Hero(s) have won!" + colour.RESET);
         System.out.println();
     }
 
     @Override
     public void eventMonsterWin()
     {
-        System.out.println("The Monster(s) have won");
+        System.out.println(colour.RED + "The Monster(s) have won" + colour.RESET);
         System.out.println();
     }
 
@@ -49,7 +49,7 @@ public class BattleStats implements BattleEventListener
     public void eventEntityFaint(String name)
     {
         System.out.println("...");
-        System.out.println(name + " has fainted");
+        System.out.println(colour.RED + name + " has fainted" + colour.RESET);
         System.out.println();
     }
 
@@ -70,7 +70,7 @@ public class BattleStats implements BattleEventListener
     public void eventHeroTurn()
     {
         System.out.println();
-        System.out.println("[ HERO(S) TURN BEGINS ]");
+        System.out.println(colour.BLUE + "[ HERO(S) TURN BEGINS ]" + colour.RESET);
         System.out.println();
     }
 
@@ -78,7 +78,7 @@ public class BattleStats implements BattleEventListener
     public void eventMonsterTurn()
     {
         System.out.println();
-        System.out.println("[ MONSTER(S) TURN BEGINS ]");
+        System.out.println(colour.RED + "[ MONSTER(S) TURN BEGINS ]" + colour.RESET);
         System.out.println();
     }
 
@@ -92,8 +92,9 @@ public class BattleStats implements BattleEventListener
     @Override
     public void eventCastSpell(String name, String target, String itemName)
     {
-        System.out.println(name + " cast a " + itemName + " spell on " + target);
-        System.out.println("Critical Damage!");
+        System.out.println(colour.BLUE + name + " cast a " + itemName + " spell on " + target + colour.RESET);
+        System.out.println();
+        System.out.println(colour.RED + "Critical Damage!" + colour.RESET);
         System.out.println();
     }
 
@@ -107,7 +108,7 @@ public class BattleStats implements BattleEventListener
     @Override
     public void eventUsedItem(String name, String itemName)
     {
-        System.out.println(name + " has used " + itemName);
+        System.out.println(colour.BLUE + name + " has used " + colour.RESET);
     }
 
 }

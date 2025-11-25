@@ -23,6 +23,7 @@ public class Input{
 
         while (true)
         {
+            System.out.print("<> ");
             String input = inp.nextLine().trim();
             input = input.toUpperCase();
 

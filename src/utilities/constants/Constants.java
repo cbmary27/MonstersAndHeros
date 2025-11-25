@@ -69,5 +69,7 @@ public class Constants{
     public static final int FOUR = 4;
     public static final int FIVE = 5;
 
+    public static final String filePath = "src/textfiles/Legends_Monsters_and_Heroes/";
+
 
 }

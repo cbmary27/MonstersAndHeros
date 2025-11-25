@@ -2,6 +2,7 @@ package fileparser;
 
 import java.util.*;
 import java.io.*;
+import utilities.constants.Constants;
 
 public class FileParser
 {
@@ -16,7 +17,7 @@ public class FileParser
 
     public FileParser()
     {
-        filePath = "Legends_Monsters_and_Heroes/";
+        filePath = Constants.filePath;
         entityDetails = new ArrayList<String>();
         names = new ArrayList<String>();
     }

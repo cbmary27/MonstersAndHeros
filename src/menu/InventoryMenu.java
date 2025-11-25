@@ -42,4 +42,10 @@ public class InventoryMenu{
     {
         System.out.println("That is the wrong index for this type of item!");
     }
+
+    public void cannotUnequip()
+    {
+        System.out.println("Cannot unequip. Must always have one weapon in inventory!");
+        System.out.println();
+    }
 }

@@ -17,6 +17,11 @@ public class BattleMenu implements ShowMenu
         System.out.println(colour.RESET);
     }
 
+    public void endofRound()
+    {
+        System.out.println(" < ---------------------------------------------------------------------------------- >");
+    }
+
     public void nextMove(String name)
     {
         System.out.println(colour.WHITE_BOLD);

@@ -166,6 +166,11 @@ public class Inventory
                 Item item2 = hero.selectItem(choice);
                 if (check(item2.getType(), Constants.WEAPON))
                 {
+                    if (hero.getEquippedWeapons().size() == 1)
+                    {
+                        menu.cannotUnequip();
+                        break;
+                    }
                     hero.unEquipWeapon(item2);
                 }
                 else if (check(item2.getType(),Constants.ARMOR))

@@ -31,6 +31,7 @@ public class Weaponry extends Item implements Equippable{
         else
         {
             System.out.println("Weapon is broken, cannot be equipped!");
+            System.out.println();
         }
     }
 
@@ -71,6 +72,7 @@ public class Weaponry extends Item implements Equippable{
             if (usage == 0)
             {
                 System.out.println("The weapon broke!");
+                System.out.println();
             }
         }
     }

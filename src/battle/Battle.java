@@ -23,6 +23,7 @@ public class Battle implements Listeners{
     private int damageDealt;
     private boolean dodgeProbability;
     private boolean isBattleDone;
+    private boolean isTurnOver;
     private int highestLevel;
     private BattleStats blistener;
 
@@ -39,6 +40,7 @@ public class Battle implements Listeners{
         bmenu = new BattleMenu(); 
         inp = new Input();
         isBattleDone = false;
+        isTurnOver = false;
         round = 0;
     }
 
@@ -80,6 +82,8 @@ public class Battle implements Listeners{
 
             for (Hero hero : heros)
             {
+                isTurnOver = false;
+
                 if (hero.getHP() == 0)
                 {
                     continue;
@@ -96,31 +100,35 @@ public class Battle implements Listeners{
 
                 displayStats();
 
-                bmenu.showMenu();
-                bmenu.nextMove(hero.getName());
-
-                choice = inp.stringInput();
-
-                switch(choice)
+                while (isTurnOver == false)
                 {
-                    case Constants.ATTACK:
-                        heroAttack();
-                        target.takeDamage(damageDealt);
-                        check();
-                        break;
+                    bmenu.showMenu();
+                    bmenu.nextMove(hero.getName());
 
-                    case Constants.OPEN:
-                        battleInventory();
-                        break;
+                    choice = inp.stringInput();
 
-                    case Constants.FORFEIT:
-                        isBattleDone = true;
-                        blistener.eventForfeitBattle();
-                        break;
+                    switch(choice)
+                    {
+                        case Constants.ATTACK:
+                            heroAttack();
+                            target.takeDamage(damageDealt);
+                            check();
+                            break;
 
-                    default:
-                        Error.invalidChoice();
-                        break;
+                        case Constants.OPEN:
+                            battleInventory();
+                            break;
+
+                        case Constants.FORFEIT:
+                            isTurnOver = true;
+                            isBattleDone = true;
+                            blistener.eventForfeitBattle();
+                            break;
+
+                        default:
+                            Error.invalidChoice();
+                            break;
+                    }
                 }
 
                 if (isBattleDone)
@@ -191,7 +199,7 @@ public class Battle implements Listeners{
             while (chosen)
             {
                 count = 0;
-                
+
                 for(Item item : currentHero.getEquippedWeapons())
                 {
                     if (item.getUsage() == 0)
@@ -203,6 +211,7 @@ public class Battle implements Listeners{
                 if (count == Constants.TWO)
                 {
                     bmenu.allWeaponsBroken();
+                    isTurnOver = false;
                     break;
                 }
 
@@ -226,6 +235,7 @@ public class Battle implements Listeners{
             {
                 chosen = true;
                 bmenu.weaponBroken();
+                isTurnOver = false;
             }
             else
             {
@@ -235,6 +245,8 @@ public class Battle implements Listeners{
 
         if (!chosen)
         {
+            System.out.println("Hey");
+
             chosenWeapon.applyEffect(currentHero);
 
             damageDealt = currentHero.getItemDamage();
@@ -245,6 +257,7 @@ public class Battle implements Listeners{
             {
                 damageDealt = 0;
                 dodgedAttack(target.getName(), currentHero.getName());
+                isTurnOver = true;
                 return;
             }
 
@@ -252,6 +265,8 @@ public class Battle implements Listeners{
             {
                 blistener.eventEntityDamage(currentHero.getName(), damageDealt);
             }
+
+            isTurnOver = true;
         }
     }
 
@@ -271,20 +286,30 @@ public class Battle implements Listeners{
             choice = inp.getIntInput(1, currentHero.getInventory().getItems().size());
             Item item = currentHero.selectItem(choice);
             item.applyEffect(currentHero);
-            damageDealt = currentHero.getItemDamage();
-            target.takeDamage(damageDealt);
-            target.skillLoss();
-            if (damageDealt != 0)
+            if (item.getUsage() == 0)
             {
-                blistener.eventEntityDamage(currentHero.getName(), damageDealt);
-                blistener.eventCastSpell(currentHero.getName(), target.getName(), item.getName());
+                isTurnOver = false;
             }
-            check();
+            else
+            {
+                item.applyEffect(currentHero);
+                damageDealt = currentHero.getItemDamage();
+                target.takeDamage(damageDealt);
+                target.skillLoss();
+                if (damageDealt != 0)
+                {
+                    blistener.eventEntityDamage(currentHero.getName(), damageDealt);
+                    blistener.eventCastSpell(currentHero.getName(), target.getName(), item.getName());
+                }
+                check();
+                isTurnOver = true;
+            }
         }
 
         else
         {
             currentHero.getInventory().test(choice, currentHero);
+            isTurnOver = true;
         }
     }
 
