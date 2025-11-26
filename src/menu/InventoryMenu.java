@@ -55,4 +55,10 @@ public class InventoryMenu{
         System.out.println("Cannot unequip. Must always have one weapon in inventory!");
         System.out.println();
     }
+
+    public void lineBreak()
+    {
+        System.out.println("<--------------------------------------------------------------------------------------------------------->");
+        System.out.println();
+    }
 }

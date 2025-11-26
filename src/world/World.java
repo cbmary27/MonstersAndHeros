@@ -55,32 +55,12 @@ public class World
     */
     public void initializeMap()
     {
-        List<String> l = new ArrayList<String>();
         initializePlayerPosition();
+        List<String> spaces = calcSpaces();
 
         int k = 0;
-        int x = (rows*columns) - 1;
 
-        int numMarkets = (int) ((0.3 * x)); //getting the number of markets, common and inaccessible spaces on a 8x8 map
-        int numCommon = (int) (0.5 * x) + 2;
-        int numInaccessible = (int) ((0.2 * x) + 2);
-
-        for (int i = 0; i < numMarkets; i++)
-        {
-            l.add(Constants.MARKET); //adding all these spaces according to their size to a list
-        }
-
-        for (int i = 0; i < numCommon; i++)
-        {
-            l.add(Constants.COMMONTILE);
-        }
-
-        for (int i = 0; i < numInaccessible; i++)
-        {
-            l.add(Constants.NOENTRY);
-        }
-
-        Collections.shuffle(l); //shuffling the list
+        Collections.shuffle(spaces); //shuffling the entire list of spaces
 
         for (int i = 0; i < rows; i++) //intiializing the map
         {
@@ -96,7 +76,7 @@ public class World
         {
             int j = columns - 1;
             grid[i][j].tileVal = new Piece<>(Constants.BOARDSTAR);
-            l.remove(Constants.BOARDSTAR);
+            spaces.remove(Constants.BOARDSTAR);
         }
 
         for (int i = 0; i < rows; i++)
@@ -113,18 +93,53 @@ public class World
                 }
                 else
                 {
-                    if (l.get(k).equals(Constants.COMMONTILE))
+                    if (spaces.get(k).equals(Constants.COMMONTILE))
                     {
                         grid[i][j].tileVal = new Piece<>(Constants.BOARDSTAR);
                     }
                     else
                     {
-                        grid[i][j].tileVal = new Piece<>(l.get(k));
+                        grid[i][j].tileVal = new Piece<>(spaces.get(k));
                     }
                     k++;
                 }
             }
         }
+    }
+
+    /**
+    * A method to get the different spaces of a map into a list to be used for initialization of the map
+    * @return void method
+    */
+    public List<String> calcSpaces()
+    {
+        List<String> l = new ArrayList<>();
+        int x = (rows*columns) - 1;
+
+        int numMarkets = (int) ((0.2 * x)); //getting the number of markets, common and inaccessible spaces on a 8x8 map
+        int numCommon = (int) (0.6 * x);
+        int numInaccessible = (int) ((0.1 * x));
+
+        for (int i = 0; i < numCommon; i++)
+        {
+            l.add(Constants.COMMONTILE); //adding all these spaces according to their size to a list
+            l.add(Constants.MARKET); //to get a shuffle of tile spaces
+            l.add(Constants.NOENTRY);
+            numMarkets--;
+            numInaccessible--;
+        }
+
+        for (int i = 0; i < numMarkets; i++)
+        {
+            l.add(Constants.MARKET); //adding all these spaces according to their size to a list
+        }
+
+        for (int i = 0; i < numInaccessible; i++)
+        {
+            l.add(Constants.NOENTRY);
+        }
+
+        return l;
     }
 
     /**
@@ -143,7 +158,6 @@ public class World
                 playerPosition[i][j].tileVal = new Piece<>("0");
             }
         }
-
     }
 
     /**
@@ -158,6 +172,8 @@ public class World
             {
                 System.out.print(Constants.BOARDHEDGE);
             }
+
+            System.out.print(Constants.PLUS);
 
             System.out.println();
 
@@ -193,6 +209,8 @@ public class World
         {
             System.out.print(Constants.BOARDHEDGE);
         }
+
+        System.out.print(Constants.PLUS);
 
         System.out.println();
     }

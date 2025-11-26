@@ -133,7 +133,6 @@ public class Battle implements Listeners{
                     {
                         case Constants.ATTACK:
                             heroAttack(target);
-                            //target.takeDamage(damageDealt);
                             check();
                             break;
 
@@ -185,7 +184,7 @@ public class Battle implements Listeners{
         {
             while (true) {
                 i = (int) (Math.random() * heros.size()); //getting a random hero from the party for the current monster to fight against
-                if (isHeroDefeated(heros.get(i)))
+                if (heros.get(i).getHP() == 0)
                 {
                     continue;
                 }
@@ -357,7 +356,7 @@ public class Battle implements Listeners{
 
         else
         {
-            currentHero.getInventory().test(choice, currentHero); //if hero has selected another option from the inventory
+            currentHero.getInventory().inventoryOptions(choice, currentHero); //if hero has selected another option from the inventory
             isTurnOver = true;
         }
     }
@@ -442,6 +441,8 @@ public class Battle implements Listeners{
         {
             if (hero.getHP() == 0) //if some heroes from the party have fainted, then skip those heroes
             {
+                hero.setHP(25);
+                hero.setStatus(Constants.HEALTHY);
                 continue;
             }
             hero.goldReward(highestLevel); //increase gold of each hero
@@ -457,7 +458,7 @@ public class Battle implements Listeners{
     {
         bmenu.chooseWhichTarget(currentHero.getName());
         mf.displayMonsters(monsters);
-        choice = inp.getIntInput(1, monsters.size());
+        choice = inp.getIntInputIndex(1, monsters.size());
         return monsters.get(Integer.parseInt(choice) - 1);
     }
 

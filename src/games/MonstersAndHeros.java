@@ -87,6 +87,7 @@ public class MonstersAndHeros extends Games{
                         player.getInformation();
                         break;
                     case Constants.QUIT:
+                        flag = false;
                         isGameDone = true;
                         break;
                     default:
@@ -153,7 +154,7 @@ public class MonstersAndHeros extends Games{
             case Constants.BOARDSTAR:
                 Random random = new Random();
                 int randomChoice = random.nextInt(2);
-                if (randomChoice == 1 && checkHPOfParty()) // a fifty percent chance of a battle starting on a common tile
+                if (randomChoice == 1) // a fifty percent chance of a battle starting on a common tile
                 {
                     battle = new Battle();
                     battle.initializeBattle(player.getParty());

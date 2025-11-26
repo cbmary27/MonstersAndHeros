@@ -343,14 +343,17 @@ public class Hero extends Entity implements takeDamage, Listeners{
                 }
                 else
                 {
-                    if (hands + w.getRequiredHands() >= 2)
+                    if (hands + w.getRequiredHands() > 2)
                     {
                         System.out.println("This weapon requires to be held with two hands!");
                         System.out.println();
                     }
-                    System.out.println(item.getName() + " is equipped!");
-                    wa.equipItem(); //else, hero can equip the weapon
-                    equippedWeapons.add(item);
+                    else
+                    {
+                        System.out.println(item.getName() + " is equipped!");
+                        wa.equipItem(); //else, hero can equip the weapon
+                        equippedWeapons.add(item);
+                    }
                 }
             }
         }

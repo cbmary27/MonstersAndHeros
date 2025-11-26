@@ -48,7 +48,7 @@ public class Monsters extends Entity implements takeDamage{
     public void takeDamage(int damageDealt)
     {
         int reduceDefense = (int) (defense * damageDealt / 100); //reducing the defense of the monster from the damageDealt
-        hp = Math.max( 0, hp - Math.max(0, (damageDealt - reduceDefense)));
+        hp = Math.max( 0, hp - Math.max(0, (damageDealt - reduceDefense)));  
     }
 
     /**

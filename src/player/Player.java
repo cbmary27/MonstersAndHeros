@@ -49,6 +49,7 @@ public class Player{
    {
       while (true)
       {
+         menu.lineBreak();
          display();
          menu.displayInventoryMessage();
          choice = inp.getIntInput(1, party.size());

@@ -76,20 +76,4 @@ public abstract class Games{
     {
         gmenu.showMenu();
     }
-
-    /**
-    * A method to check the HP of the heroes in the party
-    * @return a boolean value to indicate whether any hero in the party is currenlty fainted or not
-    */
-    public boolean checkHPOfParty()
-    {
-        for (Hero hero : player.getParty())
-        {
-            if (hero.getHP() == 0)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
 }

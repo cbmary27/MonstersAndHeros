@@ -42,7 +42,7 @@ public class Tile{
     public void getMarketInstance()
     {
         if (market == null)
-           {market = new Market();}
+           {market = new Market();} //to keep the same market instance for a specific tile
     }
 
     public void copy(Tile pos)

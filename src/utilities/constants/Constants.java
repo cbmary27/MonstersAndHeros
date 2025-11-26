@@ -23,7 +23,7 @@ public class Constants{
     public static final String MARKET = "M";
     public static final String INFORMATION = "I";  
     public static final String YES = "Y"; 
-    public static final String NOENTRY = "X";  
+    public static final String NOENTRY = "#";  
     public static final String COMMONTILE = "C";
     public static final String FORFEIT = "F";
     public static final String OPEN = "O";
@@ -40,6 +40,7 @@ public class Constants{
 
     public static final String BOARDSTAR = "*";
     public static final String BOARDHEDGE = "+----";
+    public static final String PLUS = "+";
     public static final String BOARDVEDGE = "|";
 
     public static final String USEPOTION = "P";
@@ -77,7 +78,11 @@ public class Constants{
     public static final int FIVE = 5;
 
     public static final String filePath = "src/textfiles/Legends_Monsters_and_Heroes/";
+    public static final String fileType = ".txt";
     public static final String PLAYERPATH = "-";
+
+    public static final String SPACE = "\\s+";
+    public static final String DIGIT = "\\d+";
 
 
 }

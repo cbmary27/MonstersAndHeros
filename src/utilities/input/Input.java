@@ -17,7 +17,6 @@ public class Input{
     {
         System.out.print("<>");
         return inp.nextInt();
-
     }
 
     /**
@@ -48,7 +47,7 @@ public class Input{
                 return input;
             }
 
-            if (!input.matches("\\d+")) //checking if it is a digit
+            if (!input.matches(Constants.DIGIT)) //checking if it is a digit
             {
                 System.out.println("Invalid input! Please enter a number.");
                 continue;

@@ -73,7 +73,7 @@ public class Inventory
     }
 
     /**
-    * To remove an item from the inventory
+    * To remove an item from the inventory according to the index of the item
     * @return void method
     */
     public void dropItem(String index)
@@ -81,6 +81,10 @@ public class Inventory
         items.remove(Integer.parseInt(index) - 1);
     }
 
+    /**
+    * To remove an item from the inventory
+    * @return void method
+    */
     public void removeItem(Item item)
     {
         items.remove(item);
@@ -157,7 +161,7 @@ public class Inventory
         menu.inventoryMenu();
         choice = inp.stringInput();
 
-        test(choice, hero);
+        inventoryOptions(choice, hero);
     }
 
     /**
@@ -165,7 +169,7 @@ public class Inventory
     * @param choice,hero the choice to indicate what to do in the hero's inventory
     * @return void method
     */
-    public void test(String choice, Hero hero)
+    public void inventoryOptions(String choice, Hero hero)
     {
         switch(choice)
         {

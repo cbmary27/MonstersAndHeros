@@ -50,14 +50,14 @@ public class FileParser
     {
         names.clear();
         tuple = "";
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath+type+".txt"))){
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath+type + Constants.fileType))){
 
         br.readLine();
         tuple = br.readLine();
 
         while (tuple != null)
         {
-            String[] details = tuple.split("\\s+");
+            String[] details = tuple.split(Constants.SPACE);
             names.add(details[0]);
             tuple = br.readLine();
         } }
@@ -80,14 +80,14 @@ public class FileParser
         entityDetails.clear();
         tuple = "";
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath+type+".txt"))){
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath + type + Constants.fileType))){
 
         br.readLine();
         tuple = br.readLine();
 
         while (tuple != null)
         {
-            String[] details = tuple.split("\\s+");
+            String[] details = tuple.split(Constants.SPACE);
             if (name.equals(details[0]))
             {
                 for (String detail: details)
@@ -118,7 +118,7 @@ public class FileParser
         List<List<String>> itemDetails = new ArrayList<>();
 
         tuple = "";
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath+type+".txt"))){
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath+type+ Constants.fileType))){
 
         br.readLine();
         tuple = br.readLine();
@@ -131,7 +131,7 @@ public class FileParser
                 continue;
             }
 
-            String[] details = tuple.split("\\s+");
+            String[] details = tuple.split(Constants.SPACE);
 
             List<String> i = Arrays.asList(details);
             itemDetails.add(new ArrayList<>(i));
@@ -159,7 +159,7 @@ public class FileParser
             Random rand = new Random();
 
             tuple = "";
-            try (BufferedReader br = new BufferedReader(new FileReader(filePath + ft + type + ".txt"))){
+            try (BufferedReader br = new BufferedReader(new FileReader(filePath + ft + type + Constants.fileType))){
 
             br.readLine();
             tuple = br.readLine();
@@ -172,7 +172,7 @@ public class FileParser
                     continue;
                 }
 
-                String[] details = tuple.split("\\s+");
+                String[] details = tuple.split(Constants.SPACE);
 
                 List<String> i = new ArrayList<>(Arrays.asList(details));
                 i.add(ft);
@@ -198,14 +198,14 @@ public class FileParser
         List<List<String>> itemDetails = new ArrayList<>();
 
         tuple = "";
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath+type+".txt"))){
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath+type + Constants.fileType))){
 
         br.readLine();
         tuple = br.readLine();
 
         while (tuple != null)
         {
-            String[] details = tuple.split("\\s+");
+            String[] details = tuple.split(Constants.SPACE);
 
             List<String> i = Arrays.asList(details);
             itemDetails.add(new ArrayList<>(i));

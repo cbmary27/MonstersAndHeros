@@ -16,7 +16,7 @@ public class Instructions{
     public void displayMonstersAndHeros()
     {
         System.out.println();
-        System.out.println(colour.BG_BRIGHT_RED + colour.BLACK_BOLD + textStyle.ITALIC + "                      MONSTERS AND HEROES                             " + textStyle.RESET_ITALIC + colour.RESET);
+        System.out.println(colour.BG_BRIGHT_RED + colour.BLACK + textStyle.ITALIC + "                      MONSTERS AND HEROES                             " + textStyle.RESET_ITALIC + colour.RESET);
         System.out.println();
         System.out.println("A long, long time ago, the land of the heros was once peaceful.");
         System.out.println("The villages thrived, the forests were calm, and the people lived without fear.");
@@ -75,6 +75,7 @@ public class Instructions{
         System.out.println("   - Each of the above will consume a hero's turn.");
         System.out.println("   - The monster or a hero faints if their HP reaches 0. ");
         System.out.println("   - If all heroes win the battle, they gain exp and gold, with increases their chances of levelling up!");
+        System.out.println("   - If all heroes lose the battle, they gain a bit of HP back");
         System.out.println();
         System.out.println(colour.CYAN + ":INVENTORY:" + colour.RESET);
         System.out.println("   - Using [I] Information, you can view the inventory of each hero.");

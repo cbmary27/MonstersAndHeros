@@ -230,29 +230,28 @@ public class Market{
             menu.noBrokenItems();
         }
         else
-        {
-            if (customer.getGold() < customer.getGold()/2) //if hero does not have enough gold to repair item
+        {   
+            customer.getInventory().displayBrokenItems(); //displaying broken items
+
+            menu.whichBrokenItem();
+
+            choice = inp.getIntInput(1, customer.getInventory().getBrokenItems().size());
+
+            if (!choice.equals(Constants.QUIT))
             {
-                menu.cannotBuy();
-            }
-            else
-            {
-                customer.getInventory().displayBrokenItems(); //displaying broken items
+                Item repaired = customer.getInventory().getBrokenItem(choice);
 
-                menu.whichBrokenItem();
-
-                choice = inp.getIntInput(1, customer.getInventory().getBrokenItems().size());
-
-                if (!choice.equals(Constants.QUIT))
+                if (customer.getGold() < repaired.getPrice()/2) //if hero does not have enough gold to repair item
                 {
-                    Item repaired = customer.getInventory().getBrokenItem(choice);
-
-                    customer.updateGold(customer.getGold()/2);
+                    menu.cannotBuy();
+                }
+                else
+                {
+                    customer.updateGold(repaired.getPrice()/2);
                     repaired.setUsage(); //updating the usage of the item
                     customer.getInventory().getBrokenItems().remove(repaired); //remove item from list of broken items
 
                     menu.repairedItem();
-
                 }
             }
         }
