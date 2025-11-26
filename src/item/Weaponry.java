@@ -1,8 +1,16 @@
+/**
+ * Filename: Weaponry.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-18
+ * Description: A class for Weaponry type of Item, extends Item class, implements the equippable interface
+ */
+
 package item;
 
 import java.util.*;
 import fileparser.WeaponryDetails;
 import interfaces.Equippable;
+import utilities.constants.Constants;
 import entity.hero.Hero;
 
 
@@ -15,7 +23,7 @@ public class Weaponry extends Item implements Equippable{
     public Weaponry(String name, int price, int level, int damage, int requiredHands)
     {
         super(name, price, level);
-        this.type = "Weapon";
+        this.type = Constants.WEAPON;
         this.damage = damage;
         this.requiredHands = requiredHands;
         this.equipped = false;
@@ -55,20 +63,33 @@ public class Weaponry extends Item implements Equippable{
         usage = 10;
     }
 
-
     @Override
     public boolean isItemEquipped()
     {
         return equipped;
     }
 
+    /**
+    * To apply the effect of the Weapon
+    * @param hero the hero who has used the weapon
+    * @return void method
+    */
     @Override
     public void applyEffect(Hero hero)
     {
         if (checkUsage())
         {
             updateUsage();
+            
+            if (requiredHands == 2)
+            {
+                hero.getDamageFromItem((2 * hero.getStrength() + damage) * 5/100);
+            }
+            else
+            {
             hero.getDamageFromItem((hero.getStrength() + damage) * 5/100);
+            }
+
             if (usage == 0)
             {
                 System.out.println("The weapon broke!");

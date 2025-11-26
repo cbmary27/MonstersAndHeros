@@ -1,3 +1,10 @@
+/**
+ * Filename: Tile.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-15
+ * Description: A class to represent a tile on the board
+ */
+
 package world;
 
 import java.util.*;

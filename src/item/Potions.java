@@ -1,3 +1,10 @@
+/**
+ * Filename: Potions.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-18
+ * Description: A class for Potion type of Item, extends Item class
+ */
+
 package item;
 
 import java.util.*;
@@ -14,7 +21,7 @@ public class Potions extends Item{
     public Potions(String name, int price, int level, int increaseAtt, String affectedAtt)
     {
         super(name, price, level);
-        this.type = "Potion";
+        this.type = Constants.POTION;
         this.increaseAtt = increaseAtt;
         this.affectedAtt = affectedAtt;
         setUsage();
@@ -41,6 +48,11 @@ public class Potions extends Item{
         return this.increaseAtt;
     }
 
+    /**
+    * To apply the effect of the Potion on the hero's attributes
+    * @param hero the hero who has used the Potion
+    * @return void method
+    */
     @Override
     public void applyEffect(Hero hero)
     {

@@ -1,3 +1,10 @@
+/**
+ * Filename: Battle.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-18
+ * Description: Implements the logic for battles between heroes and monsters.
+ */
+
 package battle;
 
 import java.util.*;
@@ -44,11 +51,20 @@ public class Battle implements Listeners{
         round = 0;
     }
 
+    /**
+    * Adding an observer to record battle statistics and display
+    * @return void method
+    */
     public void addListener()
     {
         blistener = new BattleStats();
     }
 
+    /**
+    * To create monsters according to the heroes in the party and initialize variables/data structures
+    * @param party the party of heroes
+    * @return void method
+    */
     public void initializeBattle(List<Hero> party)
     {
         heros = party;
@@ -59,7 +75,7 @@ public class Battle implements Listeners{
         List<String> randMonsters = mf.getMonsters();
         List<String> monsterNames = new ArrayList<>();
 
-        while (i < numOfHeros)
+        while (i < numOfHeros) //creating monsters according to the number of heroes in the party and their levels
         {
             monsters.add(mf.createMonster(randMonsters.get(i), mf.types.get(i), highestLevel));
             monsterNames.add(randMonsters.get(i));
@@ -71,32 +87,36 @@ public class Battle implements Listeners{
         fight();
     }
 
+    /**
+    * Starts off the battle between the heroes and monsters
+    * @return void method
+    */
     public void fight()
     {
-        while (!isBattleDone)
+        while (!isBattleDone) //main loop for the battle
         {
             round++;
 
             blistener.eventNextRound(round);
             blistener.eventHeroTurn();
 
-            for (Hero hero : heros)
+            for (Hero hero : heros) //Heroes go first in a battle
             {
                 isTurnOver = false;
 
-                if (hero.getHP() == 0)
+                if (hero.getHP() == 0) //if a hero from the party has fainted, their turn is skipped
                 {
                     continue;
                 }
 
                 if (round != 1)
                 {
-                    hero.increaseHP();
+                    hero.increaseHP(); //increasing the HP and MP of the hero in the subsequent rounds
                     hero.calcMP();
                 }
 
                 currentHero = hero;
-                target = chooseTarget();
+                target = chooseTarget(); //allowing the current hero to choose their target
 
                 displayStats();
 
@@ -139,15 +159,20 @@ public class Battle implements Listeners{
 
             if (!isBattleDone)
             {
-                monsterTurn();
+                monsterTurn(); //after the monsters have attacked, the monsters turn is next
             }
             else
             {
                 break;
             }
+            bmenu.endOfRound();
         }
     }
 
+    /**
+    * Contains logic for the monsters turn during the battle
+    * @return void method
+    */
     public void monsterTurn()
     {
         int i = 0;
@@ -156,25 +181,25 @@ public class Battle implements Listeners{
 
         for (Monsters monster: monsters)
         {
-            i = (int) (Math.random() * heros.size());
+            i = (int) (Math.random() * heros.size()); //getting a random hero from the party for the current monster to fight against
 
             blistener.eventAttack(monster.getName(), heros.get(i).getName());
 
             damageDealt = monster.getBaseDamage();
-            dodgeProbability = Math.random() < heros.get(i).calcDodge();
+            dodgeProbability = Math.random() < heros.get(i).calcDodge(); //calculate the dodge probability of the hero
 
-            if (dodgeProbability)
+            if (dodgeProbability) //if dodgeProbability is true, hero can dodge the attack from the monster
             {
                 damageDealt = 0;
                 dodgedAttack(heros.get(i).getName(), monster.getName());
             }
 
-            heros.get(i).takeDamage(damageDealt);
+            heros.get(i).takeDamage(damageDealt); //else, hero takes damage from the monster's attack
             blistener.eventEntityDamage(monster.getName(), damageDealt);
 
-            if (isHeroDefeated(heros.get(i)))
+            if (isHeroDefeated(heros.get(i))) //checking if the hero has fainted from the attack
             {
-                if (checkIfAllHerosDefeated())
+                if (checkIfAllHerosDefeated()) //checking if all heroes in the party have fainted
                 {
                     isBattleDone = true;
                     break;
@@ -183,6 +208,10 @@ public class Battle implements Listeners{
         }
     }
 
+    /**
+    * If hero chooses to attack, to calculate the dodge or damage taken for the monster
+    * @return void method
+    */
     public void heroAttack()
     {
         String choice;
@@ -194,6 +223,7 @@ public class Battle implements Listeners{
 
         blistener.eventAttack(currentHero.getName(), target.getName());
 
+        //if hero has equipped two weapons, checking if the weapons are broken, else hero can choose which weapon to attack with
         if (currentHero.getEquippedWeapons().size() == Constants.TWO)
         {
             while (chosen)
@@ -202,7 +232,7 @@ public class Battle implements Listeners{
 
                 for(Item item : currentHero.getEquippedWeapons())
                 {
-                    if (item.getUsage() == 0)
+                    if (item.getUsage() == 0) //checking if weapons are broken
                     {
                         count++;
                     }
@@ -210,15 +240,15 @@ public class Battle implements Listeners{
 
                 if (count == Constants.TWO)
                 {
-                    bmenu.allWeaponsBroken();
+                    bmenu.allWeaponsBroken(); //if all weapons are broken, hero cannot attack
                     isTurnOver = false;
                     break;
                 }
 
-                bmenu.whichItem(Constants.WEAPON);
+                bmenu.whichItem(Constants.WEAPON); //else, hero can choose which weapon to attack with
                 choice = inp.getIntInput(1, currentHero.getEquippedWeapons().size());
                 chosenWeapon = currentHero.getEquippedWeapons().get(Integer.parseInt(choice) - 1);
-                if (chosenWeapon.getUsage() == 0)
+                if (chosenWeapon.getUsage() == 0) //if the hero chooses a broken weapon
                 {
                     bmenu.weaponBroken();
                 }
@@ -230,6 +260,7 @@ public class Battle implements Listeners{
         }
         else
         {
+            //if hero has a single weapon and checking if it is broken
             chosenWeapon = currentHero.getEquippedWeapons().get(0);
             if (chosenWeapon.getUsage() == 0)
             {
@@ -243,17 +274,15 @@ public class Battle implements Listeners{
             }
         }
 
-        if (!chosen)
+        if (!chosen) //applying the effect of the weapon the hero has chosen to attack with
         {
-            System.out.println("Hey");
-
             chosenWeapon.applyEffect(currentHero);
 
-            damageDealt = currentHero.getItemDamage();
+            damageDealt = currentHero.getItemDamage(); //getting the damage induced by the weapon
                     
-            dodgeProbability = Math.random() < target.calcDodge();
+            dodgeProbability = Math.random() < target.calcDodge(); //checking whether the monster can dodge the attack or not
 
-            if (dodgeProbability)
+            if (dodgeProbability) //if dodgeProbability is true, monster dodges the attack
             {
                 damageDealt = 0;
                 dodgedAttack(target.getName(), currentHero.getName());
@@ -261,7 +290,7 @@ public class Battle implements Listeners{
                 return;
             }
 
-            if (damageDealt != 0)
+            if (damageDealt != 0) 
             {
                 blistener.eventEntityDamage(currentHero.getName(), damageDealt);
             }
@@ -270,6 +299,10 @@ public class Battle implements Listeners{
         }
     }
 
+    /**
+    * Contains logic for choosing to use an item from the hero's inventory
+    * @return void method
+    */
     public void battleInventory()
     {
         currentHero.getInventory().display();
@@ -280,13 +313,14 @@ public class Battle implements Listeners{
 
         choice = inp.stringInput();
 
+        //if hero wants to cast a spell
         if (choice.equals(Constants.USESPELL))
         {
             bmenu.whichItem(Constants.SPELL);
             choice = inp.getIntInput(1, currentHero.getInventory().getItems().size());
             Item item = currentHero.selectItem(choice);
-            item.applyEffect(currentHero);
-            if (item.getUsage() == 0)
+            // item.applyEffect(currentHero); 
+            if (item.getUsage() == 0) //if the spell cannot be used
             {
                 isTurnOver = false;
             }
@@ -294,25 +328,29 @@ public class Battle implements Listeners{
             {
                 item.applyEffect(currentHero);
                 damageDealt = currentHero.getItemDamage();
-                target.takeDamage(damageDealt);
-                target.skillLoss();
+                target.takeDamage(damageDealt); //monster takes the damage from the spell
+                target.skillLoss(); //spells result in skill loss of the monster
                 if (damageDealt != 0)
                 {
                     blistener.eventEntityDamage(currentHero.getName(), damageDealt);
                     blistener.eventCastSpell(currentHero.getName(), target.getName(), item.getName());
                 }
-                check();
+                check(); //check if all the monsters have been defeated
                 isTurnOver = true;
             }
         }
 
         else
         {
-            currentHero.getInventory().test(choice, currentHero);
+            currentHero.getInventory().test(choice, currentHero); //if hero has selected another option from the inventory
             isTurnOver = true;
         }
     }
 
+    /**
+    * Checks if the current monster being attacked has fainted, subsequently if all monsters are defeated
+    * @return void method
+    */
     public void check()
     {
         if (isMonsterDefeated())
@@ -321,11 +359,15 @@ public class Battle implements Listeners{
 
             if (checkIfAllMonstersDefeated())
                 {
-                    heroWin();
+                    heroWin(); //if all monsters are defeated, the hero(s) have won
                 }
         }
     }
 
+    /**
+    * Checking if all monsters are defeated
+    * @return void method
+    */
     public boolean checkIfAllMonstersDefeated()
     {
         if (monsters.isEmpty())
@@ -337,13 +379,17 @@ public class Battle implements Listeners{
         return false;
     }
 
+    /**
+    * Check if all heroes are defeated
+    * @return void method
+    */
     public boolean checkIfAllHerosDefeated()
     {
         int count = 0;
 
         for (Hero hero : heros)
         {
-            if (hero.getHP() == 0)
+            if (hero.getHP() == 0) //if HP of the hero = 0
             {
                 count++;
             }
@@ -359,6 +405,10 @@ public class Battle implements Listeners{
         return false;
     }
 
+    /**
+    * If all heroes have fainted, then revive them by a small amount
+    * @return void method
+    */
     public void heroLose()
     {
         for (Hero hero : heros)
@@ -367,19 +417,27 @@ public class Battle implements Listeners{
         }
     }
 
+    /**
+    * Logic of heroes have won
+    * @return void method
+    */
     public void heroWin()
     {
         for (Hero hero : heros)
         {
-            if (hero.getHP() == 0)
+            if (hero.getHP() == 0) //if some heroes from the party have fainted, then skip those heroes
             {
                 continue;
             }
-            hero.goldReward(highestLevel);
-            hero.calcEXP(heros.size());
+            hero.goldReward(highestLevel); //increase gold of each hero
+            hero.calcEXP(heros.size()); //increase the EXP of each hero
         }
     }
 
+    /**
+    * For the hero to choose their target during their turn
+    * @return void method
+    */
     public Monsters chooseTarget()
     {
         bmenu.chooseWhichTarget(currentHero.getName());
@@ -388,11 +446,19 @@ public class Battle implements Listeners{
         return monsters.get(Integer.parseInt(choice) - 1);
     }
 
+    /**
+    * If hero/monster dodged an attack
+    * @return void method
+    */
     public void dodgedAttack(String receiver, String attacker)
     {
         blistener.eventDodgeAttack(receiver, attacker);
     }
 
+    /**
+    * To check if the current monster has fainted during an attack
+    * @return void method
+    */
     public boolean isMonsterDefeated()
     {
         if (target.getHP() == 0)
@@ -403,6 +469,10 @@ public class Battle implements Listeners{
         return false;
     }
 
+    /**
+    * To check if the current hero has fainted during an attack
+    * @return void method
+    */
     public boolean isHeroDefeated(Hero hero)
     {
         if (hero.getHP() == 0)
@@ -414,6 +484,10 @@ public class Battle implements Listeners{
         return false;
     }
 
+    /**
+    * To display the stats of the hero and monster
+    * @return void method
+    */
     public void displayStats()
     {
         System.out.println();
@@ -421,6 +495,10 @@ public class Battle implements Listeners{
         System.out.println(target);
     }
 
+    /**
+    * To get the highest level of the hero in the party
+    * @return void method
+    */
     public int getHighestLevel()
     {
         int maxLevel = 0;

@@ -1,3 +1,10 @@
+/**
+ * Filename: World.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-15
+ * Description: A class to represent the map in the game
+ */
+
 package world;
 
 import java.util.*;
@@ -13,8 +20,6 @@ public class World
     private int rows;
     private int columns;
     public Error error = new Error();
-
-    //public Tile currentPos;
 
     public World(int rows, int columns)
     {
@@ -44,20 +49,25 @@ public class World
         return columns;
     }
 
+    /**
+    * A method to initialize the map
+    * @return void method
+    */
     public void initializeMap()
-    { //player should not be blocked by "X" in the map. add conditions for that
+    {
         List<String> l = new ArrayList<String>();
         initializePlayerPosition();
 
         int k = 0;
         int x = (rows*columns) - 1;
-        int numMarkets = (int) ((0.3 * x)) - 1;
+
+        int numMarkets = (int) ((0.3 * x)); //getting the number of markets, common and inaccessible spaces on a 8x8 map
         int numCommon = (int) (0.5 * x) + 2;
-        int numInaccessible = (int) ((0.2 * x) + 1);
+        int numInaccessible = (int) ((0.2 * x) + 2);
 
         for (int i = 0; i < numMarkets; i++)
         {
-            l.add(Constants.MARKET);
+            l.add(Constants.MARKET); //adding all these spaces according to their size to a list
         }
 
         for (int i = 0; i < numCommon; i++)
@@ -70,19 +80,36 @@ public class World
             l.add(Constants.NOENTRY);
         }
 
-        Collections.shuffle(l);
+        Collections.shuffle(l); //shuffling the list
 
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < rows; i++) //intiializing the map
         {
             for (int j = 0; j < columns; j++)
             {
                 grid[i][j] = new Tile();
                 grid[i][j].setRow(i);
                 grid[i][j].setColumn(j);
+            }
+        }
 
-                if(i == 7 && j == 7)
+        for (int i = rows - 2 ; i >= 0; i--) //setting the map to always have a path for the party of heroes indicated by *
+        {
+            int j = columns - 1;
+            grid[i][j].tileVal = new Piece<>(Constants.BOARDSTAR);
+            l.remove(Constants.BOARDSTAR);
+        }
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if(i == rows - 1 && j == columns - 1)
                 {
                     grid[i][j].tileVal = new Piece<>(Constants.START); //Start Position
+                }
+                else if (j == columns - 1)
+                {
+                    continue;
                 }
                 else
                 {
@@ -90,8 +117,8 @@ public class World
                     {
                         grid[i][j].tileVal = new Piece<>(Constants.BOARDSTAR);
                     }
-
-                    else{
+                    else
+                    {
                         grid[i][j].tileVal = new Piece<>(l.get(k));
                     }
                     k++;
@@ -100,6 +127,10 @@ public class World
         }
     }
 
+    /**
+    * A method to intialize a matrix to represent the position of the player on the map
+    * @return void method
+    */
     public void initializePlayerPosition()
     {
         for (int i = 0; i < rows; i++)
@@ -115,6 +146,10 @@ public class World
 
     }
 
+    /**
+    * A method to display the map to the player
+    * @return void method
+    */
     public void printMap()
     {
         for (int i = 0; i < rows; i++)
@@ -139,7 +174,7 @@ public class World
                             System.out.print(Constants.BOARDVEDGE + " " + colour.RED_BOLD + grid[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
                             break;
                         case Constants.START:
-                            System.out.print(Constants.BOARDVEDGE + " " + grid[i][j].tileVal.getValueOnTile() + "  ");
+                            System.out.print(Constants.BOARDVEDGE + " " + colour.CYAN_BOLD + grid[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
                             break;
                         case Constants.BOARDSTAR:
                             System.out.print(Constants.BOARDVEDGE + " " + colour.GREEN + grid[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
@@ -162,6 +197,11 @@ public class World
         System.out.println();
     }
 
+    /**
+    * A method to check whether a move inputted by the player is a legal move or not
+    * @param ch,pos the move entered and the position of the player on the map
+    * @return boolean value to indicate whether the move is legal or not
+    */
     public boolean isMoveLegal(String ch, Tile pos)
     {
         switch(ch)
@@ -189,6 +229,11 @@ public class World
         return true;
     }
 
+    /**
+    * A method to check whether a tile is inaccessible or not
+    * @param i,j the indices of the tile on the map
+    * @return boolean value to indicate whether the tile is inaccessible or not
+    */
     public boolean checkIfTileInaccessible(int i, int j)
     {
         if (grid[i][j].tileVal.getValueOnTile().equals(Constants.NOENTRY))
@@ -199,6 +244,11 @@ public class World
         return false;
     }
 
+    /**
+    * A method to move the player piece on the map according to the inputted move
+    * @param player,choice the player making the move and their choice
+    * @return void method
+    */
     public void makeMove(Player player, String choice)
     {
         playerPosition[player.currentPos.getRow()][player.currentPos.getColumn()].tileVal.setValueOnTile("0");
@@ -218,6 +268,7 @@ public class World
                 break;
         }
 
+        //updating the position of the player in the playerPosition matrix
         playerPosition[player.currentPos.getRow()][player.currentPos.getColumn()].tileVal.setValueOnTile(player.playerPiece.getValueOnTile());
     }
 }

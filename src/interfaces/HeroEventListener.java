@@ -1,3 +1,10 @@
+/**
+ * Filename: HeroEventListener.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-20
+ * Description: An interface that lists the methods of an observer for Hero
+ */
+
 package interfaces;
 
 import java.util.*;

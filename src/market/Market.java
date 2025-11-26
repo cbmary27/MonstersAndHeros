@@ -1,3 +1,10 @@
+/**
+ * Filename: Market.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-17
+ * Description: A class for Market and its functionalities
+ */
+
 package market;
 
 import java.util.*;
@@ -24,6 +31,11 @@ public class Market{
         menu = new MarketMenu();
     }
 
+    /**
+    * A method to implement functionalities according to the hero's choice
+    * @param hero the hero who entered the market
+    * @return void method
+    */
     public void enter(Hero hero)
     {
         customer = hero;
@@ -35,7 +47,7 @@ public class Market{
 
             switch(choice)
             {
-                case Constants.BUY:
+                case Constants.BUY: //to buy items
                     menu.buy();
                     menu.showGold(customer.getName(), customer.getGold());
                     createMarketFactoryInstance();
@@ -43,7 +55,7 @@ public class Market{
                     choice = " ";
                     break;
 
-                case Constants.SELL:
+                case Constants.SELL: //to sell items
                     menu.sell();
                     menu.showGold(customer.getName(), customer.getGold());
                     createMarketFactoryInstance();
@@ -51,7 +63,7 @@ public class Market{
                     choice = " ";
                     break;
 
-                case Constants.REPAIR:
+                case Constants.REPAIR: //to repair items if broken
                     menu.repair();
                     menu.showGold(customer.getName(), customer.getGold());
                     repairItem();
@@ -75,6 +87,10 @@ public class Market{
         }
     }
 
+    /**
+    * A method to get the players choice for which type of items they want to view
+    * @return void method
+    */
     public void display()
     {
         menu.displayItems();
@@ -102,12 +118,21 @@ public class Market{
 
     }
 
+    /**
+    * A method to buy an item of the hero's choice
+    * @param item the item chosen by the hero
+    * @return void method
+    */
     public void buy(Item item)
     {
-        customer.getInventory().addItem(item);
-        customer.updateGold(item.getPrice());
+        customer.getInventory().addItem(item); //add item to hero's inventory
+        customer.updateGold(item.getPrice()); //update the gold of the hero
     }
 
+    /**
+    * A method to sell items from hero's inventory
+    * @return void method
+    */
     public void sell()
     {
         String choice;
@@ -120,7 +145,7 @@ public class Market{
             }
             else
             {
-                customer.getInventory().display();
+                customer.getInventory().display(); //display hero's inventory
                 menu.sellItem();
 
                 choice = inp.getIntInput(1, customer.getInventory().getItems().size());
@@ -132,7 +157,7 @@ public class Market{
 
                 Item sold = customer.getInventory().getItem(choice);
 
-                switch(sold.getType())
+                switch(sold.getType()) //to get the type of item to be sold
                 {
                     case Constants.POTION:
                         Potions potionItem = (Potions) sold;
@@ -153,6 +178,7 @@ public class Market{
                         break;
 
                     case Constants.WEAPON:
+                        //if hero has only one weapon in inventory and tries to sell it
                         if (customer.getInventory().checkNumberOfWeapons() == 1)
                         {
                             menu.cannotSell();
@@ -163,7 +189,7 @@ public class Market{
                         customer.increaseGold(weaponItem.getPrice()/2);
                         if (customer.getEquippedWeapons().contains(sold))
                         {
-                            customer.getEquippedWeapons().remove(sold);
+                            customer.getEquippedWeapons().remove(sold); //removing weapon from hero's equipped weapons if it was equipped
                         }
                         mf.weaponryDetails.add(wd);
                         menu.soldItem();
@@ -187,6 +213,10 @@ public class Market{
         }
     }
 
+    /**
+    * A method to repair a broken item from the hero's inventory
+    * @return void method
+    */
     public void repairItem()
     {
         String choice;
@@ -195,19 +225,19 @@ public class Market{
 
         List<Item> brokenItems = customer.getInventory().getBrokenItems();
 
-        if (brokenItems.size() == 0)
+        if (brokenItems.size() == 0) //checking if there are any broken items in hero's inventory
         {
             menu.noBrokenItems();
         }
         else
         {
-            if (customer.getGold() < customer.getGold()/2)
+            if (customer.getGold() < customer.getGold()/2) //if hero does not have enough gold to repair item
             {
                 menu.cannotBuy();
             }
             else
             {
-                customer.getInventory().displayBrokenItems();
+                customer.getInventory().displayBrokenItems(); //displaying broken items
 
                 menu.whichBrokenItem();
 
@@ -218,8 +248,8 @@ public class Market{
                     Item repaired = customer.getInventory().getBrokenItem(choice);
 
                     customer.updateGold(customer.getGold()/2);
-                    repaired.setUsage();
-                    customer.getInventory().getBrokenItems().remove(repaired);
+                    repaired.setUsage(); //updating the usage of the item
+                    customer.getInventory().getBrokenItems().remove(repaired); //remove item from list of broken items
 
                     menu.repairedItem();
 
@@ -228,6 +258,10 @@ public class Market{
         }
     }
 
+    /**
+    * A method to display potions
+    * @return void method
+    */
     public void displayPotions()
     {
         int i = 1;
@@ -276,6 +310,10 @@ public class Market{
         }
     }
 
+    /**
+    * A method to display spells
+    * @return void method
+    */
     public void displaySpells()
     {
         int i = 1;
@@ -325,6 +363,10 @@ public class Market{
         }
     }
 
+    /**
+    * A method to display weapons
+    * @return void method
+    */
     public void displayWeapons()
     {
         int i = 1;
@@ -373,6 +415,10 @@ public class Market{
         }
     }
 
+    /**
+    * A method to display armors
+    * @return void method
+    */
     public void displayArmor()
     {
         int i = 1;
@@ -419,15 +465,18 @@ public class Market{
                 flag = false;
             }
         }
-
     }
 
+    /**
+    * A method to create a market factory instance
+    * @return void method
+    */
     public void createMarketFactoryInstance()
     {
         if (mf == null)
             {
                 mf = new MarketFactory();
-                mf.createMarket();
+                mf.createMarket(); //to get items from the market
             }
     }
 

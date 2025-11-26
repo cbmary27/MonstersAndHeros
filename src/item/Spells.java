@@ -1,7 +1,15 @@
+/**
+ * Filename: Spells.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-18
+ * Description: A class for Spell type of Item, extends Item class
+ */
+
 package item;
 
 import java.util.*;
 import fileparser.SpellDetails;
+import utilities.constants.Constants;
 import entity.hero.Hero;
 
 
@@ -14,7 +22,7 @@ public class Spells extends Item{
     public Spells(String name, int price, int level, int damage, int affectedMana, String spellType)
     {
         super(name, price, level);
-        this.type = "Spell";
+        this.type = Constants.SPELL;
         this.damage = damage;
         this.affectedMana = affectedMana;
         this.spellType  = spellType;
@@ -42,6 +50,11 @@ public class Spells extends Item{
         usage = 0;
     }
 
+    /**
+    * To apply the effect of the Spell on the hero's attributes
+    * @param hero the hero who has cast the spell
+    * @return void method
+    */
     @Override
     public void applyEffect(Hero hero)
     {

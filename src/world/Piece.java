@@ -1,3 +1,10 @@
+/**
+ * Filename: Piece.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-15
+ * Description: A class represent the piece on the board or tile
+ */
+
 package world;
 
 import java.util.*;

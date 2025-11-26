@@ -1,3 +1,10 @@
+/**
+ * Filename: Error.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-16
+ * Description: A class to display error statements
+ */
+
 package utilities.error;
 
 public class Error{

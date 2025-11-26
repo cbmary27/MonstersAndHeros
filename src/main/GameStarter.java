@@ -1,3 +1,10 @@
+/**
+ * Filename: GameStarter.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-14
+ * Description: A class for initialzing an object of a game
+ */
+
 package main;
 
 import java.util.*;

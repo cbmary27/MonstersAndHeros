@@ -1,3 +1,10 @@
+/**
+ * Filename: HeroStats.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-20
+ * Description: An observer class for Hero that displays actions that affect a hero or its attributes
+ */
+
 package stats;
 
 import java.util.*;

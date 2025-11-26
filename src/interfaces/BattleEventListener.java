@@ -1,3 +1,10 @@
+/**
+ * Filename: BattleEventListener.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-20
+ * Description: An interface that lists the methods of an observer for Battle
+ */
+
 package interfaces;
 
 import java.util.*;

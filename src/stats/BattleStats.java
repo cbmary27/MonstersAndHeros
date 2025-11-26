@@ -1,3 +1,10 @@
+/**
+ * Filename: BattleStats.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-20
+ * Description: An observer class for Battle that displays actions during a battle
+ */
+
 package stats;
 
 import java.util.*;
@@ -63,7 +70,7 @@ public class BattleStats implements BattleEventListener
     @Override
     public void eventNextRound(int round)
     {
-        System.out.println("ROUND " + round + " COMMENCE");
+        System.out.println(colour.WHITE_BOLD + "                                ROUND " + round + " COMMENCE" + colour.RESET);
     }
 
     @Override

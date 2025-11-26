@@ -1,8 +1,16 @@
+/**
+ * Filename: Armor.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-18
+ * Description: A class for the Amror type of Item, extends Item class, implements the Equippable interface
+ */
+
 package item;
 
 import java.util.*;
 import fileparser.ArmorDetails;
 import interfaces.Equippable;
+import utilities.constants.Constants;
 import entity.hero.Hero;
 
 
@@ -14,7 +22,7 @@ public class Armor extends Item implements Equippable{
     public Armor(String name, int price, int level, int damageReduction)
     {
         super(name, price, level);
-        this.type = "Armor";
+        this.type = Constants.ARMOR;
         this.damageReduction = damageReduction;
         this.equipped = false;
         setUsage();

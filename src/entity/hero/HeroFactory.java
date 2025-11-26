@@ -1,3 +1,10 @@
+/**
+ * Filename: HeroFactory.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-15
+ * Description: A factory class to create heroes
+ */
+
 package entity.hero;
 
 import java.util.*;
@@ -17,29 +24,31 @@ public class HeroFactory{
         types = new ArrayList<>();
     }
 
+    /**
+    * To intialize a Hero object according to the parameters passes
+    * @param name,type name and type of the hero to be created
+    * @return Hero object
+    */
     public Hero createHero(String name, String type)
     {
-        defaultDetails = file.getChosenHeroDetails(name, type);
-        EntityDetails ed = new EntityDetails(defaultDetails, Constants.HERO);
+        defaultDetails = file.getChosenHeroDetails(name, type); //getting the details of the hero from the file using the file parser functionality
+        EntityDetails ed = new EntityDetails(defaultDetails, Constants.HERO); //recording the details in an EntityDetails object
 
         switch(type)
         {
-            // case Constants.PALADINS:
-            //     return new Paladins(ed.name, ed.mp, ed.strength, ed.dexterity, ed.agility, ed.gold, ed. exp);
-            // case Constants.SORCERERS:
-            //     return new Sorcerers(ed.name, ed.mp, ed.strength, ed.dexterity, ed.agility, ed.gold, ed. exp);
-            // case Constants.WARRIORS:
-            //     return new Warriors(ed.name, ed.mp, ed.strength, ed.dexterity, ed.agility, ed.gold, ed. exp);
-
             case Constants.PALADINS:
             case Constants.SORCERERS:
             case Constants.WARRIORS:
-                return new Hero(ed.name, ed.mp, ed.strength, ed.dexterity, ed.agility, ed.gold, ed. exp, type);
+                return new Hero(ed.name, ed.mp, ed.strength, ed.dexterity, ed.agility, ed.gold, ed.exp, type); //initializing a hero object using EntityDetails
             default:
                 return null;
         }
     }
 
+    /**
+    * To get a list of heroes to display to the user
+    * @return the list of hero names to be displayed
+    */
     public List<String> getHeros()
     {
         String heroTemp = " ";
@@ -84,6 +93,10 @@ public class HeroFactory{
         System.out.println("<>" + name + "<>");
     }
 
+    /**
+    * To pick a random hero to be generated using a list of hero names
+    * @return the name picked
+    */
     public String pickRandomHero(List<String> names)
     {
         Random rand = new Random();

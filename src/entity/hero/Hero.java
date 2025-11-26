@@ -1,3 +1,10 @@
+/**
+ * Filename: Hero.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-15
+ * Description: A class for Hero and their functionalites, extends the Entity class
+ */
+
 package entity.hero;
 
 import java.util.*;
@@ -40,11 +47,19 @@ public class Hero extends Entity implements takeDamage, Listeners{
         addListener();
     }
 
+    /**
+    * Adding an observer to record hero statistics and display
+    * @return void method
+    */
     public void addListener()
     {
         hlistener = new HeroStats();
     }
 
+    /**
+    * Logic for when a hero levels up
+    * @return void method
+    */
     public void increaseLevel()
     {
         level++;
@@ -90,7 +105,7 @@ public class Hero extends Entity implements takeDamage, Listeners{
 
     public void calcEXP(int n)
     {
-        exp = exp + level * (n + 10); //needs to be modified
+        exp = exp + level * (n + 10);
         hlistener.eventExpGain(name, level * (n + 10));
         checkForLevelUp();
     }
@@ -105,6 +120,10 @@ public class Hero extends Entity implements takeDamage, Listeners{
         status = state;
     }
 
+    /**
+    * Checking whether a hero can level up after EXP gain
+    * @return void method
+    */
     public void checkForLevelUp()
     {
         if (exp >= (level * 20))
@@ -129,6 +148,10 @@ public class Hero extends Entity implements takeDamage, Listeners{
         return itemDamage;
     }
 
+    /**
+    * To calculate the gold amount gained by hero after winning a battle
+    * @return void method
+    */
     public void goldReward(int level)
     {
         gold = gold + (level * 100);
@@ -212,6 +235,11 @@ public class Hero extends Entity implements takeDamage, Listeners{
         this.mp = val;
     }
 
+    /**
+    * To calculate the attribute increase of a hero after an item is consumed
+    * @param amt,incAtt the amount by which the attribute has to increase
+    * @return void method
+    */
     public void increaseAttribute(int amt, String incAtt)
     {
         switch(incAtt)
@@ -245,18 +273,28 @@ public class Hero extends Entity implements takeDamage, Listeners{
         itemDamage = damage;
     }
 
+    /**
+    * To calculate the damage reduction from the hero wearing an armor
+    * @param item the armor worn by hero
+    * @return damage reduction of armor
+    */
     public int useArmor(Item item)
     {
         Armor a = (Armor) item;
         return a.getDamageReduction();
     }
 
+    /**
+    * Logic for a hero taking damage from a monster
+    * @param damageDealt the damage induced by a monster's attack
+    * @return void method
+    */
     @Override
     public void takeDamage(int damageDealt)
     {
         int defense = 0;
 
-        if (equippedArmor != null)
+        if (equippedArmor != null) //checking if hero has worn an armor, which increase defense
         {
             defense = useArmor(equippedArmor);
         }
@@ -265,7 +303,7 @@ public class Hero extends Entity implements takeDamage, Listeners{
             defense = (int) (damageDealt * 0.7);
         }
         
-        hp = Math.max( 0, hp - Math.max(0, (damageDealt - defense)));
+        hp = Math.max( 0, hp - Math.max(0, (damageDealt - defense))); //calculating HP of hero after damage
     }
 
     public Inventory getInventory()
@@ -283,29 +321,39 @@ public class Hero extends Entity implements takeDamage, Listeners{
         return inventory.getItem(choice);
     }
 
+    /**
+    * Logic for the hero to equip a weapon
+    * @param item the weapon to be equipped by the hero
+    * @return void method
+    */
     public void equipWeapon(Item item)
     {
         int hands;
         if (item instanceof Equippable)
         {
             Equippable wa = (Equippable) item;
-            if (!wa.isItemEquipped())
+            if (!wa.isItemEquipped()) //checking if weapon is already equipped
             {
-                hands = inventory.checkAnyWeaponEquipped();
-                if (hands == 2)
+                hands = inventory.checkAnyWeaponEquipped(); //checking if any other weapon is equipped
+                if (hands == 2) //if weapon currently equipped required two hands or hero has equipped two weapons
                 {
                     System.out.println("Cannot equip any more weapons!");
                 }
                 else
                 {
                     System.out.println(item.getName() + " is equipped!");
-                    wa.equipItem();
+                    wa.equipItem(); //else, hero can equip the weapon
                     equippedWeapons.add(item);
                 }
             }
         }
     }
 
+    /**
+    * Logic for the hero to unequip a weapon
+    * @param item the weapon to unequip
+    * @return void method
+    */
     public void unEquipWeapon(Item item)
     {
         if (item instanceof Equippable)
@@ -320,15 +368,20 @@ public class Hero extends Entity implements takeDamage, Listeners{
         }
     }
 
+    /**
+    * Logic for the hero to equip an armor
+    * @param item the armor to be equipped
+    * @return void method
+    */
     public void equipArmor(Item item)
     {
         boolean flag;
         if (item instanceof Equippable)
         {
             Equippable wa = (Equippable) item;
-            if (!wa.isItemEquipped())
+            if (!wa.isItemEquipped()) //checking if the armor is already equipped
             {
-                flag = inventory.checkAnyArmorEquipped();
+                flag = inventory.checkAnyArmorEquipped(); //checking if any other armor is already equipped
                 if (flag)
                 {
                     System.out.println("You already have an armor equipped!");
@@ -336,13 +389,18 @@ public class Hero extends Entity implements takeDamage, Listeners{
                 else
                 {
                     System.out.println(item.getName() + " is equipped!");
-                    wa.equipItem();
+                    wa.equipItem(); //else, hero can equip the weapon
                     equippedArmor = item;
                 }
             }
         }
     }
 
+    /**
+    * Logic for the hero to unequip an armor
+    * @param item the armor to be unequipped
+    * @return void method
+    */
     public void unEquipArmor(Item item)
     {
         if (item instanceof Equippable)

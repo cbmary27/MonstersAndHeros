@@ -1,3 +1,10 @@
+/**
+ * Filename: Constants.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-17
+ * Description: A class that contains variables that store values to be used throughtout other classes
+ */
+
 package utilities.constants;
 
 import java.util.*;
@@ -70,6 +77,7 @@ public class Constants{
     public static final int FIVE = 5;
 
     public static final String filePath = "src/textfiles/Legends_Monsters_and_Heroes/";
+    public static final String PLAYERPATH = "-";
 
 
 }

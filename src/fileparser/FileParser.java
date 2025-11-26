@@ -1,3 +1,10 @@
+/**
+ * Filename: FileParser.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-14
+ * Description: A class to implement the logic to retrieve details from the text files
+ */
+
 package fileparser;
 
 import java.util.*;
@@ -22,6 +29,9 @@ public class FileParser
         names = new ArrayList<String>();
     }
 
+    /**
+    * A static method to get an instance of FileParser
+    */
     public static FileParser getInstance()
     {
         if (fileParser == null)
@@ -31,6 +41,11 @@ public class FileParser
         return fileParser;
     }
 
+    /**
+    * A method to get a list of names of items/entities from the files by the type
+    * @param type the type of item/entity
+    * @return a list of names of the item/entity
+    */
     public List<String> get(String type)
     {
         names.clear();
@@ -55,6 +70,11 @@ public class FileParser
 
     }
 
+    /**
+    * A method to get the details of the of heros chosen for the player
+    * @param name,type the name and type of the hero for whom the details are to be retrieved
+    * @return a list of details of the hero
+    */
     public List<String> getChosenHeroDetails(String name, String type)
     {
         entityDetails.clear();
@@ -87,6 +107,11 @@ public class FileParser
         return entityDetails;
     }
 
+    /**
+    * A method to get the details of spell items
+    * @param type the type of spell item whose details are required
+    * @return a list of details of the spell
+    */
     public List<List<String>> getItemDetails(String type)
     {
         Random rand = new Random();
@@ -121,6 +146,11 @@ public class FileParser
         return itemDetails;
     }
 
+     /**
+    * A method to get the item details from multiple files
+    * @param fileType,type the files required as well the type of the item
+    * @return a list of details from the files
+    */
     public List<List<String>> getMultipleFileItems(List<String> fileType, String type)
     {
         List<List<String>> itemDetails = new ArrayList<>();
@@ -136,7 +166,7 @@ public class FileParser
 
             while (tuple != null)
             {
-                if (rand.nextBoolean())
+                if (rand.nextBoolean()) //choosing items randomly
                 {
                     tuple = br.readLine();
                     continue;
@@ -158,6 +188,11 @@ public class FileParser
         return itemDetails;
     }
 
+    /**
+    * A method to get the details of complimentary weapons for the heroes
+    * @param type the file type
+    * @return a list of details of the complimentary weapons
+    */
     public List<List<String>> getComplimentaryWeaponDetails(String type)
     {
         List<List<String>> itemDetails = new ArrayList<>();

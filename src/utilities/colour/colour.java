@@ -1,3 +1,10 @@
+/**
+ * Filename: colour.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-19
+ * Description: A class that contains ANSI codes for colours to be used across various classes
+ */
+
 package utilities.colour;
 
 import java.util.*;

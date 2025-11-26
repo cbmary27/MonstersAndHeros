@@ -1,3 +1,10 @@
+/**
+ * Filename: Inventory.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-18
+ * Description: A class for the implementation of the logic for inventory
+ */
+
 package inventory;
 
 import java.util.*;
@@ -34,6 +41,10 @@ public class Inventory
         return brokenItems;
     }
 
+    /**
+    * To display the items in the hero's inventory
+    * @return void method
+    */
     public void display()
     {
         int i = 1;
@@ -52,11 +63,19 @@ public class Inventory
         System.out.println();
     }
 
+    /**
+    * To add an item to the inventory
+    * @return void method
+    */
     public void addItem(Item item)
     {
         items.add(item);
     }
 
+    /**
+    * To remove an item from the inventory
+    * @return void method
+    */
     public void dropItem(String index)
     {
         items.remove(Integer.parseInt(index) - 1);
@@ -72,11 +91,19 @@ public class Inventory
         return items.get(Integer.parseInt(index) - 1);
     }
 
+    /**
+    * To get an item whose usage = 0
+    * @return void method
+    */
     public Item getBrokenItem(String index)
     {
         return brokenItems.get(Integer.parseInt(index) - 1);
     }
 
+    /**
+    * To check if the weapon in the inventory is equipped
+    * @return returns the total number of "hands" currently occupied (holds a weapon)
+    */
     public int checkAnyWeaponEquipped()
     {
         int hands = 0;
@@ -97,6 +124,10 @@ public class Inventory
         return hands;
     }
 
+    /**
+    * To check if the armor in the inventory is equipped
+    * @return a boolean value to indicate whether an armor is equipped or not
+    */
     public boolean checkAnyArmorEquipped()
     {
         for (Item item : items)
@@ -113,6 +144,11 @@ public class Inventory
         return false;
     }
 
+    /**
+    * A started method to open hero's inventory
+    * @param hero the hero opening the inventory
+    * @return void method
+    */
     public void open(Hero hero)
     {
         String choice;
@@ -124,11 +160,16 @@ public class Inventory
         test(choice, hero);
     }
 
+    /**
+    * To check if the weapon in the inventory is equipped
+    * @param choice,hero the choice to indicate what to do in the hero's inventory
+    * @return void method
+    */
     public void test(String choice, Hero hero)
     {
         switch(choice)
         {
-            case Constants.USEPOTION:
+            case Constants.USEPOTION: //to use a potion
                 menu.useItem(Constants.POTION);
                 choice = inp.getIntInput(1, items.size());
                 Item item = getItem(choice);
@@ -142,7 +183,7 @@ public class Inventory
                 }
                 break;
 
-            case Constants.EQUIP:
+            case Constants.EQUIP: //to equip a weapon/armor
                 menu.useItem(Constants.EQUIP);
                 choice = inp.getIntInput(1, items.size());
                 Item item1 = getItem(choice);
@@ -160,13 +201,13 @@ public class Inventory
                 }
                 break;
 
-            case Constants.UNEQUIP:
+            case Constants.UNEQUIP: //to unequip a weapon/armor
                 menu.useItem(Constants.UNEQUIP);
                 choice = inp.getIntInput(1, items.size());
                 Item item2 = hero.selectItem(choice);
                 if (check(item2.getType(), Constants.WEAPON))
                 {
-                    if (hero.getEquippedWeapons().size() == 1)
+                    if (hero.getEquippedWeapons().size() == 1) //if only one weapon in hero's inventory, cannot unequip
                     {
                         menu.cannotUnequip();
                         break;
@@ -192,6 +233,11 @@ public class Inventory
         }
     }
 
+    /**
+    * To check if item type from the index selected by player matches the action intended
+    * @param type,item
+    * @return a boolean value to indicate whether the type matches the action intended or not
+    */
     public boolean check(String type, String item)
     {
         if (type.equals(item))
@@ -201,6 +247,10 @@ public class Inventory
         return false;
     }
 
+    /**
+    * To check if the usage of any item in the hero's inventory has maxxed out
+    * @return void method
+    */
     public void checkForBrokenItems()
     {
         brokenItems.clear();
@@ -213,6 +263,10 @@ public class Inventory
         }
     }
 
+    /**
+    * To display the broken items in the inventory
+    * @return void method
+    */
     public void displayBrokenItems()
     {
         int i = 1;
@@ -223,6 +277,10 @@ public class Inventory
         }
     }
 
+    /**
+    * To check the number of weapons in the hero's inventory
+    * @return the number of weapons in the hero's inventory
+    */
     public int checkNumberOfWeapons()
     {
         int count = 0;

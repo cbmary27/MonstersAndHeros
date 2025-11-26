@@ -1,3 +1,10 @@
+/**
+ * Filename: WeaponryDetails.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-17
+ * Description: A class to store the details of weapons after retrieving from the file
+ */
+
 package fileparser;
 
 import java.util.*;

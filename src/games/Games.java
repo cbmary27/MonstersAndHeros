@@ -1,3 +1,10 @@
+/**
+ * Filename: Games.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-14
+ * Description: An abstract class for Games
+ */
+
 package games;
 
 import java.util.*;
@@ -33,6 +40,11 @@ public abstract class Games{
 
     public abstract void start();
 
+    /**
+    * A method to check the input of the player for moving across the map
+    * @param input the input of the player
+    * @return a boolean value to indicate whether its a valid move or not
+    */
     public boolean checkInput(String input)
     {
         switch(input.toUpperCase())
@@ -50,6 +62,10 @@ public abstract class Games{
         }
     }
 
+    /**
+    * A method to restore game details if the player wants to play again
+    * @return void method
+    */
     public void restore()
     {
         player.getParty().clear();
@@ -61,6 +77,10 @@ public abstract class Games{
         gmenu.showMenu();
     }
 
+    /**
+    * A method to check the HP of the heroes in the party
+    * @return a boolean value to indicate whether any hero in the party is currenlty fainted or not
+    */
     public boolean checkHPOfParty()
     {
         for (Hero hero : player.getParty())

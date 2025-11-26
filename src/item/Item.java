@@ -1,3 +1,11 @@
+/**
+ * Filename: Item.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-18
+ * Description: An abstract class for Item
+ */
+
+
 package item;
 
 import java.util.*;
@@ -38,6 +46,10 @@ public abstract class Item{
         this.usage--;
     }
 
+    /**
+    * To check if an item is maxxed out or not
+    * @return a boolean value to indicate whether the item is maxxed out or not
+    */
     public boolean checkUsage()
     {
         if (usage <= 0)

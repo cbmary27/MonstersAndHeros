@@ -1,3 +1,10 @@
+/**
+ * Filename: Entity.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-14
+ * Description: An abstract class for Entity
+ */
+
 package entity;
 
 import java.util.*;
@@ -31,8 +38,6 @@ public abstract class Entity{
     {
         this.hp = val;
     }
-
-    //public abstract void increaseLevel();
 
     public void calcHP()
     {

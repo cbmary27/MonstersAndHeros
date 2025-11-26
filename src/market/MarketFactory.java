@@ -1,3 +1,10 @@
+/**
+ * Filename: MarketFactory.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-17
+ * Description: A factory class for market to retrieve the stock of items
+ */
+
 package market;
 
 import java.util.*;
@@ -23,6 +30,10 @@ public class MarketFactory
         spellDetails = new ArrayList<>();
     }
 
+    /**
+    * A method to get the items for the market by retrieving item details from the market
+    * @return void method
+    */
     public void createMarket()
     {
         List<List<String>> p = file.getItemDetails("Potions");
@@ -51,6 +62,10 @@ public class MarketFactory
         }
     }
 
+    /**
+    * A method to retrieve complimentary weapons from the file
+    * @return void method
+    */
     public void createComplimentaryWeapons()
     {
         List<List<String>> w = file.getComplimentaryWeaponDetails("Initial");

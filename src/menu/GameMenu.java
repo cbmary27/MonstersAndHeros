@@ -1,3 +1,10 @@
+/**
+ * Filename: GameMenu.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-21
+ * Description: A class for printing Game actions, implements the ShowMenu interface
+ */
+
 package menu;
 
 import java.util.*;

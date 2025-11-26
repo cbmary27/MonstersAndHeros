@@ -1,3 +1,10 @@
+/**
+ * Filename: Monsters.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-18
+ * Description: A class for monsters and their functionalities, extends the Entity class
+ */
+
 package entity.monsters;
 
 import java.util.*;
@@ -32,13 +39,22 @@ public class Monsters extends Entity implements takeDamage{
         return super.toString();
     }
 
+    /**
+    * To calculate the HP after the monster takes damage
+    * @param damageDealt damage to be taken by the monster during battle
+    * @return void method
+    */
     @Override
     public void takeDamage(int damageDealt)
     {
-        int reduceDefense = (int) (defense * damageDealt / 100);
+        int reduceDefense = (int) (defense * damageDealt / 100); //reducing the defense of the monster from the damageDealt
         hp = Math.max( 0, hp - Math.max(0, (damageDealt - reduceDefense)));
     }
 
+    /**
+    * To calculate the skill loss of the monster after an attack
+    * @return void method
+    */
     public void skillLoss()
     {
         switch (type)

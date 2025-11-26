@@ -1,3 +1,10 @@
+/**
+ * Filename: Player.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-20
+ * Description: A class for Player and its functionalities
+ */
+
 package player;
 
 import java.util.*;
@@ -34,6 +41,10 @@ public class Player{
       return this.party;
    }
 
+   /**
+    * A method to get the information of the party of heroes to display to the player
+    * @return void method
+    */
    public void getInformation()
    {
       while (true)
@@ -48,7 +59,7 @@ public class Player{
          }
        
          Hero hero =  party.get(Integer.parseInt(choice) - 1);
-         hero.openInventory();    
+         hero.openInventory(); //opens the hero's inventory
       }
 
    }

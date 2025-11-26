@@ -1,3 +1,10 @@
+/**
+ * Filename: BattleMenu.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-21
+ * Description: A class for printing Battle actions, implements the ShowMenu interface
+ */
+
 package menu;
 
 import java.util.*;
@@ -17,7 +24,7 @@ public class BattleMenu implements ShowMenu
         System.out.println(colour.RESET);
     }
 
-    public void endofRound()
+    public void endOfRound()
     {
         System.out.println(" < ---------------------------------------------------------------------------------- >");
     }

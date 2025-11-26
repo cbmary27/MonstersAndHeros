@@ -1,3 +1,10 @@
+/**
+ * Filename: MonsterFactory.java
+ * Author: Chris Mary Benson
+ * Date: 2025-Nov-18
+ * Description: A factory class to create monsters
+ */
+
 package entity.monsters;
 
 import java.util.*;
@@ -19,10 +26,15 @@ public class MonsterFactory{
         defaultDetails = new ArrayList<>();
     }
 
+    /**
+    * To intialize a Monster object according to the parameters passes
+    * @param name,type,level name, type, level of the monster to be created
+    * @return Mosnter object
+    */
     public Monsters createMonster(String name, String type, int level)
     {
-        defaultDetails = file.getChosenHeroDetails(name, type);
-        EntityDetails ed = new EntityDetails(defaultDetails, Constants.MONSTER);
+        defaultDetails = file.getChosenHeroDetails(name, type); //get the details associated with the monster
+        EntityDetails ed = new EntityDetails(defaultDetails, Constants.MONSTER); //use EntityDetails to store the details
 
         switch(type)
         {
@@ -35,6 +47,10 @@ public class MonsterFactory{
         }
     }
 
+    /**
+    * To get a list of monsters
+    * @return a list of names of monsters
+    */
     public List<String> getMonsters()
     {
         String monsterTemp = " ";
@@ -72,6 +88,10 @@ public class MonsterFactory{
         System.out.println();
     }
 
+    /**
+    * To pick a random monster from the list of names
+    * @return the name of the monster picked
+    */
     public String pickRandomMonster(List<String> names)
     {
         Random rand = new Random();
