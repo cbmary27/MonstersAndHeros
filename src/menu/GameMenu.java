@@ -60,7 +60,6 @@ public class GameMenu implements ShowMenu
 
     public void whichHeroMarket()
     {
-        System.out.println();
         System.out.println("Who will be going to the market?");
     }
 

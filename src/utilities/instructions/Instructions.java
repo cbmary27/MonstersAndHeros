@@ -9,12 +9,14 @@ package utilities.instructions;
 
 import java.util.*;
 import utilities.colour.colour;
+import utilities.textstyle.textStyle;
 
 public class Instructions{
     
     public void displayMonstersAndHeros()
     {
-        System.out.println("MONSTERS AND HEROS");
+        System.out.println();
+        System.out.println(colour.BG_BRIGHT_RED + colour.BLACK_BOLD + textStyle.ITALIC + "                      MONSTERS AND HEROES                             " + textStyle.RESET_ITALIC + colour.RESET);
         System.out.println();
         System.out.println("A long, long time ago, the land of the heros was once peaceful.");
         System.out.println("The villages thrived, the forests were calm, and the people lived without fear.");

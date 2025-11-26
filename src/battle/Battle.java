@@ -100,6 +100,8 @@ public class Battle implements Listeners{
             blistener.eventNextRound(round);
             blistener.eventHeroTurn();
 
+            displayHeroes();
+
             for (Hero hero : heros) //Heroes go first in a battle
             {
                 isTurnOver = false;
@@ -130,8 +132,8 @@ public class Battle implements Listeners{
                     switch(choice)
                     {
                         case Constants.ATTACK:
-                            heroAttack();
-                            target.takeDamage(damageDealt);
+                            heroAttack(target);
+                            //target.takeDamage(damageDealt);
                             check();
                             break;
 
@@ -181,8 +183,17 @@ public class Battle implements Listeners{
 
         for (Monsters monster: monsters)
         {
-            i = (int) (Math.random() * heros.size()); //getting a random hero from the party for the current monster to fight against
-
+            while (true) {
+                i = (int) (Math.random() * heros.size()); //getting a random hero from the party for the current monster to fight against
+                if (isHeroDefeated(heros.get(i)))
+                {
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
+            }
             blistener.eventAttack(monster.getName(), heros.get(i).getName());
 
             damageDealt = monster.getBaseDamage();
@@ -212,7 +223,7 @@ public class Battle implements Listeners{
     * If hero chooses to attack, to calculate the dodge or damage taken for the monster
     * @return void method
     */
-    public void heroAttack()
+    public void heroAttack(Monsters target)
     {
         String choice;
         boolean chosen = true;
@@ -294,7 +305,7 @@ public class Battle implements Listeners{
             {
                 blistener.eventEntityDamage(currentHero.getName(), damageDealt);
             }
-
+            target.takeDamage(damageDealt);
             isTurnOver = true;
         }
     }
@@ -317,13 +328,17 @@ public class Battle implements Listeners{
         if (choice.equals(Constants.USESPELL))
         {
             bmenu.whichItem(Constants.SPELL);
-            choice = inp.getIntInput(1, currentHero.getInventory().getItems().size());
+            choice = inp.getIntInputIndex(1, currentHero.getInventory().getItems().size());
             Item item = currentHero.selectItem(choice);
-            // item.applyEffect(currentHero); 
             if (item.getUsage() == 0) //if the spell cannot be used
             {
                 isTurnOver = false;
             }
+            else if (item.getType() != Constants.SPELL)
+            {
+                isTurnOver = false;
+            }
+
             else
             {
                 item.applyEffect(currentHero);
@@ -511,5 +526,15 @@ public class Battle implements Listeners{
             }
         }
         return maxLevel;
+    }
+
+    public void displayHeroes()
+    {
+        for (Hero hero : heros)
+        {
+            System.out.println(hero);
+            System.out.println();
+        }
+
     }
 }

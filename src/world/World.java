@@ -186,7 +186,7 @@ public class World
                     System.out.print(Constants.BOARDVEDGE + " " + colour.YELLOW + playerPosition[i][j].tileVal.getValueOnTile() + colour.RESET + "  ");
                 }
             }
-            System.out.println(Constants.BOARDVEDGE + " " );
+            System.out.println(Constants.BOARDVEDGE + " ");
         }
 
         for (int j = 0; j < columns; j++)

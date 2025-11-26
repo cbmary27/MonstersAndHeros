@@ -183,7 +183,7 @@ public class MonstersAndHeros extends Games{
                 {
                     player.display();
                     gmenu.whichHeroMarket();
-                    choice = inp.getIntInput(1, player.getParty().size()); //which hero is going to enter the market
+                    choice = inp.getIntInputIndex(1, player.getParty().size()); //which hero is going to enter the market
 
                     world.grid[i][j].getMarketInstance();
                     world.grid[i][j].market.enter(player.getHero(choice)); //calling a method from Market class to proceed

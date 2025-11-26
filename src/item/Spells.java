@@ -60,6 +60,8 @@ public class Spells extends Item{
     {
         if (checkUsage())
         {
+            updateUsage();
+            
             if (hero.getMP() >= affectedMana)
             {
                 hero.setMP(hero.getMP() - affectedMana);

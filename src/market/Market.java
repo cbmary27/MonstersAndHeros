@@ -274,7 +274,7 @@ public class Market{
             i = 1;
             for (PotionDetails p : mf.potionDetails)
             {
-                System.out.print("["+ i + "]");
+                System.out.print("["+ i + "] ");
                 System.out.println(p);
                 i++;
                 System.out.println();
@@ -327,7 +327,7 @@ public class Market{
 
             for (SpellDetails p : mf.spellDetails)
             {
-                System.out.print("["+ i + "]");
+                System.out.print("["+ i + "] ");
                 System.out.println(p);
                 i++;
                 System.out.println();
@@ -379,7 +379,7 @@ public class Market{
             i = 1;
             for (WeaponryDetails p : mf.weaponryDetails)
             {
-                System.out.print("["+ i + "]");
+                System.out.print("["+ i + "] ");
                 System.out.println(p);
                 i++;
                 System.out.println();
@@ -431,7 +431,7 @@ public class Market{
             i = 1;
             for (ArmorDetails p : mf.armorDetails)
             {
-                System.out.print("["+ i + "]");
+                System.out.print("["+ i + "] ");
                 System.out.println(p);
                 i++;
                 System.out.println();

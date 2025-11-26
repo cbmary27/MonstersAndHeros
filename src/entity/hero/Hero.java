@@ -332,15 +332,22 @@ public class Hero extends Entity implements takeDamage, Listeners{
         if (item instanceof Equippable)
         {
             Equippable wa = (Equippable) item;
+            Weaponry w = (Weaponry) item;
             if (!wa.isItemEquipped()) //checking if weapon is already equipped
             {
                 hands = inventory.checkAnyWeaponEquipped(); //checking if any other weapon is equipped
                 if (hands == 2) //if weapon currently equipped required two hands or hero has equipped two weapons
                 {
                     System.out.println("Cannot equip any more weapons!");
+                    System.out.println();
                 }
                 else
                 {
+                    if (hands + w.getRequiredHands() >= 2)
+                    {
+                        System.out.println("This weapon requires to be held with two hands!");
+                        System.out.println();
+                    }
                     System.out.println(item.getName() + " is equipped!");
                     wa.equipItem(); //else, hero can equip the weapon
                     equippedWeapons.add(item);

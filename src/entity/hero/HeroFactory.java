@@ -10,6 +10,7 @@ package entity.hero;
 import java.util.*;
 import fileparser.*;
 import utilities.constants.Constants;
+import utilities.colour.colour;
 
 public class HeroFactory{
 
@@ -60,7 +61,7 @@ public class HeroFactory{
         List<String> heros = new ArrayList<>();
         List<String> heroNames = new ArrayList<>();
 
-        System.out.println("Paladins: favoured for their strength and dexterity");
+        System.out.println(colour.GREEN + "Paladins: favoured for their strength and dexterity" + colour.RESET);
 
         heroNames = file.get(Constants.PALADINS);
 
@@ -69,7 +70,7 @@ public class HeroFactory{
         heros.add(heroTemp);
 
         System.out.println();
-        System.out.println("Warriors: favoured for their strength and agility");
+        System.out.println(colour.YELLOW + "Warriors: favoured for their strength and agility" + colour.RESET);
 
         heroNames = file.get(Constants.WARRIORS);
 
@@ -78,7 +79,7 @@ public class HeroFactory{
         heros.add(heroTemp);
 
         System.out.println();
-        System.out.println("Sorcerers: favoured for their dexterity and agility");
+        System.out.println(colour.PURPLE + "Sorcerers: favoured for their dexterity and agility" + colour.RESET);
 
         heroNames = file.get(Constants.SORCERERS);
         heroTemp = pickRandomHero(heroNames);
@@ -90,7 +91,7 @@ public class HeroFactory{
 
     public void displayHero(String name)
     {
-        System.out.println("<>" + name + "<>");
+        System.out.println("<> " + name + " <>");
     }
 
     /**
