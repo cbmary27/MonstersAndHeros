@@ -198,85 +198,66 @@ NOTE - A hero will always need a weapon with them at all times. Thus, they canno
 
 Time to assemble your league!
 
-
-Paladins: favoured for their strength and dexterity
+Paladins: favoured for their strength and dexterity  
 <> Lunessa <>
 
-
-Warriors: favoured for their strength and agility
+Warriors: favoured for their strength and agility  
 <> Flandal_Steelskin <>
 
-
-Sorcerers: favoured for their dexterity and agility
+Sorcerers: favoured for their dexterity and agility  
 <> Selunea <>
 
-
-How many heros will accompany you on your journey?
+How many heros will accompany you on your journey?  
 Your party can either have 1, 2 or 3 heros!
 
-
 [INPUT]
-
-
 <> 2
-
 
 [OUTPUT]
 
-
-Now...we don't want your heros out in the wild without a weapon now, do we?
+Now...we don't want your heros out in the wild without a weapon now, do we?  
 Here's a complimentary weapon to get you started! (and keep you safe from the monsters)
 
-
-Lunessa: Stick is equipped!
-
-
+Lunessa: Stick is equipped!  
 Eunoia_Cyn: Stick is equipped!
 
-
-[1] Lunessa | HP : 100 | Level : 1 | EXP : 7| Status : Healthy | Strength : 750 | Dexterity : 700 | Agility : 330| Gold : 2500
-[2] Eunoia_Cyn | HP : 100 | Level : 1 | EXP : 6| Status : Healthy | Strength : 700 | Dexterity : 600 | Agility : 400| Gold : 2500
-
+[1] Lunessa | HP : 100 | Level : 1 | EXP : 7 | Status : Healthy | Strength : 750 | Dexterity : 700 | Agility : 330 | Gold : 2500  
+[2] Eunoia_Cyn | HP : 100 | Level : 1 | EXP : 6 | Status : Healthy | Strength : 700 | Dexterity : 600 | Agility : 400 | Gold : 2500
 
 Select a hero's inventory to view | [Q] Quit
 [INPUT]
 <> q
 
-
 [OUTPUT]
 
-'''
-+----+----+----+----+----+----+----+----
++----+----+----+----+----+----+----+----+
 | X  | *  | *  | *  | *  | *  | M  | *  |
-+----+----+----+----+----+----+----+----
++----+----+----+----+----+----+----+----+
 | *  | *  | *  | *  | *  | M  | M  | *  |
-+----+----+----+----+----+----+----+----
++----+----+----+----+----+----+----+----+
 | X  | *  | M  | X  | *  | *  | X  | *  |
-+----+----+----+----+----+----+----+----
++----+----+----+----+----+----+----+----+
 | M  | *  | M  | *  | M  | *  | *  | *  |
-+----+----+----+----+----+----+----+----
++----+----+----+----+----+----+----+----+
 | M  | M  | M  | M  | M  | M  | X  | *  |
-+----+----+----+----+----+----+----+----
++----+----+----+----+----+----+----+----+
 | *  | M  | *  | M  | *  | X  | X  | *  |
-+----+----+----+----+----+----+----+----
++----+----+----+----+----+----+----+----+
 | X  | X  | *  | *  | *  | *  | M  | *  |
-+----+----+----+----+----+----+----+----
++----+----+----+----+----+----+----+----+
 | *  | *  | *  | X  | M  | X  | *  | S  |
-+----+----+----+----+----+----+----+----
-'''
++----+----+----+----+----+----+----+----+
 
-[W] - move up
-[A] - move left
-[S] - move right
-[D] - move down
-[M] - enter Market
-[I] - Information
-[Q] - Quit
-
+[W] - move up  
+[A] - move left  
+[S] - move right  
+[D] - move down  
+[M] - enter Market  
+[I] - Information  
+[Q] - Quit  
 
 Enter your move:
 [INPUT]
-
 
 <> w
 
