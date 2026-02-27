@@ -2,15 +2,6 @@
 ## MONSTERS AND HEROES 
 ---------------------------------------------------------------------------
 
-
-Name: Chris Mary Benson
-Email: chris27@bu.edu
-ID: U56085268
-
-
-Github Link: https://github.com/ChrisCodes27/MonstersAndHeros.git
-
-
 ## Files
 ---------------------------------------------------------------------------
 
@@ -254,7 +245,7 @@ Select a hero's inventory to view | [Q] Quit
 
 [OUTPUT]
 
-
+'''
 +----+----+----+----+----+----+----+----
 | X  | *  | *  | *  | *  | *  | M  | *  |
 +----+----+----+----+----+----+----+----
@@ -272,6 +263,8 @@ Select a hero's inventory to view | [Q] Quit
 +----+----+----+----+----+----+----+----
 | *  | *  | *  | X  | M  | X  | *  | S  |
 +----+----+----+----+----+----+----+----
+'''
+
 [W] - move up
 [A] - move left
 [S] - move right
@@ -1497,8 +1490,6 @@ Eunoia_Cyn gained 100 gold
 Eunoia_Cyn gained 12 EXP
 
 
-
-
 +----+----+----+----+----+----+----+----
 | X  | *  | *  | *  | *  | *  | M  | *  |
 +----+----+----+----+----+----+----+----
@@ -1516,6 +1507,8 @@ Eunoia_Cyn gained 12 EXP
 +----+----+----+----+----+----+----+----
 | *  | *  | *  | X  | M  | X  | *  | S  |
 +----+----+----+----+----+----+----+----
+
+
 [W] - move up
 [A] - move left
 [S] - move right
